@@ -4,12 +4,24 @@
   box-sizing: border-box
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
+  display:block
+
+
+
 
 h1, h2, h3, h4, h5, h6
   margin: 8px 0
 
 p
   margin: 0
+
+.container
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+  background: url("~src/assets/background.png") no-repeat center 10%
+  background-size: cover    
+  background-repeat: no-repeat
 
 .toolbar
   position: absolute
@@ -20,7 +32,7 @@ p
   display: flex
   align-items: center
   justify-content: space-between
-  background-color: #1976d2
+  background-color: #008080
   color: white
   font-weight: 600
   
@@ -51,24 +63,34 @@ p
   padding: 0 10%
   padding-top: 100px
   text-align: center
-  height: 100%
+  min-height: calc(80vh - 40px)
+  margin-top: 40px
+
+
 
   h1 
     font-size: 3em
-    font-weight: 600
+    font-weight: 800
     line-height: 60px
     text-transform: capitalize
+    color: #fff
+    animation: fadeSlideDown 1s ease 0.8s forwards
+    opacity: 0
+
   
 
   p 
     color: #000000
     margin-top: 20px
     width: 70%
+    color: #fff
+    font-weight: 600
+
   
 
   
 .get-started-button
-    background-color: #007bff
+    background-color: #008080
     color: #fff 
     padding: 10px 20px
     font-size: 16px
@@ -82,5 +104,51 @@ p
     // Add hover effect
     &:hover 
       background-color: #0056b3
-    
 
+.logo-animate
+  animation: fadeSlideLeft 0.8s ease forwards
+
+.nav-animate
+  opacity: 0
+  animation: fadeSlideDown 0.6s ease forwards
+
+.toolbar
+  animation: slideDown 0.7s ease forwards
+
+.body
+  h1
+    animation: fadeSlideDown 1s ease 0.8s forwards
+    opacity: 0
+
+  p
+    animation: fadeSlideDown 1s ease 1.1s forwards
+    opacity: 0
+
+  .get-started-button
+    animation: fadeSlideDown 1s ease 1.4s forwards
+    opacity: 0
+
+
+@keyframes slideDown
+  from
+    transform: translateY(-100%)
+    opacity: 0
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@keyframes fadeSlideDown
+  from
+    opacity: 0
+    transform: translateY(-20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+@keyframes fadeSlideLeft
+  from
+    opacity: 0
+    transform: translateX(-20px)
+  to
+    opacity: 1
+    transform: translateX(0)
