@@ -1,44 +1,83 @@
-<app-background></app-background>
-<app-subnavbar></app-subnavbar>
-<app-card>
-  <h1 class="card-title">Login</h1>
-    <div class="card-body">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="fill">
-          <mat-label>Email</mat-label>
-          <input matInput type="text" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-          <mat-error *ngIf="submitted && f.email.errors">
-            <div *ngIf="f.email.errors.required">Email is required</div>
-            <div *ngIf="f.email.errors.email" class ="warning-message">Email is invalid</div>
-          </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field appearance="fill">
-          <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
-          [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-          <mat-icon matSuffix (click)="togglePassword()">
-            {{ hidePassword ? 'visibility_off' : 'visibility' }}
-          </mat-icon>
-          <mat-error *ngIf="submitted && f.password.errors">
-            <div *ngIf="f.password.errors.required">Password is required</div>
-          </mat-error>
-        </mat-form-field>
-        
-        <div class = button-container>
-          <button mat-raised-button color="primary" [disabled]="submitting">
-            <span *ngIf="submitting"></span>
-            login
-          </button>
-          <div class = button-link>
-          <a mat-button-link routerLink="../registration">Register</a>
-        
-        <div>
-          <a mat-button-link class = "spaced-link" routerLink="../forgot-password">Forgot Password?</a>
+<div class="container">
+  <div class="main-layout">
+    <div class="image-side">
+       <a class="back-button" mat-icon-button routerLink="/" routerLinkActive="active-link">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+    </div>
+    <div class="login-side">
+      <div class="login-logo">
+        <img width="40" alt="Logo" src="../assets/icon2.png"/>
+      </div>
+      <app-card>
+
+        <!-- Anime Face -->
+        <div class="anime-face" [class.eyes-closed]="isPasswordFocused">
+          <div class="face">
+            <div class="eyes">
+              <div class="eye left-eye">
+                <div class="pupil"></div>
+                <div class="eyelid"></div>
+              </div>
+              <div class="eye right-eye">
+                <div class="pupil"></div>
+                <div class="eyelid"></div>
+              </div>
+            </div>
+            <div class="mouth"></div>
           </div>
         </div>
+
+        <h1 class="card-title">Login in with email</h1>
+        <p class="card-description">Enter your credentials to access your account</p>
+
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+              <mat-label>Email</mat-label>
+              <input matInput type="text" formControlName="email"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <mat-error *ngIf="submitted && f.email.errors">
+                <div *ngIf="f.email.errors.required">Email is required</div>
+                <div *ngIf="f.email.errors.email" class="warning-message">Email is invalid</div>
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                (focus)="isPasswordFocused = true"
+                (blur)="isPasswordFocused = false" />
+              <mat-icon matSuffix (click)="togglePassword()">
+                {{ hidePassword ? 'visibility_off' : 'visibility' }}
+              </mat-icon>
+              <mat-error *ngIf="submitted && f.password.errors">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+              </mat-error>
+            </mat-form-field>
+
+            <div class="forgot-password-container">
+              <a mat-button-link routerLink="../forgot-password" class="forgot-link">Forgot Password?</a>
+            </div>
+            
+            <div class="button-container">
+              <button mat-raised-button color="primary" [disabled]="submitting">
+                <span *ngIf="submitting"></span>
+                Login
+              </button>
+            </div>
+
+            <div class="divider">
+              <span>or sign up with</span>
+            </div>
+
+            <a mat-stroked-button routerLink="../registration" class="register-button">
+              Register
+            </a>
+          </form>
         </div>
-      
-    </form>
+      </app-card>
     </div>
-</app-card>
+  </div>
+</div>

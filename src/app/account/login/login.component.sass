@@ -1,9 +1,128 @@
+.container
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+  padding:0px
+  position: relative
+  animation: pageFadeIn 0.5s ease forwards
+
+.main-layout
+  display: flex
+  flex: 1
+
+.image-side
+  width: 60%
+  background: url("~src/assets/background.png") no-repeat center center
+  background-size: cover
+  border-radius: 0 10px 10px 0
+  position: relative 
+  animation: slideInLeft 0.6s ease both
+
+.back-button
+  position: absolute
+  top: 16px
+  left: 16px
+  z-index: 10
+  color: #003333
+  transition: color 0.3s ease
+
+  .mat-icon
+    font-size: 28px
+    color: #003333
+    filter: drop-shadow(0 1px 3px rgba(255, 168, 0, 0.5))
+    transition: color 0.3s ease, filter 0.3s ease
+
+  &:hover
+    color: #cc8400
+
+    .mat-icon
+      color: #cc8400
+      filter: drop-shadow(0 1px 3px rgba(180, 100, 0, 0.7))
+
+.login-side
+  width: 40%
+  display: flex
+  align-items: center
+  justify-content: center
+  background-color: #f9f9f9
+  padding: 10px
+  box-sizing: border-box
+  position: relative
+   animation: slideInRight 0.6s ease both
+
+.login-logo
+  position: absolute
+  top: 16px
+  right: 16px
+  display: flex
+  align-items: center
+  gap: 8px
+  animation: fadeSlideDown 0.5s ease 0.3s both
+
+.login-logo-name
+  color: #FFA800
+  font-size: 1rem
+  font-weight: bold
+  text-shadow: 0 0 6px rgba(255, 168, 0, 0.4)
+  
+
+app-card
+  width:100%
+  animation: fadeSlideUp 0.5s ease 0.2s both
+
+.card-title
+  text-align: center
+  font-size: 24px
+  font-weight: bold
+
+.card-description
+  text-align: center
+  color: #888
+  font-size: 14px
+  margin-bottom: 20px
+  margin-top: 4px
+
+.forgot-password-container
+  display: flex
+  justify-content: flex-end
+  margin-bottom: 10px
+  margin-top: -10px
+
+  .forgot-link
+    color: #FFA800
+    font-size: 13px
+    text-decoration: none
+    cursor: pointer
+    transition: color 0.3s ease
+
+    &:hover
+      color: #cc8400
+
+.divider
+  display: flex
+  align-items: center
+  text-align: center
+  margin: 24px 0
+  color: #aaa
+  font-size: 13px
+
+  &::before, &::after
+    content: ''
+    flex: 1
+    border-top: 1.5px dashed #ccc
+
+  span
+    padding: 0 12px
+    white-space: nowrap
+
+
 
 mat-form-field
   width: 100%
-  max-width: 600px
+  max-width: 100%
   margin-bottom: 20px
   display: flex
+
 
 input.mat-input-element
   border-radius: 4px
@@ -17,41 +136,20 @@ input.mat-input-element
   
 
 .button-container 
-  margin-top: 40px/* Adjust this value to control the spacing */
+  margin-top: 40px
   display: flex
   flex-direction: column
 
 button.mat-raised-button
-  background-color: #007bff
+  background-color: #008080 !important
   color: #fff
   padding: 10px 20px
+  width: 100% 
   border: none
   border-radius: 4px
   cursor: pointer
   transition: background-color 0.3s ease
 
-button.mat-raised-button:disabled
-  background-color: #ccc
-  cursor: not-allowed
-
-.button-link
-  margin-top: 20px/* Adjust this value as needed */
-  display: flex
-  flex-direction: column
-  align-items: center
-
-a.mat-button-link 
-  color: #007bff
-  text-decoration: none
-  font-size: 14px
-  cursor: pointer
-  transition: color 0.3s ease
-
-a.mat-button-link:hover
-  color: #0056b3
-
-.spaced-link
-  margin-top: 20px
 
 div.text-end
   font-size: 14px
@@ -60,11 +158,151 @@ div.text-end
   display: flex
   align-items: center
 
+.register-button
+  width: 100%
+  border-radius: 50px !important
+  border: 2px solid #FFA800 !important
+  color: #FFA800 !important
+  text-align: center
+  padding: 10px 0
+  font-size: 14px
+  font-weight: 600
+  transition: background-color 0.3s ease, color 0.3s ease
+  display: block
 
-/* Increase the cursor pointer on the icon */
-.mat-icon 
-  cursor: pointer
+  &:hover
+    background-color: #FFA800 !important
+    color: #fff !important
 
 
+// Anime face
+.anime-face
+  display: flex
+  justify-content: center
+  margin-bottom: 10px
+
+  .face
+    width: 80px
+    height: 80px
+    background: #FFDE21
+    border-radius: 50%
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+    position: relative
+
+  .eyes
+    display: flex
+    gap: 16px
+    margin-bottom: 8px
+
+  .eye
+    width: 16px
+    height: 16px
+    background: white
+    border-radius: 50%
+    position: relative
+    overflow: hidden
+    border: 1.5px solid #333
+
+    .pupil
+      width: 8px
+      height: 8px
+      background: #333
+      border-radius: 50%
+      position: absolute
+      top: 3px
+      left: 3px
+      transition: transform 0.3s ease
+
+    .eyelid
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background: #FFDE37
+      border-radius: 50%
+      transform: translateY(-100%)  // hidden above by default
+      transition: transform 0.4s ease
+
+  .mouth
+    width: 20px
+    height: 8px
+    border-bottom: 2.5px solid #c0826a
+    border-radius: 0 0 10px 10px
+
+// Eyes closed state
+.eyes-closed
+  .eyelid
+    transform: translateY(0) !important  // slides down to cover eye
+
+  .mouth
+    border-bottom: none
+    border-top: 2.5px solid #c0826a
+    border-radius: 10px 10px 0 0
+    margin-top: 4px
+
+
+// Teal overrides for Angular Material
+::ng-deep
+  .mat-form-field-ripple
+    background-color: #008080 !important
+
+  .mat-form-field.mat-focused .mat-form-field-ripple
+    background-color: #008080 !important
+
+  .mat-form-field.mat-focused .mat-form-field-label
+    color: #008080 !important
+
+  .mat-input-element:focus
+    caret-color: #008080 !important
+
+  .mat-form-field.mat-focused .mat-form-field-outline-thick
+    color: #008080 !important
+
+  .mat-checkbox-checked .mat-checkbox-background
+    background-color: #008080 !important
+
+
+@keyframes pageFadeIn
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+@keyframes slideInLeft
+  from
+    opacity: 0
+    transform: translateX(-40px)
+  to
+    opacity: 1
+    transform: translateX(0)
+
+@keyframes slideInRight
+  from
+    opacity: 0
+    transform: translateX(40px)
+  to
+    opacity: 1
+    transform: translateX(0)
+
+@keyframes fadeSlideDown
+  from
+    opacity: 0
+    transform: translateY(-16px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+@keyframes fadeSlideUp
+  from
+    opacity: 0
+    transform: translateY(20px)
+  to
+    opacity: 1
+    transform: translateY(0)
 
 

@@ -15,6 +15,9 @@ export class LoginComponent implements OnInit {
   submitted = false;
   hidePassword = true; 
 
+  isPasswordFocused = false;
+
+
 
   togglePassword() {
     this.hidePassword = !this.hidePassword;
