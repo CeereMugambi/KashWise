@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Product } from 'src/app/models';
+import { IAccount, IRole, Product } from 'src/app/models';
 import { MOCK_PRODUCTS } from 'src/assets/data/mock-products';
 import { AccountService } from 'src/app/services';
 
@@ -17,19 +17,23 @@ import { AccountService } from 'src/app/services';
 
 export class HomeComponent {
 
-  // isNavCollapsed = false;
+  isNavCollapsed = false;
   productName: string = '';
   entryDate: Date | null = null;
   products: Product[] = [];
   filteredProducts: Product[] = [];
   userInitials: string = '';
+  Role = IRole;
+  account?: IAccount | null;
 
 
   displayedColumns: string[] = ['image', 'id', 'productName', 'quantity', 'price', 'entryDate', 'actions'];
 
   constructor(private http: HttpClient,
     private accountService: AccountService
-  ) {}
+  ) {
+    this.accountService.account.subscribe(x => this.account = x);
+  }
 
   ngOnInit(): void {
     this.products = MOCK_PRODUCTS;
@@ -37,20 +41,23 @@ export class HomeComponent {
   }
 
 
-// toggleNav(): void {
-//   this.isNavCollapsed = !this.isNavCollapsed;
-// }
+toggleNav(): void {
+  this.isNavCollapsed = !this.isNavCollapsed;
+}
 
 setUserInitials(): void {
   const account = this.accountService.accountValue;
-  if (account) {
-    const first = account.firstName?.charAt(0) ?? '';
-    const last = account.lastName?.charAt(0) ?? '';
-    this.userInitials = `${first}${last}`.toUpperCase();
+  if (account?.firstName && account?.lastName) {
+    this.userInitials = `${account.firstName.charAt(0)}${account.lastName.charAt(0)}`.toUpperCase();
   } else {
-    this.userInitials = '?';
+    this.accountService.account.subscribe(acc => {
+      if (acc?.firstName && acc?.lastName) {
+        this.userInitials = `${acc.firstName.charAt(0)}${acc.lastName.charAt(0)}`.toUpperCase();
+      }
+    });
   }
 }
+
 onSubmit(): void {
   this.filteredProducts = this.products.filter(p => {
     const matchesName = p.productName.toLowerCase()
@@ -64,6 +71,9 @@ onSubmit(): void {
 
 formatDate(date: Date): string {
   return date.toISOString().split('T')[0];
+}
+logout(): void {
+  this.accountService.logout();
 }
 }
     
