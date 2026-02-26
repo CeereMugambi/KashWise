@@ -1,11 +1,13 @@
-import { Component,Input,OnInit,EventEmitter, Output, } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup,FormControl, Validators} from '@angular/forms';
-import { AbstractControl} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 import { AccountService } from 'src/app/services';
 import { AlertService } from 'src/app/services';
 import { MustMatch } from 'src/app/helpers';
 import { first } from 'rxjs/operators';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-registration-form',
@@ -14,44 +16,46 @@ import { first } from 'rxjs/operators';
 })
 export class RegistrationFormComponent implements OnInit {
 
-@Input() isAdmin: boolean = false;
-@Input() isUpdate: boolean = false;
-@Output() changeRouteEvent = new EventEmitter<void>();
-@Output() updateSuccess = new EventEmitter<void>();
-
-
+  @Input() isAdmin: boolean = false;
+  @Input() isUpdateMode: boolean = false;
+  @Input() isUpdate: boolean = false;
+  @Output() changeRouteEvent = new EventEmitter<void>();
+  @Output() updateSuccess = new EventEmitter<void>();
 
   account = this.accountService.accountValue!;
   form!: FormGroup;
   submitting = false;
   submitted = false;
-  hidePassword = true; 
-  hideConfirmPassword=true;
+  hidePassword = true;
+  hideConfirmPassword = true;
   deleting = false;
-
+  id?: string;
 
   togglePassword() {
     this.hidePassword = !this.hidePassword;
   }
+
   toggleConfirmPassword() {
     this.hideConfirmPassword = !this.hideConfirmPassword;
   }
+
   constructor(
-      private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
-      private router: Router,
-      private accountService: AccountService,
-      private alertService: AlertService
-  ) { }
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private accountService: AccountService,
+    private alertService: AlertService,
+    private dialog: MatDialog
+  ) {}
 
   noSpecialChars(control: AbstractControl) {
-    const pattern = /^[a-zA-Z0-9]*$/; // Regular expression to allow only alphanumeric characters
+    const pattern = /^[a-zA-Z0-9]*$/;
     if (!pattern.test(control.value)) {
       return { specialChars: true };
     }
     return null;
   }
-  
+
   ngOnInit() {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
@@ -60,88 +64,136 @@ export class RegistrationFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
-      acceptTerms: [this.isAdmin, Validators.requiredTrue] 
-
+      acceptTerms: [this.isAdmin, Validators.requiredTrue]
     }, {
       validator: MustMatch('password', 'confirmPassword')
     });
-  
-    //Used for the edit and profile update logic
-    if (this.isUpdate) {
-      this.form.patchValue({
-        title: this.account.title,
-        firstName: this.account.firstName,
-        lastName: this.account.lastName,
-        email: this.account.email,
 
-      });
-    }
-  
-    if (this.isAdmin && !this.isUpdate) {
+    this.id = this.route.snapshot.params['id'];
+    this.isUpdate = !!this.id;
+    this.isUpdateMode = this.isUpdate;
+
+    if (this.isAdmin) {
       this.form.addControl('role', new FormControl('', Validators.required));
     }
 
+    if (this.isUpdate && this.id) {
+      this.accountService.getById(this.id)
+        .pipe(first())
+        .subscribe(account => {
+          this.f['title'].setValue(account.title);
+          this.f['firstName'].setValue(account.firstName);
+          this.f['lastName'].setValue(account.lastName);
+          this.f['email'].setValue(account.email);
+          if (this.isAdmin) {
+            this.f['role'].setValue(account.role);
+          }
+        });
+    }
   }
 
-  
-
-  // convenience getter for easy access to form fields
   get f() { return this.form.controls; }
 
   onSubmit() {
     this.submitted = true;
+    this.alertService.clear();
 
-    console.log(this.form.value)
-    console.log('isAdmin:', this.isAdmin);
-    console.log('isUpdate:', this.isUpdate);
-   
-      // reset alerts on submit
-      this.alertService.clear();
-
-      // stop here if form is invalid
-      if (this.form.invalid) {
-          return;
-      }
-
-      this.submitting = true;
-      if(this.isUpdate){
-      this.accountService.update(this.account.id!, this.form.value)
-      this.submitted=true;
-      this.updateSuccess.emit();
+    if (this.form.invalid) {
+      return;
     }
-      else{
-      this.accountService.register(this.form.value)
-          .pipe(first())
-          .subscribe({
-              next: () => {
-                  this.alertService.success('Registration successful',{ 
-                    keepAfterRouteChange: true,
-                });
-                  this.router.navigate(['../login'], { relativeTo: this.route });
-                  
-                  this.changeRouteEvent.emit();   
-              
 
-              },
-              error: error => {
-                  this.alertService.error(error);
-                  this.submitting = false;
-              }
-          });   
-        }  
+    this.submitting = true;
+
+    if (this.isUpdate && this.id) {
+      // ← update the selected account by id
+      this.accountService.update(this.id, this.form.value)
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            this.alertService.success('Account updated successfully', {
+              keepAfterRouteChange: true
+            });
+            this.updateSuccess.emit();
+            this.router.navigate(['/list']);  // ← back to list
+          },
+          error: error => {
+            this.alertService.error(error);
+            this.submitting = false;
+          }
+        });
+
+    } else if (this.isUpdate && !this.id) {
+      // ← user updating their own profile (no id in route)
+      this.accountService.update(this.account.id!, this.form.value)
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            this.alertService.success('Profile updated successfully', {
+              keepAfterRouteChange: true
+            });
+            this.updateSuccess.emit();
+          },
+          error: error => {
+            this.alertService.error(error);
+            this.submitting = false;
+          }
+        });
+
+    } else {
+      // ← register new account
+      this.accountService.register(this.form.value)
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            this.alertService.success('Registration successful', {
+              keepAfterRouteChange: true
+            });
+            this.changeRouteEvent.emit();
+            if (this.isAdmin) {
+              this.router.navigate(['/list']);  // ← admin goes back to list
+            } else {
+              this.router.navigate(['../login'], { relativeTo: this.route }); // ← user goes to login
+            }
+          },
+          error: error => {
+            this.alertService.error(error);
+            this.submitting = false;
+          }
+        });
+    }
   }
 
-    onDelete() {
-      if (confirm('Are you sure?')) {
-          this.deleting = true;
-          this.accountService.delete(this.account.id!)
-              .pipe(first())
-              .subscribe(() => {
-                  this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
-              });
-}
-    }
-
-
+  onDelete() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Delete Account',
+        message: 'Are you sure you want to delete this account? This action cannot be undone.'
+      }
+    });
   
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.deleting = true;
+        const deleteId = this.id ?? this.account.id!;
+  
+        this.accountService.delete(deleteId)
+          .pipe(first())
+          .subscribe({
+            next: () => {
+              this.alertService.success('Account deleted successfully', {
+                keepAfterRouteChange: true
+              });
+              if (this.isAdmin) {
+                this.router.navigate(['/list']);
+              }
+            },
+            error: error => {
+              this.alertService.error(error);
+              this.deleting = false;
+            }
+          });
+      }
+    });
+  }
 }

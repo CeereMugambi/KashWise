@@ -169,6 +169,52 @@
   display: none
 
 // ================================
+// TITLE BUTTON
+// ================================
+
+.title-section
+  display: flex
+  align-items: center
+  justify-content: space-between
+  background: linear-gradient(135deg, #003333, #008080)
+  border-radius: 12px
+  padding: 28px 32px
+  margin-bottom: 24px
+  animation: fadeSlideUp 0.5s ease both
+
+.title-text
+  flex: 1
+
+  h1
+    color: #fff
+    font-size: 24px
+    font-weight: 700
+    margin: 0 0 8px 0
+
+  p
+    color: rgba(255,255,255,0.75)
+    font-size: 14px
+    line-height: 1.6
+    margin: 0
+    max-width: 600px
+
+.title-icon
+  font-size: 64px
+  width: 64px
+  height: 64px
+  color: #FFA800
+  opacity: 0.8
+  margin-left: 24px
+
+@keyframes fadeSlideUp
+  from
+    opacity: 0
+    transform: translateY(20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// ================================
 // SEARCH SECTION
 // ================================
 .top-section

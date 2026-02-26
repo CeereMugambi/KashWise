@@ -1,6 +1,5 @@
 import { NgModule,NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WelcomeAdminComponent } from './welcome-admin/welcome-admin.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { ComponentsModule } from '../components/components.module';
@@ -11,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    WelcomeAdminComponent,
     ListComponent,
     EditAdminComponent,
   ],
@@ -27,7 +25,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ],
 
   exports:[
-    WelcomeAdminComponent,
     ListComponent
   ],
 })

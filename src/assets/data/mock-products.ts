@@ -39,6 +39,6 @@ export const MOCK_PRODUCTS: Product[] = [
         quantity: 60,
         price: 2300,
         entryDate: '2024-04-01',
-        imageUrl: 'assets/product-images/monitor-stand.avif'
+        imageUrl: 'assets/product-images/monitor-stand.jpeg'
       }
 ];

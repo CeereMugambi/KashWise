@@ -1,6 +1,47 @@
-<app-background></app-background>
-<app-subnavbar></app-subnavbar>
-<app-card>
-    <h1>{{ title }}</h1>
-    <app-registration-form [isAdmin]="true" (changeRouteEvent)="onChangeRoute()"></app-registration-form>
-</app-card>
+<div class="container">
+    <div class="main-layout">
+  
+      <!-- LEFT: Image side -->
+      <div class="image-side">
+        <a class="back-button" mat-icon-button routerLink="/list" routerLinkActive="active-link">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+  
+        <div class="admin-badge">
+          <mat-icon>security</mat-icon>
+          <span>Admin Portal</span>
+        </div>
+      </div>
+  
+      <!-- RIGHT: Form side -->
+      <div class="login-side">
+        <div class="login-logo">
+          <img width="40" alt="Logo" src="../assets/icon2.png"/>
+        </div>
+  
+        <app-card>
+          <div class="admin-tag">
+            <mat-icon>{{ isAddMode ? 'admin_panel_settings' : 'manage_accounts' }}</mat-icon>
+            <span>{{ isAddMode ? 'Admin Action' : 'Edit Account' }}</span>
+          </div>
+  
+          <h1 class="card-title">{{ title }}</h1>
+          <p class="card-description">
+            {{ isAddMode 
+              ? 'Create and configure a new user account with role permissions' 
+              : 'Update account details and role permissions for this user' 
+            }}
+          </p>
+  
+          <div class="card-body">
+            <app-registration-form 
+              [isAdmin]="true"
+              [isUpdate]="!isAddMode"
+              (changeRouteEvent)="onChangeRoute()">
+            </app-registration-form>
+          </div>
+        </app-card>
+      </div>
+  
+    </div>
+  </div>

@@ -3,9 +3,13 @@
   <!-- Side Nav -->
   <div class="side-nav" [class.collapsed]="isNavCollapsed">
 
+    
+
     <div class="nav-toggle" (click)="toggleNav()">
-      <mat-icon>{{ isNavCollapsed ? 'menu' : 'menu' }}</mat-icon>
-    m
+      <mat-icon>menu</mat-icon>
+      <div class="user-avatar" *ngIf="!isNavCollapsed">
+        <span>{{ userInitials }}</span>
+      </div>
     </div>
 
     <div class="side-nav-header" *ngIf="!isNavCollapsed">
@@ -26,7 +30,7 @@
         <span *ngIf="!isNavCollapsed">Settings</span>
       </li>
       <ng-container *ngIf="account!.role === Role.Admin">
-      <li class="nav-item" routerLink="/welcome-admin">
+      <li class="nav-item" routerLink="/list">
         <mat-icon>security</mat-icon>
         <span *ngIf="!isNavCollapsed">Admin</span>
       </li>

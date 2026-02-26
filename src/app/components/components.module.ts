@@ -9,6 +9,8 @@ import { HomeNavbarComponent } from './home-navbar/home-navbar.component';
 import { AlertComponent } from './alert/alert.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogComponent } from './dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -21,13 +23,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeNavbarComponent,
     AlertComponent,
     RegistrationFormComponent,
+    DialogComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
     ComponentsRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule
 
   ],
   
