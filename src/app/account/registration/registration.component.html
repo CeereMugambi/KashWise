@@ -1,6 +1,28 @@
-<app-background></app-background>
-<app-subnavbar></app-subnavbar>
-<app-card>
-  <h1 class="card-title">Register</h1>
- <app-registration-form></app-registration-form>
-</app-card>
+<div class="container">
+  <div class="main-layout">
+
+    <!-- LEFT: Image side -->
+    <div class="image-side">
+      <a class="back-button" mat-icon-button routerLink="/" routerLinkActive="active-link">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+    </div>
+
+    <!-- RIGHT: Registration form side -->
+    <div class="login-side">
+      <div class="login-logo">
+        <img width="40" alt="Logo" src="../assets/icon2.png"/>
+      </div>
+
+      <app-card>
+        <h1 class="card-title">Create an Account</h1>
+        <p class="card-description">Fill in your details to get started</p>
+
+        <div class="card-body">
+          <app-registration-form></app-registration-form>
+        </div>
+      </app-card>
+    </div>
+
+  </div>
+</div>

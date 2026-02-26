@@ -9,7 +9,6 @@ import { HomeNavbarComponent } from './home-navbar/home-navbar.component';
 import { AlertComponent } from './alert/alert.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WeathercardInfoComponent } from './weathercard-info/weathercard-info.component';
 
 
 
@@ -22,7 +21,6 @@ import { WeathercardInfoComponent } from './weathercard-info/weathercard-info.co
     HomeNavbarComponent,
     AlertComponent,
     RegistrationFormComponent,
-    WeathercardInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +38,6 @@ import { WeathercardInfoComponent } from './weathercard-info/weathercard-info.co
     HomeNavbarComponent,
     AlertComponent,
     RegistrationFormComponent,
-    WeathercardInfoComponent
   ]
   
     

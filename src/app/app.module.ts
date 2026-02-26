@@ -18,6 +18,10 @@ import { fakeBackendProvider } from './helpers';
 import { AdminModule } from './admin/admin.module';
 import { ProfileModule } from './profile/profile.module';
 import { profileRoutingModule } from './profile/profile-routing.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
+
+
 
 @NgModule({
   declarations: [
@@ -41,7 +45,9 @@ import { profileRoutingModule } from './profile/profile-routing.module';
     HomeModule,
     AdminModule,
     ProfileModule,
-    profileRoutingModule
+    profileRoutingModule,
+    MatTooltipModule,
+    MatTableModule
   ],
   
   providers: [

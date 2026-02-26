@@ -1,18 +1,10 @@
-import { Component,Input } from '@angular/core';
-
-import { Subscription ,BehaviorSubject} from 'rxjs';
-
-import { tap } from 'rxjs';
-
+import { Component } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
+import { Product } from 'src/app/models';
+import { MOCK_PRODUCTS } from 'src/assets/data/mock-products';
+import { AccountService } from 'src/app/services';
 
-import { WeatherService } from 'src/app/services';
-
-import { IweatherData, iForecastday } from 'src/app/models';
-
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -25,91 +17,55 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class HomeComponent {
 
-  constructor(private http: HttpClient, private weatherService: WeatherService,private snackBar: MatSnackBar) {}
-
-  // @Input() isSelected: boolean = false;
-   
-  cityName:string = 'Nairobi';
-  
-  IweatherData?: IweatherData;
-
-  selectedDate: string = '';
-
-  forecastData?: iForecastday[];
-
-  // selectedUnits: string = 'metric';
-
-  // weatherSubscription: Subscription | undefined;
-
-  errorMessage: string | null = null;
+  // isNavCollapsed = false;
+  productName: string = '';
+  entryDate: Date | null = null;
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  userInitials: string = '';
 
 
-  // private weatherDataSubject = new BehaviorSubject<IweatherData | null>(null);
+  displayedColumns: string[] = ['image', 'id', 'productName', 'quantity', 'price', 'entryDate', 'actions'];
+
+  constructor(private http: HttpClient,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
-    this.getWeatherData(this.cityName, this.selectedDate);
-    this.cityName = '';
-
-    // this.weatherDataSubject.subscribe(response => { //subscribe to the weatherDataSubject
-    //   if (response) {
-    //     this.IweatherData = response;
-    //     console.log(response);
-    //   }
-    // });
-  }
-  
-  onSubmit() {
-    if (!this.selectedDate) {
-      this.errorMessage = 'Please select a date before clicking Submit.';
-      this.openSnackBar(this.errorMessage); // Display the error message as a snackbar
-
-      return;
-    }
-  
-    if (this.cityName && this.selectedDate) {
-      this.getWeatherData(this.cityName, this.selectedDate);
-      this.cityName = '';
-      this.selectedDate = '';
-      this.openSnackBar('Form submitted successfully!');
-      this.errorMessage = null; // Clear the error message if the submission is successful
-
-    }
+    this.products = MOCK_PRODUCTS;
+    this.filteredProducts = MOCK_PRODUCTS;
   }
 
-    onDateChange(date?:string) {
-      if (this.selectedDate) {
-        this.getWeatherData(this.cityName, this.selectedDate);
-      }
-    }
 
-    private getWeatherData(cityName: string, units: string, date?: string) {
-      const request = date ? this.weatherService.getWeatherData(date, cityName) : this.weatherService.getWeatherData(cityName, units);
-      request.subscribe({
-        next:(response) => {
-          this.IweatherData = response;
-          console.log(response);
-        }
-      });
-    }
+// toggleNav(): void {
+//   this.isNavCollapsed = !this.isNavCollapsed;
+// }
 
-
-
-    private openSnackBar(message: string) {
-      this.snackBar.open(message, 'Dismiss', {
-        duration: 3000, // Duration in milliseconds
-        horizontalPosition: 'center',
-        verticalPosition: 'top'
-      });
-    }
-    
-    
-    // ngOnDestroy(): void {
-    //   if (this.weatherSubscription) {
-    //     this.weatherSubscription.unsubscribe(); //unsubscribe from any service to avoid memory leaks
-    //   }
-    // }
-    
-    
+setUserInitials(): void {
+  const account = this.accountService.accountValue;
+  if (account) {
+    const first = account.firstName?.charAt(0) ?? '';
+    const last = account.lastName?.charAt(0) ?? '';
+    this.userInitials = `${first}${last}`.toUpperCase();
+  } else {
+    this.userInitials = '?';
   }
+}
+onSubmit(): void {
+  this.filteredProducts = this.products.filter(p => {
+    const matchesName = p.productName.toLowerCase()
+      .includes(this.productName.toLowerCase());
+    const matchesDate = this.entryDate
+      ? p.entryDate === this.formatDate(this.entryDate)
+      : true;
+    return matchesName && matchesDate;
+  });
+}
+
+formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+}
+    
 
   
