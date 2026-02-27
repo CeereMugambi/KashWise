@@ -153,6 +153,7 @@ export class ProductDetailComponent implements OnInit {
 
   closeCart(): void {
     this.showCart = false;
+    this.router.navigate(['/home']);
   }
 
   proceedToCheckout(): void {

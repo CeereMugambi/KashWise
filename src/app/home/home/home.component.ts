@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cartSub = this.cartService.cartItems$.subscribe(items => {
       this.cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
       this.hasCartItems = this.cartCount > 0;
+      console.log('Cart updated on home:', this.cartCount);
     });
   }
 
