@@ -4,9 +4,10 @@
 .page-layout
   display: flex
   min-height: 100vh
+  position: relative
 
 // ================================
-// SIDE NAV — reuse same styles
+// SIDE NAV
 // ================================
 .side-nav
   width: 20%
@@ -150,11 +151,15 @@
   padding: 24px
   background-color: #f5f5f5
   min-height: 100vh
-  transition: margin-left 0.3s ease, width 0.3s ease
+  transition: margin-left 0.3s ease, width 0.3s ease, filter 0.3s ease
 
   &.expanded
     margin-left: 56px
     width: calc(100% - 56px)
+
+  &.cart-active
+    filter: blur(2px)
+    pointer-events: none
 
 // ================================
 // MOBILE MENU BTN
@@ -185,6 +190,38 @@
     font-size: 18px
     font-weight: 700
     color: #003333
+    flex: 1
+
+  .cart-toggle-btn
+    margin-left: auto
+    position: relative
+    background: #fff
+    color: #008080
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1)
+    transition: all 0.2s ease
+    width: 44px
+    height: 44px
+
+    &:hover
+      background: #008080
+      color: #fff
+
+    .cart-badge
+      position: absolute
+      top: -2px
+      right: -2px
+      background: #FFA800
+      color: #fff
+      font-size: 10px
+      font-weight: 700
+      width: 18px
+      height: 18px
+      border-radius: 50%
+      display: flex
+      align-items: center
+      justify-content: center
+      line-height: 1
+      pointer-events: none
 
 // ================================
 // NOT FOUND
@@ -216,7 +253,7 @@
     border-radius: 8px !important
 
 // ================================
-// DETAIL LAYOUT — two columns
+// DETAIL LAYOUT
 // ================================
 .detail-layout
   display: grid
@@ -460,7 +497,6 @@
 
   &:hover:not(:disabled)
     border-color: #008080
-    color: #008080
 
     .size-name
       color: #008080
@@ -501,7 +537,6 @@
 .qty-control
   display: flex
   align-items: center
-  gap: 0
   border: 2px solid #e0e0e0
   border-radius: 50px
   overflow: hidden
@@ -547,8 +582,9 @@
 // ================================
 .action-btns
   display: flex
-  gap: 12px
+  gap: 10px
   margin-top: 8px
+  flex-wrap: wrap
 
 .confirm-btn
   flex: 1
@@ -556,9 +592,10 @@
   color: #fff !important
   border-radius: 50px !important
   height: 48px
-  font-size: 15px
+  font-size: 14px
   font-weight: 600
   transition: background 0.2s ease
+  min-width: 140px
 
   &:hover:not(:disabled)
     background-color: #006666 !important
@@ -566,12 +603,26 @@
   &:disabled
     background-color: #ccc !important
 
+.more-items-btn
+  flex: 1
+  background-color: #FFA800 !important
+  color: #fff !important
+  border-radius: 50px !important
+  height: 48px
+  font-size: 14px
+  font-weight: 600
+  transition: background 0.2s ease
+  min-width: 140px
+
+  &:hover
+    background-color: #cc8400 !important
+
 .cancel-btn
   border: 2px solid #ccc !important
   color: #666 !important
   border-radius: 50px !important
   height: 48px
-  padding: 0 24px
+  padding: 0 20px
   transition: all 0.2s ease
 
   &:hover
@@ -579,116 +630,16 @@
     color: #e53935 !important
 
 // ================================
-// RESPONSIVE
+// CART BLUR OVERLAY
 // ================================
-@media (max-width: 1024px)
-  .side-nav
-    width: 240px
-
-    &.collapsed
-      width: 56px
-
-  .main-content
-    margin-left: 240px
-    width: calc(100% - 240px)
-
-    &.expanded
-      margin-left: 56px
-      width: calc(100% - 56px)
-
-@media (max-width: 900px)
-  .detail-layout
-    grid-template-columns: 1fr
-
-@media (max-width: 768px)
-  .side-nav
-    width: 240px
-    position: fixed
-    transform: translateX(-100%)
-    transition: transform 0.3s ease
-
-    &.collapsed
-      transform: translateX(0)
-
-  .main-content
-    margin-left: 0
-    width: 100%
-    padding: 16px
-
-    &.expanded
-      margin-left: 0
-      width: 100%
-
-  .mobile-menu-btn
-    display: flex
-    align-items: center
-    justify-content: center
-    width: 44px
-    height: 44px
-    background-color: #008080
-    border-radius: 50%
-    color: #fff
-    cursor: pointer
-    margin-bottom: 16px
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2)
-
-    mat-icon
-      font-size: 22px
-      width: 22px
-      height: 22px
-
-  .info-panel
-    padding: 20px 16px
-
-  .product-name
-    font-size: 20px
-
-  .action-btns
-    flex-direction: column
-
-@media (max-width: 480px)
-  .side-nav
-    width: 100%
-    transform: translateX(-100%)
-
-    &.collapsed
-      transform: translateX(0)
-
-  .main-content
-    margin-left: 0
-    width: 100%
-    padding: 12px
-
-    &.expanded
-      margin-left: 0
-      width: 100%
-
-// ================================
-// NAV OVERLAY
-// ================================
-.nav-overlay
-  display: none
-
-@media (max-width: 768px)
-  .nav-overlay
-    display: block
-    position: fixed
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    background: rgba(0,0,0,0.5)
-    z-index: 99
-
-    // ================================
-// CART OVERLAY
-// ================================
-.cart-overlay
+.cart-blur-overlay
   position: fixed
   inset: 0
-  background: rgba(0,0,0,0.4)
-  z-index: 300
-  animation: fadeIn 0.2s ease
+  z-index: 149
+  background: rgba(0,0,0,0.25)
+  backdrop-filter: blur(3px)
+  -webkit-backdrop-filter: blur(3px)
+  animation: fadeIn 0.25s ease
 
 @keyframes fadeIn
   from
@@ -697,25 +648,24 @@
     opacity: 1
 
 // ================================
-// CART PANEL — slides up from bottom
+// CART PANEL — fixed RIGHT side
 // ================================
 .cart-panel
   position: fixed
-  bottom: 0
-  left: 20%       // account for side nav
+  top: 0
   right: 0
+  bottom: 0
+  width: 0
   background: #fff
-  border-radius: 20px 20px 0 0
-  box-shadow: 0 -8px 32px rgba(0,0,0,0.15)
-  z-index: 301
+  box-shadow: -8px 0 32px rgba(0,0,0,0.15)
+  z-index: 150
   display: flex
   flex-direction: column
-  max-height: 80vh
-  transform: translateY(100%)
-  transition: transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1)
+  overflow: hidden
+  transition: width 0.35s cubic-bezier(0.34, 1.05, 0.64, 1)
 
   &.open
-    transform: translateY(0)
+    width: 520px
 
 // ================================
 // CART HEADER
@@ -727,6 +677,7 @@
   padding: 20px 24px 16px
   border-bottom: 1px solid #f0f0f0
   flex-shrink: 0
+  background: #fff
 
 .cart-title
   display: flex
@@ -745,8 +696,8 @@
     font-weight: 700
     color: #003333
 
-.cart-count
-  background: #008080
+.cart-count-badge
+  background: #FFA800
   color: #fff
   font-size: 12px
   font-weight: 700
@@ -763,6 +714,36 @@
     color: #e53935
 
 // ================================
+// CART EMPTY STATE
+// ================================
+.cart-empty
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  flex: 1
+  padding: 40px 20px
+  color: #ccc
+  text-align: center
+
+  mat-icon
+    font-size: 56px
+    width: 56px
+    height: 56px
+    margin-bottom: 16px
+    color: #e0e0e0
+
+  p
+    font-size: 16px
+    font-weight: 600
+    color: #bbb
+    margin: 0 0 6px 0
+
+  span
+    font-size: 13px
+    color: #ccc
+
+// ================================
 // CART ITEMS
 // ================================
 .cart-items
@@ -772,7 +753,7 @@
 
 .cart-item
   display: flex
-  align-items: center
+  align-items: flex-start
   gap: 16px
   padding: 16px 0
   border-bottom: 1px solid #f5f5f5
@@ -781,8 +762,8 @@
     border-bottom: none
 
 .cart-item-img
-  width: 64px
-  height: 64px
+  width: 72px
+  height: 72px
   border-radius: 10px
   object-fit: cover
   flex-shrink: 0
@@ -791,19 +772,23 @@
   flex: 1
   display: flex
   flex-direction: column
-  gap: 3px
+  gap: 4px
+  min-width: 0
 
   .cart-item-name
     font-size: 14px
     font-weight: 600
     color: #003333
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
 
   .cart-item-size
     font-size: 12px
-    color: #888
+    color: #aaa
 
   .cart-item-price
-    font-size: 12px
+    font-size: 13px
     color: #008080
     font-weight: 500
 
@@ -811,12 +796,12 @@
   display: flex
   flex-direction: column
   align-items: flex-end
-  gap: 6px
+  gap: 8px
+  flex-shrink: 0
 
 .cart-qty-control
   display: flex
   align-items: center
-  gap: 0
   border: 1.5px solid #e0e0e0
   border-radius: 50px
   overflow: hidden
@@ -829,8 +814,8 @@
     color: #003333
 
 .cart-qty-btn
-  width: 28px
-  height: 28px
+  width: 30px
+  height: 30px
   border: none
   background: #f5f5f5
   cursor: pointer
@@ -872,7 +857,7 @@
 // CART FOOTER
 // ================================
 .cart-footer
-  padding: 16px 24px 24px
+  padding: 20px 24px 28px
   border-top: 1px solid #f0f0f0
   display: flex
   flex-direction: column
@@ -882,7 +867,8 @@
 .cart-summary
   display: flex
   flex-direction: column
-  gap: 6px
+  gap: 8px
+  margin-bottom: 4px
 
 .summary-row
   display: flex
@@ -891,10 +877,11 @@
   color: #666
 
   &.total-row
-    padding-top: 8px
+    padding-top: 10px
     border-top: 1px solid #f0f0f0
     font-weight: 700
     color: #003333
+    font-size: 16px
 
 .total-amount
   font-size: 18px
@@ -906,12 +893,15 @@
   background-color: #008080 !important
   color: #fff !important
   border-radius: 50px !important
-  font-size: 16px
+  font-size: 15px
   font-weight: 600
   transition: background 0.2s ease
 
   mat-icon
     margin-right: 8px
+    font-size: 20px
+    width: 20px
+    height: 20px
 
   &:hover
     background-color: #006666 !important
@@ -919,24 +909,138 @@
 .continue-btn
   width: 100%
   height: 44px
-  border: 2px solid #ddd !important
-  color: #888 !important
+  border: 2px solid #FFA800 !important
+  color: #FFA800 !important
   border-radius: 50px !important
   font-size: 14px
+  font-weight: 600
   transition: all 0.2s ease
 
+  mat-icon
+    margin-right: 6px
+    font-size: 18px
+    width: 18px
+    height: 18px
+
   &:hover
-    border-color: #008080 !important
-    color: #008080 !important
+    background-color: #FFA800 !important
+    color: #fff !important
 
 // ================================
-// RESPONSIVE — cart panel
+// NAV OVERLAY
+// ================================
+.nav-overlay
+  display: none
+
+// ================================
+// RESPONSIVE
 // ================================
 @media (max-width: 1024px)
+  .side-nav
+    width: 240px
+
+    &.collapsed
+      width: 56px
+
+  .main-content
+    margin-left: 240px
+    width: calc(100% - 240px)
+
+    &.expanded
+      margin-left: 56px
+      width: calc(100% - 56px)
+
   .cart-panel
-    left: 240px
+    &.open
+      width: 520px
+
+@media (max-width: 900px)
+  .detail-layout
+    grid-template-columns: 1fr
+
+  .cart-panel
+    &.open
+      width: 420px
 
 @media (max-width: 768px)
-  .cart-panel
+  .side-nav
+    width: 240px
+    position: fixed
+    transform: translateX(-100%)
+    transition: transform 0.3s ease
+
+    &.collapsed
+      transform: translateX(0)
+
+  .main-content
+    margin-left: 0
+    width: 100%
+    padding: 16px
+
+    &.expanded
+      margin-left: 0
+      width: 100%
+
+    &.cart-active
+      filter: blur(2px)
+
+  .mobile-menu-btn
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 44px
+    height: 44px
+    background-color: #008080
+    border-radius: 50%
+    color: #fff
+    cursor: pointer
+    margin-bottom: 16px
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2)
+
+    mat-icon
+      font-size: 22px
+      width: 22px
+      height: 22px
+
+  .nav-overlay
+    display: block
+    position: fixed
+    top: 0
     left: 0
-    border-radius: 20px 20px 0 0
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0,0.5)
+    z-index: 99
+
+  .cart-panel
+    &.open
+      width: 100%
+
+  .info-panel
+    padding: 20px 16px
+
+  .product-name
+    font-size: 20px
+
+  .action-btns
+    flex-direction: column
+
+    .confirm-btn, .more-items-btn, .cancel-btn
+      width: 100%
+
+@media (max-width: 480px)
+  .side-nav
+    width: 100%
+    transform: translateX(-100%)
+
+    &.collapsed
+      transform: translateX(0)
+
+  .main-content
+    margin-left: 0
+    width: 100%
+    padding: 12px
+
+    &.expanded
+      margin-left: 0
+      width: 100%

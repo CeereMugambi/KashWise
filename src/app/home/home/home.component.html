@@ -59,13 +59,24 @@
       <mat-icon>menu</mat-icon>
     </div>
 
-    <!-- Home Banner -->
+   <!-- Home Banner -->
     <div class="home-banner">
       <div class="home-text">
         <h1>Welcome, {{ firstName }}!</h1>
         <p>Search and browse products from our catalogue.<br>Add items to your order with ease.</p>
       </div>
-      <mat-icon class="home-icon">storefront</mat-icon>
+      <div class="banner-right">
+        <!-- Cart icon button — only shows when cart has items -->
+        <button
+          mat-icon-button
+          class="cart-float-btn"
+          *ngIf="hasCartItems"
+          (click)="goToCart()">
+          <mat-icon>shopping_cart</mat-icon>
+          <span class="cart-float-badge">{{ cartCount }}</span>
+        </button>
+        <mat-icon class="home-icon">storefront</mat-icon>
+      </div>
     </div>
 
     <!-- Search Section -->

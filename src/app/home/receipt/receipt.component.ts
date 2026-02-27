@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services';
 import { IAccount, IRole } from 'src/app/models';
 import { CartItem } from '../product-detail/product-detail.component';
+import { allProducts } from 'src/assets/data/mock-products';
 
 @Component({
   selector: 'app-receipt',
@@ -21,6 +22,7 @@ export class ReceiptComponent implements OnInit {
   total = 0;
   orderDate = '';
   orderId = '';
+  stockDeducted = false;
 
   constructor(
     private router: Router,
@@ -45,7 +47,21 @@ export class ReceiptComponent implements OnInit {
   ngOnInit(): void {
     this.setUserInitials();
     this.orderId = this.generateOrderId();
+    this.deductStock();
   }
+
+    // deducts from MOCK_PRODUCTS — guarded so it only runs once
+    deductStock(): void {
+      if (this.stockDeducted) return;
+      this.cartItems.forEach(item => {
+        const product = allProducts.find(p => p.id === item.product.id);
+        if (product) {
+          product.quantity = Math.max(0, product.quantity - item.quantity);
+        }
+      });
+      this.stockDeducted = true;
+    }
+  
 
   generateOrderId(): string {
     return 'ORD-' + Date.now().toString(36).toUpperCase();

@@ -156,8 +156,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   proceedToCheckout(): void {
-    // Pass cart data via navigation state
-    this.router.navigate(['/receipt'], {
+     this.router.navigate(['/receipt'], {
       state: {
         cartItems: this.cartItems,
         total: this.cartTotal,
@@ -165,6 +164,11 @@ export class ProductDetailComponent implements OnInit {
       }
     });
   }
+  addMoreItems(): void {
+    this.showCart = false;
+    this.router.navigate(['/home']);
+  }
+
 
   goBack(): void {
     this.router.navigate(['/home']);
