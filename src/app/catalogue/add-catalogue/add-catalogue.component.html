@@ -1,353 +1,54 @@
 <div class="page-layout">
-
-    <!-- Nav Overlay (mobile) -->
     <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
   
-    <!-- Side Nav -->
     <div class="side-nav" [class.collapsed]="isNavCollapsed">
-  
       <div class="nav-toggle" (click)="toggleNav()">
         <mat-icon>menu</mat-icon>
-        <div class="user-avatar" *ngIf="!isNavCollapsed">
-          <span>{{ userInitials }}</span>
-        </div>
+        <div class="user-avatar" *ngIf="!isNavCollapsed"><span>{{ userInitials }}</span></div>
       </div>
-  
-      <div class="side-nav-header" *ngIf="!isNavCollapsed">
-        <span>Menu</span>
-      </div>
-  
+      <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
       <ul class="nav-links">
-        <li class="nav-item" routerLink="/home">
-          <mat-icon>home</mat-icon>
-          <span *ngIf="!isNavCollapsed">Home</span>
-        </li>
-        <li class="nav-item active" routerLink="/catalogue">
-          <mat-icon>menu_book</mat-icon>
-          <span *ngIf="!isNavCollapsed">Catalogue</span>
-        </li>
-        <li class="nav-item" routerLink="/profile">
-          <mat-icon>person</mat-icon>
-          <span *ngIf="!isNavCollapsed">Profile</span>
-        </li>
-        <li class="nav-item" routerLink="/settings">
-          <mat-icon>settings</mat-icon>
-          <span *ngIf="!isNavCollapsed">Settings</span>
-        </li>
+        <li class="nav-item" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
+        <li class="nav-item active" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
+        <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
+        <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
         <ng-container *ngIf="account!.role === Role.Admin">
-          <li class="nav-item" routerLink="/list">
-            <mat-icon>security</mat-icon>
-            <span *ngIf="!isNavCollapsed">Admin</span>
-          </li>
+          <li class="nav-item" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
         </ng-container>
       </ul>
-  
       <div class="nav-bottom" (click)="logout()">
-        <li class="nav-item logout">
-          <mat-icon>logout</mat-icon>
-          <span *ngIf="!isNavCollapsed">Logout</span>
-        </li>
+        <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
       </div>
-  
     </div>
   
-    <!-- Main Content -->
     <div class="main-content" [class.expanded]="isNavCollapsed">
+      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()"><mat-icon>menu</mat-icon></div>
   
-      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
-        <mat-icon>menu</mat-icon>
-      </div>
-  
-      <!-- Banner -->
       <div class="catalogue-banner">
         <div class="catalogue-text">
           <h1>Add New Product</h1>
-          <p>Fill in the details below to add a new product to the catalogue.<br>
-            Select a category to see what's already listed.</p>
+          <p>Fill in the details below to add a new product to the catalogue.<br>Select a category to see what's already listed.</p>
         </div>
         <mat-icon class="catalogue-icon">add_box</mat-icon>
       </div>
   
-      <!-- Form Section -->
       <div class="form-section">
-  
         <div class="form-header">
           <div class="form-header-left">
             <mat-icon>inventory_2</mat-icon>
             <h2>Product Details</h2>
           </div>
           <a routerLink="/catalogue" mat-stroked-button class="back-button">
-            <mat-icon>arrow_back</mat-icon>
-            Back to Catalogue
+            <mat-icon>arrow_back</mat-icon> Back to Catalogue
           </a>
         </div>
   
-        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-  
-          <!-- Row 1: Category + Product Name -->
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Category</mat-label>
-              <mat-select formControlName="category" (selectionChange)="onCategoryChange($event.value)">
-                <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="submitted && f['category'].errors?.['required']">
-                Category is required
-              </mat-error>
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Product Name</mat-label>
-              <input matInput formControlName="productName" placeholder="e.g. Supa Loaf Brown Bread 500g">
-              <mat-error *ngIf="submitted && f['productName'].errors?.['required']">
-                Product name is required
-              </mat-error>
-              <mat-error *ngIf="submitted && f['productName'].errors?.['duplicate']">
-                This product already exists in {{ selectedCategory }}
-              </mat-error>
-            </mat-form-field>
-          </div>
-  
-          <!-- Existing products hint -->
-          <div class="existing-products" *ngIf="existingSubcategories.length > 0">
-            <div class="existing-header">
-              <mat-icon>info_outline</mat-icon>
-              <span>Already in {{ selectedCategory }}:</span>
-            </div>
-            <div class="existing-chips">
-              <span class="existing-chip" *ngFor="let sub of existingSubcategories">
-                {{ sub }}
-              </span>
-            </div>
-          </div>
-  
-          <!-- Row 2: Brand + Size -->
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Brand</mat-label>
-              <input matInput formControlName="brand" placeholder="e.g. Supa Loaf">
-              <mat-error *ngIf="submitted && f['brand'].errors?.['required']">
-                Brand is required
-              </mat-error>
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Size / Weight</mat-label>
-              <input matInput formControlName="size" placeholder="e.g. 500g, 1L, Large">
-            </mat-form-field>
-          </div>
-  
-          <!-- Row 3: Price + Quantity -->
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Price (KSH)</mat-label>
-              <input matInput type="number" formControlName="price" placeholder="0.00">
-              <span matPrefix>KSH&nbsp;</span>
-              <mat-error *ngIf="submitted && f['price'].errors?.['required']">
-                Price is required
-              </mat-error>
-              <mat-error *ngIf="submitted && f['price'].errors?.['min']">
-                Price must be greater than 0
-              </mat-error>
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Quantity in Stock</mat-label>
-              <input matInput type="number" formControlName="quantity" placeholder="0">
-              <mat-error *ngIf="submitted && f['quantity'].errors?.['required']">
-                Quantity is required
-              </mat-error>
-              <mat-error *ngIf="submitted && f['quantity'].errors?.['min']">
-                Quantity must be 0 or more
-              </mat-error>
-            </mat-form-field>
-          </div>
-  
-          <!-- Row 4: Entry Date + Image URL -->
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Entry Date</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="entryDate">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-error *ngIf="submitted && f['entryDate'].errors?.['required']">
-                Entry date is required
-              </mat-error>
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Image URL</mat-label>
-              <input matInput formControlName="imageUrl" placeholder="assets/product-images/...">
-              <mat-icon matSuffix>image</mat-icon>
-            </mat-form-field>
-          </div>
-  
-          <!-- Description -->
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="form-field full-width">
-              <mat-label>Description (optional)</mat-label>
-              <textarea matInput formControlName="description" rows="3"
-                placeholder="Brief product description..."></textarea>
-            </mat-form-field>
-          </div>
-  
-          <!-- ================================ -->
-          <!-- CATEGORY SPECIFIC FIELDS        -->
-          <!-- ================================ -->
-          <div class="dynamic-fields" *ngIf="selectedCategory">
-            <div class="dynamic-fields-header">
-              <mat-icon>tune</mat-icon>
-              <h3>{{ selectedCategory }} Details</h3>
-            </div>
-  
-            <!-- Bread -->
-            <div class="form-row" *ngIf="selectedCategory === 'bread'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Bread Type</mat-label>
-                <mat-select formControlName="breadType">
-                  <mat-option value="white">White</mat-option>
-                  <mat-option value="brown">Brown</mat-option>
-                  <mat-option value="wholegrain">Wholegrain</mat-option>
-                  <mat-option value="sourdough">Sourdough</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Sliced / Unsliced</mat-label>
-                <mat-select formControlName="sliced">
-                  <mat-option value="Sliced">Sliced</mat-option>
-                  <mat-option value="Unsliced">Unsliced</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-  
-            <!-- Dairy -->
-            <div class="form-row" *ngIf="selectedCategory === 'dairy_products'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Dairy Type</mat-label>
-                <mat-select formControlName="dairyType">
-                  <mat-option value="milk">Milk</mat-option>
-                  <mat-option value="yoghurt">Yoghurt</mat-option>
-                  <mat-option value="cheese">Cheese</mat-option>
-                  <mat-option value="butter">Butter</mat-option>
-                  <mat-option value="cream">Cream</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Fat Content</mat-label>
-                <mat-select formControlName="fatContent">
-                  <mat-option value="full_fat">Full Fat</mat-option>
-                  <mat-option value="low_fat">Low Fat</mat-option>
-                  <mat-option value="skimmed">Skimmed</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Expiry Date</mat-label>
-                <input matInput [matDatepicker]="expiryPicker" formControlName="expiryDate">
-                <mat-datepicker-toggle matSuffix [for]="expiryPicker"></mat-datepicker-toggle>
-                <mat-datepicker #expiryPicker></mat-datepicker>
-              </mat-form-field>
-            </div>
-  
-            <!-- Beverages -->
-            <div class="form-row" *ngIf="selectedCategory === 'beverages'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Beverage Type</mat-label>
-                <mat-select formControlName="beverageType">
-                  <mat-option value="water">Water</mat-option>
-                  <mat-option value="juice">Juice</mat-option>
-                  <mat-option value="soda">Soda</mat-option>
-                  <mat-option value="energy_drink">Energy Drink</mat-option>
-                  <mat-option value="tea">Tea</mat-option>
-                  <mat-option value="coffee">Coffee</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Flavour</mat-label>
-                <input matInput formControlName="flavour" placeholder="e.g. Orange, Mango, Original">
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Volume</mat-label>
-                <input matInput formControlName="volume" placeholder="e.g. 300ml, 500ml, 1L">
-              </mat-form-field>
-            </div>
-  
-            <!-- Fresh Produce -->
-            <div class="form-row" *ngIf="selectedCategory === 'fresh_produce'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Produce Type</mat-label>
-                <mat-select formControlName="produceType">
-                  <mat-option value="vegetables">Vegetables</mat-option>
-                  <mat-option value="fruits">Fruits</mat-option>
-                  <mat-option value="herbs">Herbs</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Origin</mat-label>
-                <input matInput formControlName="origin" placeholder="e.g. Nakuru, Kiambu, Mombasa">
-              </mat-form-field>
-              <div class="form-field checkbox-field">
-                <mat-checkbox formControlName="organic">Organic / Naturally grown</mat-checkbox>
-              </div>
-            </div>
-  
-            <!-- Cereals -->
-            <div class="form-row" *ngIf="selectedCategory === 'cereals'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Cereal Type</mat-label>
-                <mat-select formControlName="cerealType">
-                  <mat-option value="breakfast_cereal">Breakfast Cereal</mat-option>
-                  <mat-option value="oats">Oats</mat-option>
-                  <mat-option value="muesli">Muesli</mat-option>
-                  <mat-option value="granola">Granola</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Grain Type</mat-label>
-                <mat-select formControlName="grainType">
-                  <mat-option value="wheat">Wheat</mat-option>
-                  <mat-option value="maize">Maize</mat-option>
-                  <mat-option value="oats">Oats</mat-option>
-                  <mat-option value="rice">Rice</mat-option>
-                  <mat-option value="mixed">Mixed</mat-option>
-                  <mat-option value="other">Other</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-  
-          </div>
-  
-          <!-- Image Preview -->
-          <div class="image-preview" *ngIf="f['imageUrl'].value">
-            <h3>Image Preview</h3>
-            <img
-              [src]="f['imageUrl'].value"
-              alt="Product preview"
-              class="preview-img"
-              (error)="imageError = true"
-              *ngIf="!imageError">
-            <p class="image-error" *ngIf="imageError">
-              <mat-icon>broken_image</mat-icon>
-              Image could not be loaded
-            </p>
-          </div>
-  
-          <!-- Form Actions -->
-          <div class="form-actions">
-            <button mat-stroked-button type="button" class="cancel-btn" routerLink="/catalogue">
-              Cancel
-            </button>
-            <button mat-raised-button type="submit" class="submit-btn" [disabled]="submitting">
-              <mat-icon>add_circle</mat-icon>
-              {{ submitting ? 'Saving...' : 'Add Product' }}
-            </button>
-          </div>
-  
-        </form>
+        <!-- Shared form — no product passed = add mode -->
+        <app-product-form
+          [submitted]="submitted"
+          [submitting]="submitting"
+          (formSubmit)="onFormSubmit($event)">
+        </app-product-form>
       </div>
     </div>
   </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from 'src/app/services';
 import { IAccount, IRole, Product } from 'src/app/models';
 import { allProducts } from 'src/assets/data/mock-products';
@@ -17,24 +16,12 @@ export class EditCatalogueComponent implements OnInit {
   isNavCollapsed = false;
   userInitials = '';
 
-  editForm!: FormGroup;
+  editingProduct: Product | null = null;
+  productNotFound = false;
   submitting = false;
   submitted = false;
-  imageError = false;
-  selectedCategory = '';
-  productId!: number;
-  productNotFound = false;
-
-  categories = [
-    'bread',
-    'dairy_products',
-    'beverages',
-    'fresh_produce',
-    'cereals'
-  ];
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private accountService: AccountService
@@ -44,103 +31,35 @@ export class EditCatalogueComponent implements OnInit {
 
   ngOnInit(): void {
     this.setUserInitials();
-    this.buildForm();
     this.loadProduct();
   }
 
-  buildForm(): void {
-    this.editForm = this.fb.group({
-      category:     ['', Validators.required],
-      productName:  ['', Validators.required],
-      brand:        ['', Validators.required],
-      size:         [''],
-      price:        [null, [Validators.required, Validators.min(0.01)]],
-      quantity:     [null, [Validators.required, Validators.min(0)]],
-      entryDate:    ['', Validators.required],
-      imageUrl:     [''],
-      description:  [''],
-      expiryDate:   [''],
-      // Bread
-      breadType:    [''],
-      sliced:       [''],
-      // Dairy
-      dairyType:    [''],
-      fatContent:   [''],
-      // Beverages
-      beverageType: [''],
-      flavour:      [''],
-      volume:       [''],
-      // Fresh Produce
-      produceType:  [''],
-      origin:       [''],
-      organic:      [false],
-      // Cereals
-      cerealType:   [''],
-      grainType:    ['']
-    });
-  }
-
   loadProduct(): void {
-    // get id from route e.g. /catalogue/edit-catalogue/3
-    const idParam = this.route.snapshot.paramMap.get('id');
-    this.productId = Number(idParam);
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    const product = allProducts.find(p => p.id === this.productId);
-
-    if (!product) {
+    if (isNaN(id)) {
       this.productNotFound = true;
       return;
     }
 
-    this.selectedCategory = product.category;
+    const found = allProducts.find(p => p.id === id);
 
-    // patch all base fields
-    this.editForm.patchValue({
-      category:    product.category,
-      productName: product.productName,
-      brand:       product.brand,
-      size:        product.size,
-      price:       product.price,
-      quantity:    product.quantity,
-      entryDate:   product.entryDate,
-      imageUrl:    product.imageUrl,
-      description: product.description ?? '',
-      expiryDate:  (product as any).expiryDate ?? '',
-      // Bread
-      breadType:   (product as any).breadType ?? '',
-      sliced:      (product as any).sliced === true ? 'Sliced' : (product as any).sliced === false ? 'Unsliced' : '',
-      // Dairy
-      dairyType:   (product as any).dairyType ?? '',
-      fatContent:  (product as any).fatContent ?? '',
-      // Beverages
-      beverageType:(product as any).beverageType ?? '',
-      flavour:     (product as any).flavour ?? '',
-      volume:      (product as any).volume ?? '',
-      // Fresh Produce
-      produceType: (product as any).produceType ?? '',
-      origin:      (product as any).origin ?? '',
-      organic:     (product as any).organic ?? false,
-      // Cereals
-      cerealType:  (product as any).cerealType ?? '',
-      grainType:   (product as any).grainType ?? ''
-    });
+    if (!found) {
+      this.productNotFound = true;
+      return;
+    }
+
+    this.editingProduct = found as Product;
   }
 
-  get f() { return this.editForm.controls; }
-
-  onCategoryChange(category: string): void {
-    this.selectedCategory = category;
-    this.imageError = false;
-  }
-
-  onSubmit(): void {
+  onFormSubmit(formValue: any): void {
     this.submitted = true;
-    if (this.editForm.invalid) return;
+    if (!this.editingProduct) return;
 
     this.submitting = true;
-    const formValue = this.editForm.value;
 
-    const idx = allProducts.findIndex(p => p.id === this.productId);
+    const idx = allProducts.findIndex(p => p.id === this.editingProduct!.id);
+
     if (idx > -1) {
       allProducts[idx] = {
         ...allProducts[idx],
@@ -161,7 +80,9 @@ export class EditCatalogueComponent implements OnInit {
         ...(formValue.category === 'dairy_products' && {
           dairyType:  formValue.dairyType,
           fatContent: formValue.fatContent,
-          expiryDate: formValue.expiryDate ? this.formatDate(formValue.expiryDate) : undefined
+          expiryDate: formValue.expiryDate
+            ? this.formatDate(formValue.expiryDate)
+            : undefined
         }),
         ...(formValue.category === 'beverages' && {
           beverageType: formValue.beverageType,
