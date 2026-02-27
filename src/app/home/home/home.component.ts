@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
-import { Product,IRole } from 'src/app/models';
-import { MOCK_PRODUCTS } from 'src/assets/data/mock-products';
+import { Product, IRole } from 'src/app/models';
+import { allProducts } from 'src/assets/data/mock-products';
 import { AccountService } from 'src/app/services';
 interface ProductGroup {
   category: string;
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.products = MOCK_PRODUCTS;
+    this.products = allProducts;
     this.categories = [...new Set(this.products.map(p => p.category))];
     this.setUserInitials();
   }

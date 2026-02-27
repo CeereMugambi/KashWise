@@ -7,13 +7,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { AddCatalogueComponent } from './add-catalogue/add-catalogue.component';
 import { CatalogueRoutingModule } from './catalogue-routing.module';
+import { EditCatalogueComponent } from './edit-catalogue/edit-catalogue.component';
 
 
 
 @NgModule({
   declarations: [
     CatalogueComponent,
-    AddCatalogueComponent
+    AddCatalogueComponent,
+    EditCatalogueComponent
   ],
   imports: [
     CommonModule,

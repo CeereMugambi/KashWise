@@ -63,30 +63,48 @@
         <mat-icon class="catalogue-icon">inventory_2</mat-icon>
     </div>                
       
-  
-      <div class="top-section">
+    <div class="top-section">
         <h2 class="section-title">Search Products</h2>
-        <form #form="ngForm" (submit)="onSubmit()">
-          <div class="input-row">
-            <mat-form-field appearance="outline">
-              <mat-label>Search product</mat-label>
-              <mat-icon matPrefix>search</mat-icon>
-              <input matInput type="text" name="productName" [(ngModel)]="productName" (keydown.enter)="onSubmit()">
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline">
-              <mat-label>Entry date</mat-label>
-              <input matInput [matDatepicker]="picker" name="entryDate" [(ngModel)]="entryDate">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-  
-            <button mat-raised-button type="submit" class="search-button">
-              <mat-icon>search</mat-icon>
-              Search
+      
+        <div class="input-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Search product</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input
+              matInput
+              type="text"
+              name="productName"
+              [(ngModel)]="productName"
+              (ngModelChange)="onSearch()">
+            <button
+              *ngIf="productName"
+              matSuffix
+              mat-icon-button
+              (click)="clearFilters()">
+              <mat-icon>close</mat-icon>
             </button>
-          </div>
-        </form>
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Entry date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              name="entryDate"
+              [(ngModel)]="entryDate"
+              (dateChange)="onDateChange()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <button
+              *ngIf="entryDate"
+              mat-icon-button
+              matSuffix
+              (click)="entryDate = null; onDateChange()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+      
+        </div>
       </div>
   
       <div class="table-section">
@@ -134,9 +152,10 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let product">
-                <button mat-icon-button class="edit-btn" [routerLink]="['/catalogue/add-catalogue', product.id]">
-                    <mat-icon>edit</mat-icon>
-                  </button>
+                <button mat-icon-button class="edit-btn"
+                [routerLink]="['/catalogue/edit-catalogue', product.id]">
+                <mat-icon>edit</mat-icon>
+              </button>
               <button mat-icon-button class="delete-btn">
                 <mat-icon>delete</mat-icon>
               </button>

@@ -4,6 +4,7 @@ import { CatalogueComponent } from './catalogue/catalogue.component';
 import { AddCatalogueComponent } from './add-catalogue/add-catalogue.component';
 import { AuthGuard } from '../helpers/auth.guard';
 import { IRole } from '../models/role';
+import { EditCatalogueComponent } from './edit-catalogue/edit-catalogue.component';
 
 const routes: Routes = [
     {path: '',component:CatalogueComponent},
@@ -12,8 +13,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: { roles: [IRole.Admin] } 
     },
-    { path: 'add-catalogue/:id', component: AddCatalogueComponent },
-   
+    { path: 'catalogue/edit-catalogue/:id', component: EditCatalogueComponent },   
 ];
 
 @NgModule({

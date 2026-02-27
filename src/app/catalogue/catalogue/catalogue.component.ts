@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IAccount, IRole, Product } from 'src/app/models';
-import { MOCK_PRODUCTS } from 'src/assets/data/mock-products';
+import { allProducts } from 'src/assets/data/mock-products';
 import { AccountService } from 'src/app/services';
 
 
@@ -32,16 +32,14 @@ export class CatalogueComponent {
   }
 
   ngOnInit(): void {
-    this.products = MOCK_PRODUCTS;
-    this.filteredProducts = MOCK_PRODUCTS;
+    this.products = allProducts;
+    this.filteredProducts = allProducts; 
     this.setUserInitials();
-
+  
     this.displayedColumns = this.account?.role === IRole.Admin
-    ? ['image', 'id', 'productName', 'quantity', 'price', 'entryDate', 'actions']
-    : ['image', 'id', 'productName', 'quantity', 'price', 'entryDate'];
-
+      ? ['image', 'id', 'productName', 'quantity', 'price', 'entryDate', 'actions']
+      : ['image', 'id', 'productName', 'quantity', 'price', 'entryDate'];
   }
-
 
 toggleNav(): void {
   this.isNavCollapsed = !this.isNavCollapsed;
@@ -62,15 +60,30 @@ setUserInitials(): void {
   }
 }
 
-onSubmit(): void {
+onSearch(): void {
+  this.applyFilters();
+}
+
+onDateChange(): void {
+  this.applyFilters();
+}
+
+applyFilters(): void {
   this.filteredProducts = this.products.filter(p => {
-    const matchesName = p.productName.toLowerCase()
-      .includes(this.productName.toLowerCase());
+    const matchesName = this.productName
+      ? p.productName.toLowerCase().includes(this.productName.toLowerCase())
+      : true;
     const matchesDate = this.entryDate
       ? p.entryDate === this.formatDate(this.entryDate)
       : true;
     return matchesName && matchesDate;
   });
+}
+
+clearFilters(): void {
+  this.productName = '';
+  this.entryDate = null;
+  this.filteredProducts = this.products;
 }
 
 formatDate(date: Date): string {

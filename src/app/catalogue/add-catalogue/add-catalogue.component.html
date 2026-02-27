@@ -201,15 +201,15 @@
             </div>
   
             <!-- Bread -->
-            <div class="form-row" *ngIf="selectedCategory === 'Bread'">
+            <div class="form-row" *ngIf="selectedCategory === 'bread'">
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Bread Type</mat-label>
                 <mat-select formControlName="breadType">
-                  <mat-option value="White">White</mat-option>
-                  <mat-option value="Brown">Brown</mat-option>
-                  <mat-option value="Wholegrain">Wholegrain</mat-option>
-                  <mat-option value="Sourdough">Sourdough</mat-option>
-                  <mat-option value="Multigrain">Multigrain</mat-option>
+                  <mat-option value="white">White</mat-option>
+                  <mat-option value="brown">Brown</mat-option>
+                  <mat-option value="wholegrain">Wholegrain</mat-option>
+                  <mat-option value="sourdough">Sourdough</mat-option>
+                  <mat-option value="other">Other</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline" class="form-field">
@@ -222,13 +222,24 @@
             </div>
   
             <!-- Dairy -->
-            <div class="form-row" *ngIf="selectedCategory === 'Dairy'">
+            <div class="form-row" *ngIf="selectedCategory === 'dairy_products'">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Dairy Type</mat-label>
+                <mat-select formControlName="dairyType">
+                  <mat-option value="milk">Milk</mat-option>
+                  <mat-option value="yoghurt">Yoghurt</mat-option>
+                  <mat-option value="cheese">Cheese</mat-option>
+                  <mat-option value="butter">Butter</mat-option>
+                  <mat-option value="cream">Cream</mat-option>
+                  <mat-option value="other">Other</mat-option>
+                </mat-select>
+              </mat-form-field>
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Fat Content</mat-label>
                 <mat-select formControlName="fatContent">
-                  <mat-option value="Full Fat">Full Fat</mat-option>
-                  <mat-option value="Low Fat">Low Fat</mat-option>
-                  <mat-option value="Fat Free">Fat Free</mat-option>
+                  <mat-option value="full_fat">Full Fat</mat-option>
+                  <mat-option value="low_fat">Low Fat</mat-option>
+                  <mat-option value="skimmed">Skimmed</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline" class="form-field">
@@ -240,7 +251,19 @@
             </div>
   
             <!-- Beverages -->
-            <div class="form-row" *ngIf="selectedCategory === 'Beverages'">
+            <div class="form-row" *ngIf="selectedCategory === 'beverages'">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Beverage Type</mat-label>
+                <mat-select formControlName="beverageType">
+                  <mat-option value="water">Water</mat-option>
+                  <mat-option value="juice">Juice</mat-option>
+                  <mat-option value="soda">Soda</mat-option>
+                  <mat-option value="energy_drink">Energy Drink</mat-option>
+                  <mat-option value="tea">Tea</mat-option>
+                  <mat-option value="coffee">Coffee</mat-option>
+                  <mat-option value="other">Other</mat-option>
+                </mat-select>
+              </mat-form-field>
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>Flavour</mat-label>
                 <input matInput formControlName="flavour" placeholder="e.g. Orange, Mango, Original">
@@ -251,47 +274,48 @@
               </mat-form-field>
             </div>
   
-            <!-- Snacks -->
-            <div class="form-row" *ngIf="selectedCategory === 'Snacks'">
+            <!-- Fresh Produce -->
+            <div class="form-row" *ngIf="selectedCategory === 'fresh_produce'">
               <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Weight</mat-label>
-                <input matInput formControlName="weight" placeholder="e.g. 100g, 165g">
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Flavour Type</mat-label>
-                <input matInput formControlName="flavourType" placeholder="e.g. Original, BBQ, Cheese">
-              </mat-form-field>
-            </div>
-  
-            <!-- Produce -->
-            <div class="form-row" *ngIf="selectedCategory === 'Produce'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Origin</mat-label>
-                <input matInput formControlName="origin" placeholder="e.g. Nairobi, Meru, Nakuru">
-              </mat-form-field>
-              <div class="form-field checkbox-field">
-                <mat-checkbox formControlName="organic">
-                  Organic / Naturally grown
-                </mat-checkbox>
-              </div>
-            </div>
-  
-            <!-- Grains & Cereals -->
-            <div class="form-row" *ngIf="selectedCategory === 'Grains & Cereals'">
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Grain Type</mat-label>
-                <mat-select formControlName="grainType">
-                  <mat-option value="Maize">Maize</mat-option>
-                  <mat-option value="Wheat">Wheat</mat-option>
-                  <mat-option value="Rice">Rice</mat-option>
-                  <mat-option value="Oats">Oats</mat-option>
-                  <mat-option value="Millet">Millet</mat-option>
-                  <mat-option value="Sorghum">Sorghum</mat-option>
+                <mat-label>Produce Type</mat-label>
+                <mat-select formControlName="produceType">
+                  <mat-option value="vegetables">Vegetables</mat-option>
+                  <mat-option value="fruits">Fruits</mat-option>
+                  <mat-option value="herbs">Herbs</mat-option>
+                  <mat-option value="other">Other</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline" class="form-field">
-                <mat-label>Serving Size</mat-label>
-                <input matInput formControlName="servingSize" placeholder="e.g. 30g, 1 cup">
+                <mat-label>Origin</mat-label>
+                <input matInput formControlName="origin" placeholder="e.g. Nakuru, Kiambu, Mombasa">
+              </mat-form-field>
+              <div class="form-field checkbox-field">
+                <mat-checkbox formControlName="organic">Organic / Naturally grown</mat-checkbox>
+              </div>
+            </div>
+  
+            <!-- Cereals -->
+            <div class="form-row" *ngIf="selectedCategory === 'cereals'">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Cereal Type</mat-label>
+                <mat-select formControlName="cerealType">
+                  <mat-option value="breakfast_cereal">Breakfast Cereal</mat-option>
+                  <mat-option value="oats">Oats</mat-option>
+                  <mat-option value="muesli">Muesli</mat-option>
+                  <mat-option value="granola">Granola</mat-option>
+                  <mat-option value="other">Other</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Grain Type</mat-label>
+                <mat-select formControlName="grainType">
+                  <mat-option value="wheat">Wheat</mat-option>
+                  <mat-option value="maize">Maize</mat-option>
+                  <mat-option value="oats">Oats</mat-option>
+                  <mat-option value="rice">Rice</mat-option>
+                  <mat-option value="mixed">Mixed</mat-option>
+                  <mat-option value="other">Other</mat-option>
+                </mat-select>
               </mat-form-field>
             </div>
   
