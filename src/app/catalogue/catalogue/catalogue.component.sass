@@ -1,0 +1,435 @@
+.page-layout
+  display: flex
+  min-height: 100vh
+
+// Side Nav
+.side-nav
+  width: 20%
+  min-height: 100vh
+  background-color: #003333
+  display: flex
+  flex-direction: column
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+  z-index: 100
+  overflow: hidden
+  transition: width 0.3s ease
+
+  &.collapsed
+    width: 56px
+
+.nav-toggle
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 12px 16px
+  color: #fff
+  min-height: 60px
+  border-bottom: 1px solid rgba(255,255,255,0.1)
+  cursor: pointer
+  transition: background 0.2s ease
+
+  &:hover
+    background-color: rgba(255,255,255,0.1)
+
+  mat-icon
+    font-size: 26px
+    width: 26px
+    height: 26px
+    transition: color 0.2s ease
+
+    &:hover
+      color: #FFA800
+
+.user-avatar
+  width: 38px
+  height: 38px
+  border-radius: 50%
+  background-color: #FFA800
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 13px
+  font-weight: 700
+  color: #fff
+  letter-spacing: 0.5px
+  cursor: pointer
+  flex-shrink: 0
+  transition: background-color 0.2s ease
+
+  &:hover
+    background-color: #cc8400
+
+.side-nav-header
+  padding: 16px 20px 12px
+  font-size: 11px
+  font-weight: 700
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  color: rgba(255,255,255,0.5)
+  border-bottom: 1px solid rgba(255,255,255,0.1)
+  white-space: nowrap
+  overflow: hidden
+
+.nav-links
+  list-style: none
+  padding: 12px 0
+  margin: 0
+  flex: 1
+
+.nav-item
+  display: flex
+  align-items: center
+  gap: 14px
+  padding: 14px 16px
+  color: rgba(255,255,255,0.8)
+  cursor: pointer
+  transition: all 0.2s ease
+  border-left: 3px solid transparent
+  font-size: 14px
+  font-weight: 500
+  white-space: nowrap
+  overflow: hidden
+
+  mat-icon
+    font-size: 20px
+    width: 20px
+    height: 20px
+    min-width: 20px
+    color: rgba(255,255,255,0.7)
+    flex-shrink: 0
+
+  span
+    overflow: hidden
+    transition: opacity 0.2s ease
+
+  &:hover
+    background-color: rgba(255,255,255,0.1)
+    color: #fff
+    border-left-color: #FFA800
+
+    mat-icon
+      color: #fff
+
+  &.active
+    background-color: rgba(255,255,255,0.15)
+    color: #fff
+    border-left-color: #FFA800
+    font-weight: 600
+
+    mat-icon
+      color: #FFA800
+
+.nav-bottom
+  padding: 16px 0
+  border-top: 1px solid rgba(255,255,255,0.1)
+  list-style: none
+  margin: 0
+  cursor: pointer
+
+  .logout
+    color: #ff6b6b
+    white-space: nowrap
+    overflow: hidden
+
+    mat-icon
+      color: #ff6b6b
+      flex-shrink: 0
+
+    &:hover
+      background-color: rgba(255,107,107,0.1)
+      border-left-color: #ff6b6b
+
+// Main Content
+.main-content
+  margin-left: 20%
+  width: 80%
+  padding: 24px
+  background-color: #f5f5f5
+  min-height: 100vh
+  transition: margin-left 0.3s ease, width 0.3s ease
+
+  &.expanded
+    margin-left: 56px
+    width: calc(100% - 56px)
+
+// Search
+.top-section
+  background: #fff
+  padding: 20px 24px
+  border-radius: 12px
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06)
+  margin-bottom: 24px
+
+.section-title
+  margin: 0 0 16px 0
+  font-size: 20px
+  font-weight: 700
+  color: #003333
+
+.input-row
+  display: flex
+  gap: 16px
+  align-items: center
+
+  mat-form-field
+    flex: 1
+
+.search-button
+  background-color: #003333 !important
+  color: #fff !important
+  height: 56px
+  padding: 0 24px
+  border-radius: 8px !important
+  white-space: nowrap
+
+  &:hover
+    background-color: #006666 !important
+
+//catalogue-banner
+.catalogue-banner
+  display: flex
+  align-items: center
+  justify-content: space-between
+  background: linear-gradient(180deg, #001a1a 60%, #008080 100%)
+  border-radius: 12px
+  padding: 28px 32px
+  margin-bottom: 24px
+
+  .catalogue-text
+    h1
+      color: #fff
+      font-size: 24px
+      font-weight: 700
+      margin: 0 0 8px 0
+
+    p
+      color: rgba(255,255,255,0.7)
+      font-size: 14px
+      margin: 0
+      line-height: 1.6
+
+  .catalogue-icon
+    font-size: 64px
+    width: 64px
+    height: 64px
+    color: #FFA800
+    opacity: 0.8
+
+@media (max-width: 768px)
+  .catalogue-banner
+    padding: 20px 16px
+    flex-direction: column
+    gap: 16px
+    text-align: center
+
+    .catalogue-icon
+      font-size: 40px
+      width: 40px
+      height: 40px
+
+// Table
+.table-section
+  background: #fff
+  border-radius: 12px
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06)
+  padding: 24px
+
+.table-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-bottom: 24px
+
+  h2
+    margin: 0
+    font-size: 18px
+    font-weight: 600
+    color: #003333
+
+.add-button
+  background-color: #FFA800 !important
+  color: #fff !important
+  border-radius: 8px !important
+
+  &:hover
+    background-color: #cc8400 !important
+
+.product-table
+  width: 100%
+
+.product-img
+  width: 50px
+  height: 50px
+  border-radius: 8px
+  object-fit: cover
+
+th.mat-header-cell
+  font-weight: 700
+  color: #003333
+  font-size: 13px
+  background-color: #f0f8f8
+
+td.mat-cell
+  font-size: 13px
+  color: #444
+  padding: 12px 8px
+
+tr.mat-row
+  transition: background 0.2s ease
+
+  &:hover
+    background-color: #f0f8f8
+
+.edit-btn
+  color: #008080
+
+  &:hover
+    color: #006666
+
+.delete-btn
+  color: #e53935
+
+  &:hover
+    color: #b71c1c
+
+.no-results
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 40px
+  color: #ccc
+
+  mat-icon
+    font-size: 40px
+    width: 40px
+    height: 40px
+    margin-bottom: 8px
+
+    // ================================
+// RESPONSIVE
+// ================================
+
+// Large tablets (1024px and below)
+@media (max-width: 1024px)
+  .side-nav
+    width: 240px
+
+    &.collapsed
+      width: 56px
+
+  .main-content
+    margin-left: 240px
+    width: calc(100% - 240px)
+
+    &.expanded
+      margin-left: 56px
+      width: calc(100% - 56px)
+
+// Tablets (768px and below)
+@media (max-width: 768px)
+  .side-nav
+    width: 240px
+    position: fixed
+    transform: translateX(-100%)  // hidden by default on mobile
+    transition: transform 0.3s ease
+
+    &.collapsed
+      transform: translateX(0)   // ← collapsed = OPEN on mobile (inverted)
+
+  .main-content
+    margin-left: 0    // full width by default on mobile
+    width: 100%
+    padding: 16px
+    transition: margin-left 0.3s ease
+
+    &.expanded
+      margin-left: 0
+      width: 100%
+
+  .input-row
+    flex-direction: column
+    gap: 8px
+
+    mat-form-field
+      width: 100%
+
+    button.search-button
+      width: 100%
+      height: 48px
+
+  .table-section
+    padding: 16px
+    overflow-x: auto
+
+  .product-table
+    min-width: 600px
+
+  .top-section
+    padding: 16px
+
+  .section-title
+    font-size: 16px
+
+// Mobile (480px and below)
+@media (max-width: 480px)
+  .side-nav
+    width: 100%
+    position: fixed
+    transform: translateX(-100%)  // hidden by default
+
+    &.collapsed
+      transform: translateX(0)   // ← collapsed = OPEN on mobile
+
+  .main-content
+    margin-left: 0
+    width: 100%
+    padding: 12px
+
+    &.expanded
+      margin-left: 0
+      width: 100%
+
+  .table-header
+    flex-direction: column
+    align-items: flex-start
+    gap: 12px
+
+  .add-button
+    width: 100%
+
+  th.mat-header-cell, td.mat-cell
+    font-size: 11px
+    padding: 8px 4px
+
+  .product-img
+    width: 36px
+    height: 36px
+
+    .mobile-menu-btn
+      display: none
+
+@media (max-width: 768px)
+  .mobile-menu-btn
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 44px
+    height: 44px
+    background-color: #008080
+    border-radius: 50%
+    color: #fff
+    cursor: pointer
+    margin-bottom: 16px
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2)
+    transition: background-color 0.2s ease
+
+    mat-icon
+      font-size: 22px
+      width: 22px
+      height: 22px
+
+    &:hover
+      background-color: #006666

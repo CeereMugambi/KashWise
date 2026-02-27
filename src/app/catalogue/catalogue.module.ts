@@ -1,32 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
-import { homeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home/home.component';
 import { AccountModule } from '../account/account.module';
 import { ComponentsModule } from '../components/components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CatalogueModule } from '../catalogue/catalogue.module';
+import { CatalogueComponent } from './catalogue/catalogue.component';
+import { AddCatalogueComponent } from './add-catalogue/add-catalogue.component';
+import { CatalogueRoutingModule } from './catalogue-routing.module';
 
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    CatalogueComponent,
+    AddCatalogueComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    homeRoutingModule,
     AccountModule,
     ComponentsModule,
     FormsModule,
     ReactiveFormsModule,
-    CatalogueModule
-
+    CatalogueRoutingModule
   ],
   exports:[
-    HomeComponent
-  ]
+    CatalogueComponent
+]
 })
-export class HomeModule { }
+export class CatalogueModule { }

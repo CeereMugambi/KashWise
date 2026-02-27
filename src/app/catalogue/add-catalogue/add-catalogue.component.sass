@@ -169,9 +169,9 @@
   display: none
 
 // ================================
-// HOME- BANNER
+// BANNER
 // ================================
-.home-banner
+.catalogue-banner
   display: flex
   align-items: center
   justify-content: space-between
@@ -180,7 +180,7 @@
   padding: 28px 32px
   margin-bottom: 24px
 
-  .home-text
+  .catalogue-text
     h1
       color: #fff
       font-size: 24px
@@ -193,7 +193,7 @@
       margin: 0
       line-height: 1.6
 
-  .home-icon
+  .catalogue-icon
     font-size: 64px
     width: 64px
     height: 64px
@@ -201,327 +201,223 @@
     opacity: 0.8
 
 // ================================
-// SEARCH SECTION
+// FORM SECTION
 // ================================
-.top-section
+.form-section
   background: #fff
-  padding: 20px 24px
   border-radius: 12px
   box-shadow: 0 2px 8px rgba(0,0,0,0.06)
-  margin-bottom: 24px
+  padding: 24px
 
-.section-title
-  margin: 0 0 16px 0
-  font-size: 20px
-  font-weight: 700
-  color: #003333
-
-.search-wrapper
+.form-header
   display: flex
-  flex-direction: column
-  gap: 16px
-
-.search-input-container
-  position: relative
-  width: 100%
-
-  .search-field
-    width: 100%
-
-// ================================
-// SUGGESTIONS DROPDOWN
-// ================================
-.suggestions-dropdown
-  position: absolute
-  top: 100%
-  left: 0
-  right: 0
-  background: #fff
-  border: 1px solid #e0e0e0
-  border-radius: 8px
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1)
-  z-index: 200
-  overflow: hidden
-
-.suggestion-group-label
-  padding: 8px 16px
-  font-size: 11px
-  font-weight: 700
-  letter-spacing: 1px
-  text-transform: uppercase
-  color: #aaa
-  background: #fafafa
+  justify-content: space-between
+  align-items: center
+  margin-bottom: 28px
+  padding-bottom: 16px
   border-bottom: 1px solid #f0f0f0
 
-.suggestion-item
-  display: flex
-  align-items: center
-  gap: 12px
-  padding: 12px 16px
-  cursor: pointer
-  transition: background 0.15s ease
-
-  mat-icon
-    font-size: 18px
-    width: 18px
-    height: 18px
-    color: #aaa
-    flex-shrink: 0
-
-  .suggestion-details
-    flex: 1
-    display: flex
-    flex-direction: column
-
-    .suggestion-name
-      font-size: 14px
-      color: #333
-      font-weight: 500
-
-    .suggestion-category
-      font-size: 11px
-      color: #aaa
-
-  .suggestion-price
-    font-size: 13px
-    font-weight: 600
-    color: #008080
-
-  &:hover
-    background: #f0f8f8
-
-    mat-icon
-      color: #008080
-
-// ================================
-// CATEGORY CHIPS
-// ================================
-.category-chips
-  display: flex
-  gap: 8px
-  flex-wrap: wrap
-
-.chip
-  display: flex
-  align-items: center
-  gap: 4px
-  padding: 6px 16px
-  border-radius: 50px
-  font-size: 13px
-  font-weight: 500
-  cursor: pointer
-  border: 1.5px solid #ccc
-  color: #666
-  transition: all 0.2s ease
-  background: #fff
-
-  mat-icon
-    font-size: 16px
-    width: 16px
-    height: 16px
-
-  &:hover
-    border-color: #008080
-    color: #008080
-
-  &.active
-    background-color: #008080
-    color: #fff
-    border-color: #008080
-
-// ================================
-// RESULTS SECTION
-// ================================
-.results-section
-  margin-top: 8px
-
-.results-header
-  margin-bottom: 20px
-
-  h3
-    font-size: 15px
-    color: #555
-    font-weight: 400
-    margin: 0
-
-    .result-count
-      font-size: 20px
-      font-weight: 700
-      color: #003333
-
-// ================================
-// CATEGORY GROUP
-// ================================
-.category-result-group
-  margin-bottom: 28px
-  background: #fff
-  border-radius: 12px
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06)
-  overflow: hidden
-
-.category-group-header
-  padding: 16px 20px
-  background: linear-gradient(90deg, #003333, #005555)
-
-.category-group-title
+.form-header-left
   display: flex
   align-items: center
   gap: 10px
 
   mat-icon
-    color: #FFA800
+    color: #008080
+    font-size: 24px
+    width: 24px
+    height: 24px
+
+  h2
+    margin: 0
+    font-size: 20px
+    font-weight: 700
+    color: #003333
+
+.back-button
+  border: 2px solid #008080 !important
+  color: #008080 !important
+  border-radius: 8px !important
+  transition: all 0.2s ease
+
+  &:hover
+    background-color: #008080 !important
+    color: #fff !important
+
+// ================================
+// FORM ROWS
+// ================================
+.form-row
+  display: flex
+  gap: 16px
+  margin-bottom: 8px
+
+  .form-field
+    flex: 1
+
+  .full-width
+    width: 100%
+    flex: unset
+
+.checkbox-field
+  display: flex
+  align-items: center
+  padding-top: 8px
+
+  mat-checkbox
+    color: #444
+    font-size: 14px
+
+// ================================
+// EXISTING PRODUCTS HINT
+// ================================
+.existing-products
+  background: #f0f8f8
+  border: 1px solid rgba(0,128,128,0.2)
+  border-radius: 8px
+  padding: 12px 16px
+  margin-bottom: 16px
+
+.existing-header
+  display: flex
+  align-items: center
+  gap: 6px
+  margin-bottom: 8px
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+    color: #008080
+
+  span
+    font-size: 13px
+    font-weight: 600
+    color: #008080
+
+.existing-chips
+  display: flex
+  flex-wrap: wrap
+  gap: 6px
+
+.existing-chip
+  background: #fff
+  border: 1px solid rgba(0,128,128,0.3)
+  color: #555
+  font-size: 12px
+  padding: 3px 10px
+  border-radius: 20px
+
+// ================================
+// DYNAMIC CATEGORY FIELDS
+// ================================
+.dynamic-fields
+  background: #f8fffe
+  border: 1px solid rgba(0,128,128,0.15)
+  border-radius: 10px
+  padding: 20px
+  margin-bottom: 16px
+
+.dynamic-fields-header
+  display: flex
+  align-items: center
+  gap: 8px
+  margin-bottom: 16px
+
+  mat-icon
+    color: #008080
     font-size: 20px
     width: 20px
     height: 20px
 
   h3
     margin: 0
-    font-size: 16px
+    font-size: 15px
     font-weight: 700
-    color: #fff
-
-  .group-count
-    font-size: 12px
-    color: rgba(255,255,255,0.6)
-    background: rgba(255,255,255,0.1)
-    padding: 2px 10px
-    border-radius: 20px
-
-// ================================
-// PRODUCT ROWS
-// ================================
-.product-rows-table
-  width: 100%
-  padding: 8px
-
-.product-row-header
-  display: none
-
-.product-row
-  display: flex
-  align-items: flex-start
-  gap: 16px
-  padding: 16px
-  border-bottom: 1px solid #f5f5f5
-  position: relative
-  transition: background 0.15s ease
-  min-height: 90px
-
-  &:last-child
-    border-bottom: none
-
-  &:hover
-    background: #f0f8f8
-    border-radius: 8px
-
-.col-image
-  flex-shrink: 0
-
-  .row-product-img
-    width: 70px
-    height: 70px
-    border-radius: 10px
-    object-fit: cover
-
-.col-details
-  flex: 1
-  display: flex
-  flex-direction: column
-  gap: 4px
-  padding-right: 48px  // space for the absolute add button
-
-  .row-product-name
-    font-size: 14px
-    font-weight: 600
     color: #003333
 
-  .row-product-price
-    font-size: 14px
-    font-weight: 700
-    color: #008080
+// ================================
+// IMAGE PREVIEW
+// ================================
+.image-preview
+  margin-bottom: 20px
 
-  .row-qty
-    font-size: 12px
-    color: #888
+  h3
+    font-size: 14px
+    font-weight: 600
+    color: #555
+    margin: 0 0 10px 0
+
+  .preview-img
+    width: 100px
+    height: 100px
+    object-fit: cover
+    border-radius: 10px
+    border: 2px solid #f0f0f0
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08)
+
+  .image-error
     display: flex
     align-items: center
     gap: 6px
-
-    &.low-stock
-      color: #e53935
-
-    .low-label
-      font-size: 10px
-      background: #fdecea
-      color: #e53935
-      padding: 1px 6px
-      border-radius: 10px
-      font-weight: 600
-
-.col-action
-  position: absolute
-  bottom: 12px
-  right: 12px
-
-  .add-btn
-    color: #008080
-    transition: color 0.2s ease, transform 0.2s ease
+    font-size: 12px
+    color: #e53935
+    margin: 0
 
     mat-icon
-      font-size: 32px
-      width: 32px
-      height: 32px
-
-    &:hover
-      color: #FFA800
-      transform: scale(1.15)
-
-    &:disabled
-      color: #ccc
+      font-size: 16px
+      width: 16px
+      height: 16px
 
 // ================================
-// EMPTY STATE
+// FORM ACTIONS
 // ================================
-.empty-state
+.form-actions
   display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-  padding: 80px 40px
-  color: #ccc
-  text-align: center
+  justify-content: flex-end
+  gap: 12px
+  margin-top: 24px
+  padding-top: 16px
+  border-top: 1px solid #f0f0f0
 
-  mat-icon
-    font-size: 64px
-    width: 64px
-    height: 64px
-    margin-bottom: 16px
+.cancel-btn
+  border: 2px solid #ccc !important
+  color: #666 !important
+  border-radius: 8px !important
+  padding: 0 24px
+  height: 42px
+  transition: all 0.2s ease
 
-  h3
-    color: #999
-    font-size: 18px
-    margin: 0 0 8px 0
+  &:hover
+    border-color: #e53935 !important
+    color: #e53935 !important
 
-  p
-    font-size: 14px
-    max-width: 300px
-    line-height: 1.6
+.submit-btn
+  background-color: #008080 !important
+  color: #fff !important
+  border-radius: 8px !important
+  padding: 0 28px
+  height: 42px
+  transition: background-color 0.2s ease
+
+  &:hover
+    background-color: #006666 !important
 
 // ================================
-// NO RESULTS
+// MATERIAL OVERRIDES
 // ================================
-.no-results
-  display: flex
-  flex-direction: column
-  align-items: center
-  padding: 60px
-  color: #ccc
+::ng-deep
+  .mat-form-field-ripple
+    background-color: #008080 !important
 
-  mat-icon
-    font-size: 48px
-    width: 48px
-    height: 48px
-    margin-bottom: 12px
+  .mat-form-field.mat-focused .mat-form-field-ripple
+    background-color: #008080 !important
+
+  .mat-form-field.mat-focused .mat-form-field-label
+    color: #008080 !important
+
+  .mat-input-element:focus
+    caret-color: #008080 !important
 
 // ================================
 // RESPONSIVE
@@ -582,33 +478,38 @@
     &:hover
       background-color: #006666
 
-  .welcome-banner
-    padding: 20px 16px
+  .catalogue-banner
     flex-direction: column
-    gap: 16px
+    padding: 20px 16px
+    gap: 12px
     text-align: center
 
-    .welcome-icon
+    .catalogue-icon
       font-size: 40px
       width: 40px
       height: 40px
 
-  .top-section
+  .form-header
+    flex-direction: column
+    align-items: flex-start
+    gap: 12px
+
+  .back-button
+    width: 100%
+
+  .form-row
+    flex-direction: column
+    gap: 0
+
+  .form-actions
+    flex-direction: column-reverse
+    gap: 10px
+
+    button
+      width: 100%
+
+  .dynamic-fields
     padding: 16px
-
-  .category-chips
-    gap: 6px
-
-  .chip
-    padding: 4px 12px
-    font-size: 12px
-
-  .product-row
-    padding: 12px
-
-  .col-image .row-product-img
-    width: 56px
-    height: 56px
 
 @media (max-width: 480px)
   .side-nav
@@ -627,16 +528,12 @@
       margin-left: 0
       width: 100%
 
-  .welcome-banner
-    .welcome-text h1
+  .catalogue-banner
+    .catalogue-text h1
       font-size: 18px
 
-  .col-image .row-product-img
-    width: 48px
-    height: 48px
-
-  .col-details .row-product-name
-    font-size: 13px
+  .form-section
+    padding: 16px
 
 // ================================
 // NAV OVERLAY

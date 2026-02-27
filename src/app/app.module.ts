@@ -20,6 +20,9 @@ import { ProfileModule } from './profile/profile.module';
 import { profileRoutingModule } from './profile/profile-routing.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
+import { CatalogueComponent } from './catalogue/catalogue/catalogue.component';
+import { CatalogueModule } from './catalogue/catalogue.module';
+import { CatalogueRoutingModule } from './catalogue/catalogue-routing.module';
 
 
 
@@ -47,7 +50,10 @@ import { MatTableModule } from '@angular/material/table';
     ProfileModule,
     profileRoutingModule,
     MatTooltipModule,
-    MatTableModule
+    MatTableModule,
+    CatalogueModule,
+    CatalogueRoutingModule
+  
   ],
   
   providers: [

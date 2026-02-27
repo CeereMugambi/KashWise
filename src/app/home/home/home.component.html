@@ -1,9 +1,10 @@
 <div class="page-layout">
-  
+
+  <!-- Nav Overlay (mobile) -->
+  <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+
   <!-- Side Nav -->
   <div class="side-nav" [class.collapsed]="isNavCollapsed">
-
-    
 
     <div class="nav-toggle" (click)="toggleNav()">
       <mat-icon>menu</mat-icon>
@@ -21,6 +22,10 @@
         <mat-icon>home</mat-icon>
         <span *ngIf="!isNavCollapsed">Home</span>
       </li>
+      <li class="nav-item" routerLink="/catalogue">
+        <mat-icon>menu_book</mat-icon>
+        <span *ngIf="!isNavCollapsed">Catalogue</span>
+      </li>
       <li class="nav-item" routerLink="/profile">
         <mat-icon>person</mat-icon>
         <span *ngIf="!isNavCollapsed">Profile</span>
@@ -30,11 +35,11 @@
         <span *ngIf="!isNavCollapsed">Settings</span>
       </li>
       <ng-container *ngIf="account!.role === Role.Admin">
-      <li class="nav-item" routerLink="/list">
-        <mat-icon>security</mat-icon>
-        <span *ngIf="!isNavCollapsed">Admin</span>
-      </li>
-    </ng-container>
+        <li class="nav-item" routerLink="/list">
+          <mat-icon>security</mat-icon>
+          <span *ngIf="!isNavCollapsed">Admin</span>
+        </li>
+      </ng-container>
     </ul>
 
     <div class="nav-bottom" (click)="logout()">
@@ -49,101 +54,158 @@
   <!-- Main Content -->
   <div class="main-content" [class.expanded]="isNavCollapsed">
 
+    <!-- Mobile menu button -->
     <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
       <mat-icon>menu</mat-icon>
     </div>
 
+    <!-- Home Banner -->
+    <div class="home-banner">
+      <div class="home-text">
+        <h1>Welcome, {{ firstName }}!</h1>
+        <p>Search and browse products from our catalogue.<br>Add items to your order with ease.</p>
+      </div>
+      <mat-icon class="home-icon">storefront</mat-icon>
+    </div>
+
+    <!-- Search Section -->
     <div class="top-section">
-      <h2 class="section-title">Search Products</h2>
-      <form #form="ngForm" (submit)="onSubmit()">
-        <div class="input-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Search product</mat-label>
+      <h2 class="section-title">Find Products</h2>
+
+      <div class="search-wrapper">
+
+        <!-- Search with live dropdown -->
+        <div class="search-input-container">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search products e.g. bread, milk...</mat-label>
             <mat-icon matPrefix>search</mat-icon>
-            <input matInput type="text" name="productName" [(ngModel)]="productName" (keydown.enter)="onSubmit()">
+            <input
+              matInput
+              type="text"
+              [(ngModel)]="searchQuery"
+              (ngModelChange)="onSearchChange()"
+              (focus)="showSuggestions = true"
+              (blur)="hideSuggestions()"
+              autocomplete="off">
+            <button
+              *ngIf="searchQuery"
+              matSuffix
+              mat-icon-button
+              (click)="clearSearch()">
+              <mat-icon>close</mat-icon>
+            </button>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Entry date</mat-label>
-            <input matInput [matDatepicker]="picker" name="entryDate" [(ngModel)]="entryDate">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-
-          <button mat-raised-button type="submit" class="search-button">
-            <mat-icon>search</mat-icon>
-            Search
-          </button>
+          <!-- Live suggestions dropdown -->
+          <div class="suggestions-dropdown" *ngIf="showSuggestions && suggestions.length > 0">
+            <div class="suggestion-group-label">Suggestions</div>
+            <div
+              class="suggestion-item"
+              *ngFor="let suggestion of suggestions"
+              (mousedown)="selectSuggestion(suggestion)">
+              <mat-icon>search</mat-icon>
+              <div class="suggestion-details">
+                <span class="suggestion-name">{{ suggestion.productName }}</span>
+                <span class="suggestion-category">{{ suggestion.category }}</span>
+              </div>
+              <span class="suggestion-price">KSH {{ suggestion.price | number:'1.2-2' }}</span>
+            </div>
+          </div>
         </div>
-      </form>
+
+        <!-- Category filter chips -->
+        <div class="category-chips">
+          <span
+            class="chip"
+            [class.active]="selectedCategory === ''"
+            (click)="filterByCategory('')">
+            <mat-icon>apps</mat-icon>
+            All
+          </span>
+          <span
+            class="chip"
+            *ngFor="let category of categories"
+            [class.active]="selectedCategory === category"
+            (click)="filterByCategory(category)">
+            {{ category }}
+          </span>
+        </div>
+
+      </div>
     </div>
 
-    <div class="table-section">
-      <div class="table-header">
-        <h2>Products</h2>
-        <button mat-raised-button class="add-button">
-          <mat-icon>add</mat-icon>
-          Add New
-        </button>
+    <!-- Results Section -->
+    <div class="results-section" *ngIf="searchQuery || selectedCategory">
+
+      <div class="results-header">
+        <h3>
+          <span class="result-count">{{ groupedResults.length }}</span>
+          categor{{ groupedResults.length === 1 ? 'y' : 'ies' }} found
+          <span *ngIf="searchQuery"> for "<strong>{{ searchQuery }}</strong>"</span>
+        </h3>
       </div>
 
-      <table mat-table [dataSource]="filteredProducts" class="product-table">
+      <!-- Grouped by category -->
+      <div class="category-result-group" *ngFor="let group of groupedResults">
 
-        <ng-container matColumnDef="image">
-          <th mat-header-cell *matHeaderCellDef>Image</th>
-          <td mat-cell *matCellDef="let product">
-            <img [src]="product.imageUrl" [alt]="product.productName" class="product-img"/>
-          </td>
-        </ng-container>
+        <div class="category-group-header">
+          <div class="category-group-title">
+            <mat-icon>category</mat-icon>
+            <h3>{{ group.category }}</h3>
+            <span class="group-count">{{ group.products.length }} items</span>
+          </div>
+        </div>
 
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>#ID</th>
-          <td mat-cell *matCellDef="let product">{{ product.id }}</td>
-        </ng-container>
+        <!-- Product rows -->
+        <div class="product-rows-table">
 
-        <ng-container matColumnDef="productName">
-          <th mat-header-cell *matHeaderCellDef>Product Name</th>
-          <td mat-cell *matCellDef="let product">{{ product.productName }}</td>
-        </ng-container>
+          <div class="product-row" *ngFor="let product of group.products">
 
-        <ng-container matColumnDef="quantity">
-          <th mat-header-cell *matHeaderCellDef>Quantity</th>
-          <td mat-cell *matCellDef="let product">{{ product.quantity }}</td>
-        </ng-container>
+            <!-- Image -->
+            <div class="col-image">
+              <img [src]="product.imageUrl" [alt]="product.productName" class="row-product-img"/>
+            </div>
 
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef>Price</th>
-          <td mat-cell *matCellDef="let product">KSH {{ product.price | number:'1.2-2' }}</td>
-        </ng-container>
+            <!-- Details -->
+            <div class="col-details">
+              <span class="row-product-name">{{ product.productName }}</span>
+              <span class="row-product-price">KSH {{ product.price | number:'1.2-2' }}</span>
+              <span class="row-qty" [class.low-stock]="product.quantity < 10">
+                {{ product.quantity }} available
+                <span class="low-label" *ngIf="product.quantity < 10">Low</span>
+              </span>
+            </div>
 
-        <ng-container matColumnDef="entryDate">
-          <th mat-header-cell *matHeaderCellDef>Entry Date</th>
-          <td mat-cell *matCellDef="let product">{{ product.entryDate }}</td>
-        </ng-container>
+            <!-- Add button bottom right -->
+            <div class="col-action">
+              <button
+                mat-icon-button
+                class="add-btn"
+                (click)="addToOrder(product)"
+                [disabled]="product.quantity === 0">
+                <mat-icon>add_circle</mat-icon>
+              </button>
+            </div>
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let product">
-            <button mat-icon-button class="edit-btn">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button class="delete-btn">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+          </div>
+        </div>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </div>
 
-      </table>
-
-      <div class="no-results" *ngIf="filteredProducts.length === 0">
+      <!-- No results -->
+      <div class="no-results" *ngIf="groupedResults.length === 0">
         <mat-icon>search_off</mat-icon>
-        <p>No products found</p>
+        <p>No products found for "{{ searchQuery }}"</p>
       </div>
 
     </div>
-  </div>
 
+    <!-- Default empty state -->
+    <div class="empty-state" *ngIf="!searchQuery && !selectedCategory">
+      <mat-icon>manage_search</mat-icon>
+      <h3>Start searching</h3>
+      <p>Type a product name or select a category above to browse available products</p>
+    </div>
+
+  </div>
 </div>
