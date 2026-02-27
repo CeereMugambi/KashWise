@@ -1,13 +1,10 @@
 // ================================
-// LAYOUT
+// LAYOUT + NAV — same pattern
 // ================================
 .page-layout
   display: flex
   min-height: 100vh
 
-// ================================
-// SIDE NAV
-// ================================
 .side-nav
   width: 20%
   min-height: 100vh
@@ -43,7 +40,6 @@
     font-size: 26px
     width: 26px
     height: 26px
-    transition: color 0.2s ease
 
     &:hover
       color: #FFA800
@@ -59,7 +55,6 @@
   font-size: 13px
   font-weight: 700
   color: #fff
-  letter-spacing: 0.5px
   cursor: pointer
   flex-shrink: 0
   transition: background-color 0.2s ease
@@ -106,10 +101,6 @@
     color: rgba(255,255,255,0.7)
     flex-shrink: 0
 
-  span
-    overflow: hidden
-    transition: opacity 0.2s ease
-
   &:hover
     background-color: rgba(255,255,255,0.1)
     color: #fff
@@ -147,9 +138,6 @@
       background-color: rgba(255,107,107,0.1)
       border-left-color: #ff6b6b
 
-// ================================
-// MAIN CONTENT
-// ================================
 .main-content
   margin-left: 20%
   width: 80%
@@ -162,262 +150,331 @@
     margin-left: 56px
     width: calc(100% - 56px)
 
-// ================================
-// MOBILE MENU BTN
-// ================================
 .mobile-menu-btn
   display: none
 
 // ================================
-// BANNER
+// SUCCESS BANNER
 // ================================
-.catalogue-banner
+.success-banner
   display: flex
   align-items: center
-  justify-content: space-between
+  gap: 20px
   background: linear-gradient(135deg, #003333, #008080)
-  border-radius: 12px
+  border-radius: 16px
   padding: 28px 32px
   margin-bottom: 24px
+  animation: slideDown 0.5s ease both
 
-  .catalogue-text
-    h1
-      color: #fff
-      font-size: 24px
-      font-weight: 700
-      margin: 0 0 8px 0
+@keyframes slideDown
+  from
+    opacity: 0
+    transform: translateY(-20px)
+  to
+    opacity: 1
+    transform: translateY(0)
 
-    p
-      color: rgba(255,255,255,0.7)
-      font-size: 14px
-      margin: 0
-      line-height: 1.6
+.success-icon-wrap
+  width: 64px
+  height: 64px
+  border-radius: 50%
+  background: rgba(255,255,255,0.15)
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both
 
-  .catalogue-icon
-    font-size: 64px
-    width: 64px
-    height: 64px
-    color: #FFA800
-    opacity: 0.8
+@keyframes popIn
+  from
+    opacity: 0
+    transform: scale(0.5)
+  to
+    opacity: 1
+    transform: scale(1)
+
+.success-icon
+  font-size: 40px
+  width: 40px
+  height: 40px
+  color: #FFA800
+
+.success-text
+  h1
+    color: #fff
+    font-size: 24px
+    font-weight: 800
+    margin: 0 0 6px 0
+
+  p
+    color: rgba(255,255,255,0.75)
+    font-size: 14px
+    margin: 0
 
 // ================================
-// FORM SECTION
+// RECEIPT CARD
 // ================================
-.form-section
+.receipt-card
   background: #fff
-  border-radius: 12px
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06)
-  padding: 24px
+  border-radius: 16px
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08)
+  overflow: hidden
+  margin-bottom: 24px
+  animation: fadeUp 0.5s ease 0.15s both
 
-.form-header
+@keyframes fadeUp
+  from
+    opacity: 0
+    transform: translateY(16px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// ================================
+// RECEIPT HEADER
+// ================================
+.receipt-header
   display: flex
   justify-content: space-between
-  align-items: center
-  margin-bottom: 28px
-  padding-bottom: 16px
+  align-items: flex-start
+  padding: 28px 32px
+  background: #fafafa
   border-bottom: 1px solid #f0f0f0
 
-.form-header-left
+.receipt-brand
   display: flex
   align-items: center
   gap: 10px
+  font-size: 22px
+  font-weight: 800
+  color: #003333
 
   mat-icon
+    font-size: 28px
+    width: 28px
+    height: 28px
     color: #008080
-    font-size: 24px
-    width: 24px
-    height: 24px
 
-  h2
-    margin: 0
-    font-size: 20px
+.receipt-meta
+  display: flex
+  flex-direction: column
+  gap: 6px
+  text-align: right
+
+.receipt-meta-row
+  display: flex
+  gap: 12px
+  justify-content: flex-end
+  align-items: center
+
+.meta-label
+  font-size: 12px
+  color: #aaa
+  font-weight: 500
+
+.meta-value
+  font-size: 13px
+  color: #333
+  font-weight: 600
+
+.order-id
+  color: #008080
+  font-family: monospace
+  font-size: 14px
+
+// ================================
+// DIVIDER
+// ================================
+.receipt-divider
+  display: flex
+  align-items: center
+  padding: 0 32px
+  margin: 0
+
+  &::before, &::after
+    content: ''
+    flex: 1
+    height: 1px
+    background: #f0f0f0
+
+  span
+    padding: 12px 16px
+    font-size: 11px
     font-weight: 700
+    letter-spacing: 1px
+    text-transform: uppercase
+    color: #aaa
+
+// ================================
+// ITEMS TABLE
+// ================================
+.receipt-items
+  padding: 0 32px 16px
+
+.receipt-items-header
+  display: grid
+  grid-template-columns: 2fr 1fr 0.5fr 1fr 1fr
+  padding: 10px 0
+  border-bottom: 2px solid #f0f0f0
+  font-size: 11px
+  font-weight: 700
+  text-transform: uppercase
+  letter-spacing: 0.5px
+  color: #aaa
+
+.receipt-item
+  display: grid
+  grid-template-columns: 2fr 1fr 0.5fr 1fr 1fr
+  align-items: center
+  padding: 16px 0
+  border-bottom: 1px solid #f9f9f9
+
+  &:last-child
+    border-bottom: none
+
+.item-name-col
+  display: flex
+  align-items: center
+  gap: 12px
+
+.receipt-img
+  width: 48px
+  height: 48px
+  border-radius: 8px
+  object-fit: cover
+  flex-shrink: 0
+
+.item-name-details
+  display: flex
+  flex-direction: column
+  gap: 2px
+
+  .item-name
+    font-size: 14px
+    font-weight: 600
     color: #003333
 
-.back-button
-  border: 2px solid #008080 !important
+  .item-category
+    font-size: 11px
+    color: #aaa
+    text-transform: capitalize
+
+.item-size
+  font-size: 13px
+  color: #555
+
+.item-qty
+  font-size: 13px
+  color: #555
+  font-weight: 600
+
+.item-unit
+  font-size: 13px
+  color: #555
+
+.item-subtotal
+  font-size: 14px
+  font-weight: 700
+  color: #003333
+
+// ================================
+// TOTALS
+// ================================
+.receipt-totals
+  padding: 16px 32px 24px
+  border-top: 2px solid #f0f0f0
+  display: flex
+  flex-direction: column
+  gap: 8px
+
+.totals-row
+  display: flex
+  justify-content: space-between
+  font-size: 14px
+  color: #666
+
+  &.grand-total
+    padding-top: 12px
+    border-top: 2px dashed #e0e0e0
+    font-size: 18px
+    font-weight: 800
+    color: #003333
+
+    span:last-child
+      color: #008080
+
+// ================================
+// RECEIPT FOOTER
+// ================================
+.receipt-footer
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding: 20px
+  background: linear-gradient(135deg, #003333, #008080)
+  color: rgba(255,255,255,0.85)
+
+  mat-icon
+    font-size: 18px
+    width: 18px
+    height: 18px
+    color: #FFA800
+
+  p
+    margin: 0
+    font-size: 13px
+
+// ================================
+// ACTION BUTTONS
+// ================================
+.receipt-actions
+  display: flex
+  gap: 12px
+  justify-content: flex-end
+
+.print-btn
+  background-color: #fff !important
   color: #008080 !important
-  border-radius: 8px !important
+  border: 2px solid #008080 !important
+  border-radius: 50px !important
+  height: 46px
+  padding: 0 24px
+  font-weight: 600
   transition: all 0.2s ease
 
   &:hover
     background-color: #008080 !important
     color: #fff !important
 
-// ================================
-// FORM ROWS
-// ================================
-.form-row
-  display: flex
-  gap: 16px
-  margin-bottom: 8px
-
-  .form-field
-    flex: 1
-
-  .full-width
-    width: 100%
-    flex: unset
-
-.checkbox-field
-  display: flex
-  align-items: center
-  padding-top: 8px
-
-  mat-checkbox
-    color: #444
-    font-size: 14px
-
-// ================================
-// EXISTING PRODUCTS HINT
-// ================================
-.existing-products
-  background: #f0f8f8
-  border: 1px solid rgba(0,128,128,0.2)
-  border-radius: 8px
-  padding: 12px 16px
-  margin-bottom: 16px
-
-.existing-header
-  display: flex
-  align-items: center
-  gap: 6px
-  margin-bottom: 8px
-
-  mat-icon
-    font-size: 16px
-    width: 16px
-    height: 16px
-    color: #008080
-
-  span
-    font-size: 13px
-    font-weight: 600
-    color: #008080
-
-.existing-chips
-  display: flex
-  flex-wrap: wrap
-  gap: 6px
-
-.existing-chip
-  background: #fff
-  border: 1px solid rgba(0,128,128,0.3)
-  color: #555
-  font-size: 12px
-  padding: 3px 10px
-  border-radius: 20px
-
-// ================================
-// DYNAMIC CATEGORY FIELDS
-// ================================
-.dynamic-fields
-  background: #f8fffe
-  border: 1px solid rgba(0,128,128,0.15)
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 16px
-
-.dynamic-fields-header
-  display: flex
-  align-items: center
-  gap: 8px
-  margin-bottom: 16px
-
-  mat-icon
-    color: #008080
-    font-size: 20px
-    width: 20px
-    height: 20px
-
-  h3
-    margin: 0
-    font-size: 15px
-    font-weight: 700
-    color: #003333
-
-// ================================
-// IMAGE PREVIEW
-// ================================
-.image-preview
-  margin-bottom: 20px
-
-  h3
-    font-size: 14px
-    font-weight: 600
-    color: #555
-    margin: 0 0 10px 0
-
-  .preview-img
-    width: 100px
-    height: 100px
-    object-fit: cover
-    border-radius: 10px
-    border: 2px solid #f0f0f0
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08)
-
-  .image-error
-    display: flex
-    align-items: center
-    gap: 6px
-    font-size: 12px
-    color: #e53935
-    margin: 0
-
-    mat-icon
-      font-size: 16px
-      width: 16px
-      height: 16px
-
-// ================================
-// FORM ACTIONS
-// ================================
-.form-actions
-  display: flex
-  justify-content: flex-end
-  gap: 12px
-  margin-top: 24px
-  padding-top: 16px
-  border-top: 1px solid #f0f0f0
-
-.cancel-btn
-  border: 2px solid #ccc !important
-  color: #666 !important
-  border-radius: 8px !important
-  padding: 0 24px
-  height: 42px
-  transition: all 0.2s ease
-
-  &:hover
-    border-color: #e53935 !important
-    color: #e53935 !important
-
-.submit-btn
+.home-btn
   background-color: #008080 !important
   color: #fff !important
-  border-radius: 8px !important
+  border-radius: 50px !important
+  height: 46px
   padding: 0 28px
-  height: 42px
-  transition: background-color 0.2s ease
+  font-weight: 600
+  transition: background 0.2s ease
 
   &:hover
     background-color: #006666 !important
 
 // ================================
-// MATERIAL OVERRIDES
+// PRINT STYLES
 // ================================
-::ng-deep
-  .mat-form-field-ripple
-    background-color: #008080 !important
+@media print
+  .side-nav, .mobile-menu-btn, .nav-overlay, .receipt-actions, .success-banner
+    display: none !important
 
-  .mat-form-field.mat-focused .mat-form-field-ripple
-    background-color: #008080 !important
+  .main-content
+    margin-left: 0 !important
+    width: 100% !important
+    padding: 0 !important
+    background: #fff !important
 
-  .mat-form-field.mat-focused .mat-form-field-label
-    color: #008080 !important
-
-  .mat-input-element:focus
-    caret-color: #008080 !important
+  .receipt-card
+    box-shadow: none
+    border-radius: 0
 
 // ================================
 // RESPONSIVE
@@ -468,48 +525,54 @@
     cursor: pointer
     margin-bottom: 16px
     box-shadow: 0 2px 8px rgba(0,0,0,0.2)
-    transition: background-color 0.2s ease
 
     mat-icon
       font-size: 22px
       width: 22px
       height: 22px
 
-    &:hover
-      background-color: #006666
-
-  .catalogue-banner
+  .receipt-header
     flex-direction: column
-    padding: 20px 16px
-    gap: 12px
-    text-align: center
+    gap: 16px
+    padding: 20px 20px
 
-    .catalogue-icon
-      font-size: 40px
-      width: 40px
-      height: 40px
+    .receipt-meta
+      text-align: left
 
-  .form-header
+    .receipt-meta-row
+      justify-content: flex-start
+
+  .receipt-items-header
+    display: none
+
+  .receipt-item
+    grid-template-columns: 1fr
+    gap: 4px
+    padding: 16px 0
+
+    .item-qty, .item-unit, .item-size
+      font-size: 12px
+      color: #888
+
+    .item-subtotal
+      font-size: 15px
+
+  .receipt-items
+    padding: 0 20px 16px
+
+  .receipt-totals
+    padding: 16px 20px 20px
+
+  .receipt-actions
     flex-direction: column
-    align-items: flex-start
-    gap: 12px
-
-  .back-button
-    width: 100%
-
-  .form-row
-    flex-direction: column
-    gap: 0
-
-  .form-actions
-    flex-direction: column-reverse
-    gap: 10px
 
     button
       width: 100%
 
-  .dynamic-fields
-    padding: 16px
+  .success-banner
+    flex-direction: column
+    text-align: center
+    padding: 24px 20px
 
 @media (max-width: 480px)
   .side-nav
@@ -520,24 +583,8 @@
       transform: translateX(0)
 
   .main-content
-    margin-left: 0
-    width: 100%
     padding: 12px
 
-    &.expanded
-      margin-left: 0
-      width: 100%
-
-  .catalogue-banner
-    .catalogue-text h1
-      font-size: 18px
-
-  .form-section
-    padding: 16px
-
-// ================================
-// NAV OVERLAY
-// ================================
 .nav-overlay
   display: none
 
@@ -551,5 +598,3 @@
     height: 100%
     background: rgba(0,0,0,0.5)
     z-index: 99
-
-

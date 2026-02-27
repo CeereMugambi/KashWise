@@ -77,7 +77,7 @@
         <!-- Search with live dropdown -->
         <div class="search-input-container">
           <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search products e.g. bread, milk...</mat-label>
+            <mat-label>Search products</mat-label>
             <mat-icon matPrefix>search</mat-icon>
             <input
               matInput
@@ -135,8 +135,7 @@
     </div>
 
     <!-- Results Section -->
-    <div class="results-section" *ngIf="searchQuery || selectedCategory">
-
+     <div class="results-section" *ngIf="groupedResults.length > 0">
       <div class="results-header">
         <h3>
           <span class="result-count">{{ groupedResults.length }}</span>
@@ -201,7 +200,7 @@
     </div>
 
     <!-- Default empty state -->
-    <div class="empty-state" *ngIf="!searchQuery && !selectedCategory">
+    <div class="empty-state" *ngIf="groupedResults.length === 0">
       <mat-icon>manage_search</mat-icon>
       <h3>Start searching</h3>
       <p>Type a product name or select a category above to browse available products</p>

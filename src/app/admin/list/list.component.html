@@ -1,6 +1,7 @@
 <div class="page-layout">
 
   <!-- Side Nav -->
+  <!-- Side Nav -->
   <div class="side-nav" [class.collapsed]="isNavCollapsed">
 
     <div class="nav-toggle" (click)="toggleNav()">
@@ -15,7 +16,7 @@
     </div>
 
     <ul class="nav-links">
-      <li class="nav-item" routerLink="/home">
+      <li class="nav-item active" routerLink="/home">
         <mat-icon>home</mat-icon>
         <span *ngIf="!isNavCollapsed">Home</span>
       </li>
@@ -31,10 +32,12 @@
         <mat-icon>settings</mat-icon>
         <span *ngIf="!isNavCollapsed">Settings</span>
       </li>
-      <li class="nav-item active" routerLink="/admin">
-        <mat-icon>security</mat-icon>
-        <span *ngIf="!isNavCollapsed">Admin</span>
-      </li>
+      <ng-container *ngIf="account!.role === Role.Admin">
+        <li class="nav-item" routerLink="/list">
+          <mat-icon>security</mat-icon>
+          <span *ngIf="!isNavCollapsed">Admin</span>
+        </li>
+      </ng-container>
     </ul>
 
     <div class="nav-bottom" (click)="logout()">

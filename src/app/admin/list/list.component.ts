@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { first } from 'rxjs/operators';
+import { IRole } from 'src/app/models';
 
 import { AccountService } from 'src/app/services';
 
@@ -13,8 +14,11 @@ export class ListComponent implements OnInit {
     dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();searchQuery: string = '';
     roleFilter: string = '';
     filteredAccounts: any[] = [];
-    userInitials: string = '';
     isNavCollapsed: boolean = false;
+    userInitials = '';
+    firstName = '';
+    account = this.accountService.accountValue;
+    Role = IRole;
 
     
 
@@ -28,19 +32,27 @@ export class ListComponent implements OnInit {
           this.dataSource.data = this.accounts;
           this.filteredAccounts = this.accounts;
         });
+
+        this.setUserInitials();
+
+
   }
+  
   setUserInitials(): void {
     const account = this.accountService.accountValue;
     if (account?.firstName && account?.lastName) {
+      this.firstName = account.firstName;
       this.userInitials = `${account.firstName.charAt(0)}${account.lastName.charAt(0)}`.toUpperCase();
     } else {
       this.accountService.account.subscribe(acc => {
         if (acc?.firstName && acc?.lastName) {
+          this.firstName = acc.firstName;
           this.userInitials = `${acc.firstName.charAt(0)}${acc.lastName.charAt(0)}`.toUpperCase();
         }
       });
     }
   }
+
   
   toggleNav(): void {
     this.isNavCollapsed = !this.isNavCollapsed;

@@ -7,12 +7,16 @@ import { AccountModule } from '../account/account.module';
 import { ComponentsModule } from '../components/components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogueModule } from '../catalogue/catalogue.module';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ReceiptComponent } from './receipt/receipt.component';
 
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    ProductDetailComponent,
+    ReceiptComponent
   ],
   imports: [
     CommonModule,

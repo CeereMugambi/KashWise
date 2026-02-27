@@ -1,0 +1,242 @@
+<div class="page-layout">
+
+    <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+  
+    <!-- Side Nav -->
+    <div class="side-nav" [class.collapsed]="isNavCollapsed">
+      <div class="nav-toggle" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+        <div class="user-avatar" *ngIf="!isNavCollapsed"><span>{{ userInitials }}</span></div>
+      </div>
+      <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
+      <ul class="nav-links">
+        <li class="nav-item" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
+        <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
+        <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
+        <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
+        <ng-container *ngIf="account!.role === Role.Admin">
+          <li class="nav-item" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
+        </ng-container>
+      </ul>
+      <div class="nav-bottom" (click)="logout()">
+        <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+      </div>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="main-content" [class.expanded]="isNavCollapsed">
+  
+      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+      </div>
+  
+      <!-- Not Found -->
+      <div class="not-found" *ngIf="productNotFound">
+        <mat-icon>search_off</mat-icon>
+        <h2>Product not found</h2>
+        <button mat-raised-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon> Back to Home
+        </button>
+      </div>
+  
+      <ng-container *ngIf="product && !productNotFound">
+  
+        <!-- Back button -->
+        <div class="page-header">
+          <button mat-icon-button class="back-btn" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <span class="page-title">Product Details</span>
+        </div>
+  
+        <div class="detail-layout">
+  
+          <!-- LEFT: Image Carousel -->
+          <div class="image-panel">
+  
+            <div class="carousel">
+              <button class="carousel-btn prev" (click)="prevImage()">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+  
+              <div class="carousel-image-wrap">
+                <img
+                  [src]="images[currentImageIndex]"
+                  [alt]="product.productName"
+                  class="carousel-img"
+                  (error)="images[currentImageIndex] = 'assets/product-images/default.jpg'">
+              </div>
+  
+              <button class="carousel-btn next" (click)="nextImage()">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+  
+            <!-- Dot indicators -->
+            <div class="carousel-dots">
+              <span
+                class="dot"
+                *ngFor="let img of images; let i = index"
+                [class.active]="i === currentImageIndex"
+                (click)="selectImage(i)">
+              </span>
+            </div>
+  
+            <!-- Thumbnail strip -->
+            <div class="thumbnail-strip">
+              <img
+                *ngFor="let img of images; let i = index"
+                [src]="img"
+                [class.active]="i === currentImageIndex"
+                (click)="selectImage(i)"
+                class="thumbnail"
+                [alt]="'View ' + (i + 1)">
+            </div>
+  
+          </div>
+  
+          <!-- RIGHT: Product Info -->
+          <div class="info-panel">
+  
+            <!-- Category badge -->
+            <span class="category-badge">{{ product.category }}</span>
+  
+            <h1 class="product-name">{{ product.productName }}</h1>
+  
+            <div class="product-meta">
+              <span class="product-brand" *ngIf="product.brand">
+                <mat-icon>storefront</mat-icon> {{ product.brand }}
+              </span>
+              <span class="stock-badge" [class.low]="product.quantity < 10">
+                <mat-icon>inventory</mat-icon>
+                {{ product.quantity }} in stock
+                <span *ngIf="product.quantity < 10" class="low-text">Low</span>
+              </span>
+            </div>
+  
+            <p class="product-description">
+              {{ product.description || 'No description available for this product.' }}
+            </p>
+  
+            <div class="product-price">
+              KSH {{ product.price | number:'1.2-2' }}
+            </div>
+  
+            <!-- Size Options -->
+            <div class="size-section" *ngIf="sizeOptions.length > 0">
+              <h3 class="size-label">Select Size</h3>
+              <div class="size-options">
+                <button
+                  *ngFor="let option of sizeOptions"
+                  class="size-btn"
+                  [class.active]="selectedSize === option.size"
+                  [class.out-of-stock]="option.quantity === 0"
+                  [disabled]="option.quantity === 0"
+                  (click)="selectSize(option.size)">
+                  <span class="size-name">{{ option.size }}</span>
+                  <span class="size-qty">{{ option.quantity }} left</span>
+                </button>
+              </div>
+            </div>
+  
+            <!-- Quantity Selector -->
+            <div class="qty-section">
+              <h3 class="qty-label">Quantity</h3>
+              <div class="qty-control">
+                <button class="qty-btn" (click)="decrementQty()" [disabled]="selectedQuantity <= 1">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="qty-value">{{ selectedQuantity }}</span>
+                <button class="qty-btn" (click)="incrementQty()" [disabled]="selectedQuantity >= maxQuantity">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <span class="qty-max">Max: {{ maxQuantity }}</span>
+            </div>
+  
+            <!-- Action Buttons -->
+            <div class="action-btns">
+                <button mat-raised-button class="confirm-btn" (click)="addToCart()" [disabled]="maxQuantity === 0">
+                    <mat-icon>shopping_cart</mat-icon>
+                    {{ maxQuantity === 0 ? 'Out of Stock' : 'Add to Cart' }}
+                  </button>
+              <button mat-stroked-button class="cancel-btn" (click)="goBack()">
+                Cancel
+              </button>
+            </div>
+  
+          </div>
+        </div>
+  
+      </ng-container>
+      <!-- Cart Panel -->
+<div class="cart-overlay" *ngIf="showCart" (click)="closeCart()"></div>
+
+<div class="cart-panel" [class.open]="showCart">
+
+  <div class="cart-header">
+    <div class="cart-title">
+      <mat-icon>shopping_cart</mat-icon>
+      <h2>Your Cart</h2>
+      <span class="cart-count">{{ cartCount }}</span>
+    </div>
+    <button mat-icon-button class="close-cart-btn" (click)="closeCart()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="cart-items">
+    <div class="cart-item" *ngFor="let item of cartItems; let i = index">
+
+      <img [src]="item.product.imageUrl" [alt]="item.product.productName" class="cart-item-img">
+
+      <div class="cart-item-details">
+        <span class="cart-item-name">{{ item.product.productName }}</span>
+        <span class="cart-item-size" *ngIf="item.size">Size: {{ item.size }}</span>
+        <span class="cart-item-price">KSH {{ item.product.price | number:'1.2-2' }} each</span>
+      </div>
+
+      <div class="cart-item-right">
+        <div class="cart-qty-control">
+          <button class="cart-qty-btn" (click)="updateCartQty(i, -1)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span>{{ item.quantity }}</span>
+          <button class="cart-qty-btn" (click)="updateCartQty(i, 1)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <span class="cart-item-subtotal">KSH {{ item.subtotal | number:'1.2-2' }}</span>
+        <button mat-icon-button class="remove-btn" (click)="removeFromCart(i)">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cart-footer">
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal ({{ cartCount }} items)</span>
+        <span>KSH {{ cartTotal | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span class="total-amount">KSH {{ cartTotal | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <button mat-raised-button class="proceed-btn" (click)="proceedToCheckout()">
+      <mat-icon>payment</mat-icon>
+      Proceed to Checkout
+    </button>
+
+    <button mat-stroked-button class="continue-btn" (click)="closeCart()">
+      Continue Shopping
+    </button>
+  </div>
+
+</div>
+    </div>
+  </div>

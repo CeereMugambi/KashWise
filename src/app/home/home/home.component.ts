@@ -3,6 +3,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { Product, IRole } from 'src/app/models';
 import { allProducts } from 'src/assets/data/mock-products';
 import { AccountService } from 'src/app/services';
+import { Router } from '@angular/router';
 interface ProductGroup {
   category: string;
   products: Product[];
@@ -33,12 +34,13 @@ export class HomeComponent implements OnInit {
 
   order: { product: Product; quantity: number }[] = [];
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private router: Router) {}
 
   ngOnInit(): void {
     this.products = allProducts;
     this.categories = [...new Set(this.products.map(p => p.category))];
     this.setUserInitials();
+    this.buildGroupedResults();
   }
 
   setUserInitials(): void {
@@ -66,23 +68,22 @@ export class HomeComponent implements OnInit {
 
   onSearchChange(): void {
     const query = this.searchQuery.toLowerCase().trim();
-
-    if (!query && !this.selectedCategory) {
-      this.suggestions = [];
-      this.groupedResults = [];
-      return;
-    }
-
+  
     // live suggestions
-    this.suggestions = this.products
-      .filter(p => p.productName.toLowerCase().includes(query))
-      .slice(0, 6);
-
+    this.suggestions = query
+      ? this.products.filter(p => p.productName.toLowerCase().includes(query)).slice(0, 6)
+      : [];
+  
     this.buildGroupedResults();
   }
-
   filterByCategory(category: string): void {
     this.selectedCategory = category;
+  
+    if (!category && !this.searchQuery) {
+      this.buildGroupedResults();
+      return;
+    }
+  
     this.buildGroupedResults();
   }
 
@@ -127,7 +128,7 @@ export class HomeComponent implements OnInit {
     this.searchQuery = '';
     this.selectedCategory = '';
     this.suggestions = [];
-    this.groupedResults = [];
+    this.buildGroupedResults(); 
   }
 
   addToOrder(product: Product): void {
@@ -137,6 +138,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.order.push({ product, quantity: 1 });
     }
+    this.router.navigate(['/product-detail', product.id]);
     console.log('Order:', this.order);
   }
 }

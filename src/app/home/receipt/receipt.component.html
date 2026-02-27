@@ -1,0 +1,135 @@
+<div class="page-layout">
+
+    <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+  
+    <div class="side-nav" [class.collapsed]="isNavCollapsed">
+      <div class="nav-toggle" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+        <div class="user-avatar" *ngIf="!isNavCollapsed"><span>{{ userInitials }}</span></div>
+      </div>
+      <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
+      <ul class="nav-links">
+        <li class="nav-item active" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
+        <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
+        <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
+        <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
+        <ng-container *ngIf="account!.role === Role.Admin">
+          <li class="nav-item" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
+        </ng-container>
+      </ul>
+      <div class="nav-bottom" (click)="logout()">
+        <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+      </div>
+    </div>
+  
+    <div class="main-content" [class.expanded]="isNavCollapsed">
+  
+      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+      </div>
+  
+      <!-- Success Header -->
+      <div class="success-banner">
+        <div class="success-icon-wrap">
+          <mat-icon class="success-icon">check_circle</mat-icon>
+        </div>
+        <div class="success-text">
+          <h1>Order Confirmed!</h1>
+          <p>Thank you, {{ firstName }}. Your order has been placed successfully.</p>
+        </div>
+      </div>
+  
+      <!-- Receipt Card -->
+      <div class="receipt-card" id="receipt-print">
+  
+        <!-- Receipt Header -->
+        <div class="receipt-header">
+          <div class="receipt-brand">
+            <mat-icon>storefront</mat-icon>
+            <span>FreshMart</span>
+          </div>
+          <div class="receipt-meta">
+            <div class="receipt-meta-row">
+              <span class="meta-label">Order ID</span>
+              <span class="meta-value order-id">{{ orderId }}</span>
+            </div>
+            <div class="receipt-meta-row">
+              <span class="meta-label">Date</span>
+              <span class="meta-value">{{ formattedDate }}</span>
+            </div>
+            <div class="receipt-meta-row">
+              <span class="meta-label">Customer</span>
+              <span class="meta-value">{{ firstName }}</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="receipt-divider">
+          <span>Order Summary</span>
+        </div>
+  
+        <!-- Items Table -->
+        <div class="receipt-items">
+  
+          <div class="receipt-items-header">
+            <span>Item</span>
+            <span>Size</span>
+            <span>Qty</span>
+            <span>Unit Price</span>
+            <span>Subtotal</span>
+          </div>
+  
+          <div class="receipt-item" *ngFor="let item of cartItems">
+            <div class="item-name-col">
+              <img [src]="item.product.imageUrl" [alt]="item.product.productName" class="receipt-img">
+              <div class="item-name-details">
+                <span class="item-name">{{ item.product.productName }}</span>
+                <span class="item-category">{{ item.product.category }}</span>
+              </div>
+            </div>
+            <span class="item-size">{{ item.size || '—' }}</span>
+            <span class="item-qty">× {{ item.quantity }}</span>
+            <span class="item-unit">KSH {{ item.product.price | number:'1.2-2' }}</span>
+            <span class="item-subtotal">KSH {{ item.subtotal | number:'1.2-2' }}</span>
+          </div>
+  
+        </div>
+  
+        <!-- Totals -->
+        <div class="receipt-totals">
+          <div class="totals-row">
+            <span>Subtotal</span>
+            <span>KSH {{ total | number:'1.2-2' }}</span>
+          </div>
+          <div class="totals-row">
+            <span>Tax (0%)</span>
+            <span>KSH 0.00</span>
+          </div>
+          <div class="totals-row grand-total">
+            <span>Total Paid</span>
+            <span>KSH {{ total | number:'1.2-2' }}</span>
+          </div>
+        </div>
+  
+        <!-- Receipt Footer -->
+        <div class="receipt-footer">
+          <mat-icon>favorite</mat-icon>
+          <p>Thank you for shopping with FreshMart. See you again!</p>
+        </div>
+  
+      </div>
+  
+      <!-- Action Buttons -->
+      <div class="receipt-actions">
+        <button mat-raised-button class="print-btn" (click)="printReceipt()">
+          <mat-icon>print</mat-icon>
+          Print Receipt
+        </button>
+        <button mat-raised-button class="home-btn" (click)="continueShopping()">
+          <mat-icon>shopping_bag</mat-icon>
+          Continue Shopping
+        </button>
+      </div>
+  
+    </div>
+  </div>
