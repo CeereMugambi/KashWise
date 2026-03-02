@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.products = allProducts;
     this.categories = [...new Set(this.products.map(p => p.category))];
     this.setUserInitials();
-    this.buildGroupedResults();
+    // this.buildGroupedResults();
 
     // ← subscribe so cart count updates reactively
     this.cartSub = this.cartService.cartItems$.subscribe(items => {
@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.searchQuery = '';
     this.selectedCategory = '';
     this.suggestions = [];
-    this.buildGroupedResults();
+    // this.buildGroupedResults();
   }
 
   addToOrder(product: Product): void {
