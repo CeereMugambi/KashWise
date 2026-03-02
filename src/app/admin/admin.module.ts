@@ -6,12 +6,14 @@ import { ComponentsModule } from '../components/components.module';
 import { ListComponent } from './list/list.component';
 import { EditAdminComponent } from './edit-admin/edit-admin.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReviewComponent } from './review/review.component';
 
 
 @NgModule({
   declarations: [
     ListComponent,
     EditAdminComponent,
+    ReviewComponent,
   ],
   imports: [
     CommonModule,

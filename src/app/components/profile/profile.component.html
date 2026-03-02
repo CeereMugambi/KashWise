@@ -1,0 +1,314 @@
+<div class="page-layout">
+
+    <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+  
+    <div class="side-nav" [class.collapsed]="isNavCollapsed">
+      <div class="nav-toggle" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+        <div class="user-avatar" *ngIf="!isNavCollapsed">
+          <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="avatar" class="nav-avatar-img">
+          <span *ngIf="!profileImageUrl">{{ userInitials }}</span>
+        </div>
+      </div>
+      <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
+      <ul class="nav-links">
+        <li class="nav-item" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
+        <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
+        <li class="nav-item active" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
+        <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
+        <ng-container *ngIf="account!.role === Role.Admin">
+          <li class="nav-item" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
+        </ng-container>
+      </ul>
+      <div class="nav-bottom" (click)="logout()">
+        <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+      </div>
+    </div>
+  
+    <div class="main-content" [class.expanded]="isNavCollapsed">
+  
+      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+      </div>
+  
+      <!-- Banner -->
+      <div class="profile-banner">
+  
+        <div class="banner-avatar-wrap">
+          <div class="banner-avatar" (click)="!isProfileLocked && triggerFileInput()">
+            <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile" class="avatar-img">
+            <span *ngIf="!profileImageUrl">{{ userInitials }}</span>
+            <div class="avatar-overlay" *ngIf="!isProfileLocked">
+              <mat-icon>photo_camera</mat-icon>
+              <span>Change Photo</span>
+            </div>
+            <div class="avatar-overlay locked-overlay" *ngIf="isProfileLocked">
+              <mat-icon>lock</mat-icon>
+            </div>
+          </div>
+          <input
+            type="file"
+            #fileInput
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            style="display: none">
+          <button
+            class="remove-photo-btn"
+            *ngIf="profileImageUrl && !isProfileLocked"
+            (click)="removePhoto()"
+            mat-icon-button
+            matTooltip="Remove photo">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+  
+        <div class="banner-info">
+          <h1>{{ firstName }} {{ lastName }}</h1>
+          <p>{{ account?.email }}</p>
+          <span class="role-chip">
+            <mat-icon>{{ account?.role === Role.Admin ? 'security' : 'person' }}</mat-icon>
+            {{ account?.role === Role.Admin ? 'Administrator' : 'User' }}
+          </span>
+  
+          <div class="profile-lock-row">
+            <button
+              mat-stroked-button
+              class="lock-profile-btn"
+              [class.locked]="isProfileLocked"
+              (click)="toggleProfileLock()">
+              <mat-icon>{{ isProfileLocked ? 'lock' : 'lock_open' }}</mat-icon>
+              {{ isProfileLocked ? 'Locked by Admin' : 'Lock Profile' }}
+            </button>
+            <span class="lock-hint">
+              {{ isProfileLocked ? 'Contact an Admin to enable editing' : 'Lock to prevent changes' }}
+            </span>
+          </div>
+  
+          <p class="upload-hint" *ngIf="!isProfileLocked">Click the photo to update your profile picture</p>
+        </div>
+  
+        <mat-icon class="banner-icon">account_circle</mat-icon>
+      </div>
+  
+      <!-- Upload error / lock message -->
+      <div class="upload-error" *ngIf="uploadError">
+        <mat-icon>error_outline</mat-icon>
+        {{ uploadError }}
+      </div>
+  
+      <!-- Profile Cards -->
+      <div class="profile-grid">
+  
+        <!-- Personal Info -->
+        <div class="profile-card" [class.card-locked]="isProfileLocked">
+          <div class="card-header">
+            <mat-icon>badge</mat-icon>
+            <h2>Personal Information</h2>
+            <mat-icon class="header-lock-icon" *ngIf="isProfileLocked" matTooltip="Profile is locked">lock</mat-icon>
+            <button
+              mat-icon-button
+              class="edit-toggle-btn"
+              (click)="toggleEdit()"
+              [class.active]="isEditing"
+              *ngIf="!isProfileLocked">
+              <mat-icon>{{ isEditing ? 'close' : 'edit' }}</mat-icon>
+            </button>
+          </div>
+  
+          <form [formGroup]="profileForm" (ngSubmit)="onSave()">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName">
+                <mat-icon matPrefix>person_outline</mat-icon>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName">
+                <mat-icon matPrefix>person_outline</mat-icon>
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field full-width">
+                <mat-label>Email Address</mat-label>
+                <input matInput formControlName="email" type="email">
+                <mat-icon matPrefix>email</mat-icon>
+              </mat-form-field>
+            </div>
+  
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phone" placeholder="+254 700 000 000">
+                <mat-icon matPrefix>phone</mat-icon>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Location</mat-label>
+                <input matInput formControlName="location" placeholder="Nairobi, Kenya">
+                <mat-icon matPrefix>location_on</mat-icon>
+              </mat-form-field>
+            </div>
+  
+            <div class="form-actions" *ngIf="isEditing && !isProfileLocked">
+              <button mat-stroked-button type="button" class="cancel-btn" (click)="toggleEdit()">Cancel</button>
+              <button mat-raised-button type="submit" class="save-btn" [disabled]="saving">
+                <mat-icon>save</mat-icon>
+                {{ saving ? 'Saving...' : 'Save Changes' }}
+              </button>
+            </div>
+  
+            <div class="save-success" *ngIf="savedSuccess">
+              <mat-icon>check_circle</mat-icon>
+              Profile updated successfully!
+            </div>
+          </form>
+  
+          <!-- Locked notice -->
+          <div class="locked-notice" *ngIf="isProfileLocked">
+            <mat-icon>info_outline</mat-icon>
+            Unlock your profile to edit these details or change your photo.
+          </div>
+  
+          <!-- Admin only notice -->
+          <div class="admin-only-notice">
+            <mat-icon>admin_panel_settings</mat-icon>
+            Personal details can only be permanently updated by an Administrator.
+          </div>
+  
+          <!-- Confirm New Details button — only shown when unlocked -->
+          <div class="update-profile-bar">
+            <button
+              mat-raised-button
+              class="update-profile-btn"
+              (click)="confirmNewDetails()"
+              [disabled]="updatingProfile || isProfileLocked">
+              <mat-icon>{{ updatingProfile ? 'hourglass_empty' : isProfileLocked ? 'lock' : 'verified' }}</mat-icon>
+              {{ updatingProfile ? 'Confirming...' : 'Confirm New Details' }}
+            </button>
+          </div>
+  
+          <!-- Confirm success message -->
+          <div class="save-success" *ngIf="confirmSuccess">
+            <mat-icon>check_circle</mat-icon>
+            Details confirmed! Admin has been notified to review and lock your profile.
+          </div>
+  
+        </div>
+  
+        <!-- Account Stats -->
+        <div class="profile-card stats-card">
+          <div class="card-header">
+            <mat-icon>insights</mat-icon>
+            <h2>Account Overview</h2>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <mat-icon>shopping_bag</mat-icon>
+              <span class="stat-value">{{ totalOrders }}</span>
+              <span class="stat-label">Total Orders</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon>pending_actions</mat-icon>
+              <span class="stat-value">{{ pendingOrders }}</span>
+              <span class="stat-label">Pending</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon>payments</mat-icon>
+              <span class="stat-value">KSH {{ totalSold | number:'1.0-0' }}</span>
+              <span class="stat-label">Total Sold</span>
+            </div>
+            <div class="stat-item">
+              <mat-icon>calendar_today</mat-icon>
+              <span class="stat-value">{{ memberSince }}</span>
+              <span class="stat-label">Member Since</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Change Password -->
+        <div class="profile-card">
+          <div class="card-header">
+            <mat-icon>lock</mat-icon>
+            <h2>Change Password</h2>
+          </div>
+  
+          <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field full-width">
+                <mat-label>Current Password</mat-label>
+                <input matInput [type]="showCurrentPwd ? 'text' : 'password'" formControlName="currentPassword">
+                <mat-icon matPrefix>lock_outline</mat-icon>
+                <button mat-icon-button matSuffix type="button" (click)="showCurrentPwd = !showCurrentPwd">
+                  <mat-icon>{{ showCurrentPwd ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>New Password</mat-label>
+                <input matInput [type]="showNewPwd ? 'text' : 'password'" formControlName="newPassword">
+                <mat-icon matPrefix>lock</mat-icon>
+                <button mat-icon-button matSuffix type="button" (click)="showNewPwd = !showNewPwd">
+                  <mat-icon>{{ showNewPwd ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput [type]="showConfirmPwd ? 'text' : 'password'" formControlName="confirmPassword">
+                <mat-icon matPrefix>lock</mat-icon>
+                <button mat-icon-button matSuffix type="button" (click)="showConfirmPwd = !showConfirmPwd">
+                  <mat-icon>{{ showConfirmPwd ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="passwordForm.errors?.['mismatch'] && passwordSubmitted">
+                  Passwords do not match
+                </mat-error>
+              </mat-form-field>
+            </div>
+  
+            <div class="password-strength" *ngIf="passwordForm.get('newPassword')?.value">
+              <div class="strength-bar">
+                <div class="strength-fill" [style.width]="passwordStrength + '%'" [class]="strengthClass"></div>
+              </div>
+              <span class="strength-label" [class]="strengthClass">{{ strengthLabel }}</span>
+            </div>
+  
+            <div class="form-actions">
+              <button mat-raised-button type="submit" class="save-btn" [disabled]="changingPassword">
+                <mat-icon>lock_reset</mat-icon>
+                {{ changingPassword ? 'Updating...' : 'Update Password' }}
+              </button>
+            </div>
+  
+            <div class="save-success" *ngIf="passwordSuccess">
+              <mat-icon>check_circle</mat-icon>
+              Password updated! Logging you out in 2 seconds...
+            </div>
+            <div class="save-error" *ngIf="passwordError">
+              <mat-icon>error_outline</mat-icon>
+              {{ passwordError }}
+            </div>
+          </form>
+        </div>
+  
+        <!-- Danger Zone -->
+        <div class="profile-card danger-card card-locked">
+          <div class="card-header">
+            <mat-icon>warning_amber</mat-icon>
+            <h2>Danger Zone</h2>
+            <mat-icon class="header-lock-icon" matTooltip="Admin action required">lock</mat-icon>
+          </div>
+          <p class="danger-desc">Once you delete your account, there is no going back. Please be certain.</p>
+          <button mat-stroked-button class="delete-account-btn" (click)="confirmDeleteAccount()" disabled>
+            <mat-icon>delete_forever</mat-icon>
+            Delete My Account
+          </button>
+          <div class="admin-only-notice danger-admin-notice">
+            <mat-icon>admin_panel_settings</mat-icon>
+            Account deletion must be approved by an Administrator.
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>

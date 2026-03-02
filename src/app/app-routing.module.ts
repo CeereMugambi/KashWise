@@ -7,7 +7,6 @@ const AccountModule = () => import('./account/account.module').then(x => x.Accou
 const ComponentsModule = () => import('./components/components.module').then(x => x.ComponentsModule);
 const HomeModule = ()=>import('./home/home.module').then(x=>x.HomeModule)
 const AdminModule = ()=>import('./admin/admin.module').then(x=>x.AdminModule)
-const ProfileModule = ()=>import('./profile/profile.module').then(x=>x.ProfileModule)
 const CatalogueModule= ()=>import('./catalogue/catalogue.module').then(x=>x.CatalogueModule)
 
 
@@ -16,7 +15,6 @@ const routes: Routes = [
   {path:'admin',loadChildren:AdminModule, canActivate: [AuthGuard], data: { roles: [IRole.Admin] } },
   {path:'components',loadChildren:ComponentsModule},
   {path:'home',loadChildren:HomeModule, canActivate: [AuthGuard] },
-  {path: 'profile', loadChildren:ProfileModule, canActivate: [AuthGuard] },
   {path:'catalogue',loadChildren:CatalogueModule },
  
 

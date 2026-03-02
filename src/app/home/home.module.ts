@@ -26,7 +26,8 @@ import { ReceiptComponent } from './receipt/receipt.component';
     ComponentsModule,
     FormsModule,
     ReactiveFormsModule,
-    CatalogueModule
+    CatalogueModule,
+    ComponentsModule
 
   ],
   exports:[

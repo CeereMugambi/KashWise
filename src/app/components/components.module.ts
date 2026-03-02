@@ -11,6 +11,8 @@ import { RegistrationFormComponent } from './registration-form/registration-form
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
@@ -24,6 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     AlertComponent,
     RegistrationFormComponent,
     DialogComponent,
+    ProfileComponent,
+    SettingsComponent,
   ],
   imports: [
     CommonModule,

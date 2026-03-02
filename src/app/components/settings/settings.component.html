@@ -1,0 +1,298 @@
+<div class="page-layout">
+
+    <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+  
+    <div class="side-nav" [class.collapsed]="isNavCollapsed">
+      <div class="nav-toggle" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+        <div class="user-avatar" *ngIf="!isNavCollapsed">
+          <span>{{ userInitials }}</span>
+        </div>
+      </div>
+      <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
+      <ul class="nav-links">
+        <li class="nav-item" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
+        <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
+        <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
+        <li class="nav-item active" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
+        <ng-container *ngIf="account!.role === Role.Admin">
+          <li class="nav-item" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
+        </ng-container>
+      </ul>
+      <div class="nav-bottom" (click)="logout()">
+        <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+      </div>
+    </div>
+  
+    <div class="main-content" [class.expanded]="isNavCollapsed">
+  
+      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+      </div>
+  
+      <!-- Banner -->
+      <div class="settings-banner">
+        <div class="banner-text">
+          <h1>Settings</h1>
+          <p>Manage your preferences and application configuration.</p>
+        </div>
+        <mat-icon class="banner-icon">tune</mat-icon>
+      </div>
+  
+      <!-- Settings Tabs -->
+      <div class="settings-tabs">
+        <button
+          class="tab-btn"
+          *ngFor="let tab of tabs"
+          [class.active]="activeTab === tab.key"
+          (click)="activeTab = tab.key">
+          <mat-icon>{{ tab.icon }}</mat-icon>
+          {{ tab.label }}
+        </button>
+      </div>
+  
+      <!-- ======================== -->
+      <!-- NOTIFICATIONS TAB       -->
+      <!-- ======================== -->
+      <div class="settings-section" *ngIf="activeTab === 'notifications'">
+        <div class="settings-card">
+          <div class="card-header">
+            <mat-icon>notifications</mat-icon>
+            <h2>Notification Preferences</h2>
+          </div>
+  
+          <div class="toggle-list">
+            <div class="toggle-row" *ngFor="let item of notificationSettings">
+              <div class="toggle-info">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <div>
+                  <span class="toggle-title">{{ item.title }}</span>
+                  <span class="toggle-desc">{{ item.desc }}</span>
+                </div>
+              </div>
+              <mat-slide-toggle
+                [(ngModel)]="item.enabled"
+                color="primary">
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- ======================== -->
+      <!-- APPEARANCE TAB          -->
+      <!-- ======================== -->
+      <div class="settings-section" *ngIf="activeTab === 'appearance'">
+        <div class="settings-card">
+          <div class="card-header">
+            <mat-icon>palette</mat-icon>
+            <h2>Appearance</h2>
+          </div>
+  
+          <!-- Theme -->
+          <div class="appearance-option">
+            <h3>Theme</h3>
+            <p class="option-desc">Choose how the application looks. System follows your device preference automatically.</p>
+            <div class="theme-options">
+  
+              <!-- Light -->
+              <div
+                class="theme-card"
+                [class.active]="selectedTheme === 'light'"
+                (click)="onThemeChange('light')">
+                <div class="theme-preview light-preview">
+                  <div class="preview-nav"></div>
+                  <div class="preview-content">
+                    <div class="preview-bar"></div>
+                    <div class="preview-bar short"></div>
+                  </div>
+                </div>
+                <span>Light</span>
+                <mat-icon *ngIf="selectedTheme === 'light'">check_circle</mat-icon>
+              </div>
+  
+              <!-- Dark -->
+              <div
+                class="theme-card"
+                [class.active]="selectedTheme === 'dark'"
+                (click)="onThemeChange('dark')">
+                <div class="theme-preview dark-preview">
+                  <div class="preview-nav"></div>
+                  <div class="preview-content">
+                    <div class="preview-bar"></div>
+                    <div class="preview-bar short"></div>
+                  </div>
+                </div>
+                <span>Dark</span>
+                <mat-icon *ngIf="selectedTheme === 'dark'">check_circle</mat-icon>
+              </div>
+  
+              <!-- System -->
+              <div
+                class="theme-card"
+                [class.active]="selectedTheme === 'system'"
+                (click)="onThemeChange('system')">
+                <div class="theme-preview system-preview">
+                  <div class="preview-nav"></div>
+                  <div class="preview-content">
+                    <div class="preview-bar"></div>
+                    <div class="preview-bar short"></div>
+                  </div>
+                </div>
+                <span>System</span>
+                <mat-icon *ngIf="selectedTheme === 'system'">check_circle</mat-icon>
+              </div>
+  
+            </div>
+  
+            <!-- Active theme indicator -->
+            <div class="active-theme-indicator">
+              <mat-icon>
+                {{ selectedTheme === 'dark' ? 'dark_mode' : selectedTheme === 'system' ? 'devices' : 'light_mode' }}
+              </mat-icon>
+              <span *ngIf="selectedTheme === 'light'">Light mode is active</span>
+              <span *ngIf="selectedTheme === 'dark'">Dark mode is active</span>
+              <span *ngIf="selectedTheme === 'system'">Following your system preference</span>
+            </div>
+          </div>
+  
+          <!-- Language -->
+          <div class="appearance-option">
+            <h3>Language</h3>
+            <p class="option-desc">Select the language used throughout the application.</p>
+            <mat-form-field appearance="outline" class="select-field">
+              <mat-label>Select Language</mat-label>
+              <mat-select [(ngModel)]="selectedLanguage">
+                <mat-option value="en">🇬🇧 English</mat-option>
+                <mat-option value="sw">🇰🇪 Swahili</mat-option>
+                <mat-option value="fr">🇫🇷 French</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>language</mat-icon>
+            </mat-form-field>
+          </div>
+  
+          <!-- Currency -->
+          <div class="appearance-option">
+            <h3>Currency Display</h3>
+            <p class="option-desc">Choose how monetary values are displayed across the app.</p>
+            <mat-form-field appearance="outline" class="select-field">
+              <mat-label>Select Currency</mat-label>
+              <mat-select [(ngModel)]="selectedCurrency">
+                <mat-option value="KSH">KSH — Kenyan Shilling</mat-option>
+                <mat-option value="USD">USD — US Dollar</mat-option>
+                <mat-option value="EUR">EUR — Euro</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>attach_money</mat-icon>
+            </mat-form-field>
+          </div>
+  
+        </div>
+      </div>
+  
+      <!-- ======================== -->
+      <!-- PRIVACY TAB             -->
+      <!-- ======================== -->
+      <div class="settings-section" *ngIf="activeTab === 'privacy'">
+        <div class="settings-card">
+          <div class="card-header">
+            <mat-icon>shield</mat-icon>
+            <h2>Privacy & Security</h2>
+          </div>
+  
+          <div class="toggle-list">
+            <div class="toggle-row" *ngFor="let item of privacySettings">
+              <div class="toggle-info">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <div>
+                  <span class="toggle-title">{{ item.title }}</span>
+                  <span class="toggle-desc">{{ item.desc }}</span>
+                </div>
+              </div>
+              <mat-slide-toggle [(ngModel)]="item.enabled" color="primary"></mat-slide-toggle>
+            </div>
+          </div>
+  
+          <div class="privacy-actions">
+            <h3>Data Management</h3>
+  
+            <div class="action-row">
+              <div class="action-info">
+                <mat-icon>download</mat-icon>
+                <div>
+                  <span>Download My Data</span>
+                  <small>Get a copy of all your account data</small>
+                </div>
+              </div>
+              <button mat-stroked-button class="action-btn">Download</button>
+            </div>
+  
+            <div class="action-row">
+              <div class="action-info">
+                <mat-icon>history</mat-icon>
+                <div>
+                  <span>Clear Activity History</span>
+                  <small>Remove your browsing and search history</small>
+                </div>
+              </div>
+              <button mat-stroked-button class="action-btn danger-action" (click)="clearHistory()">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- ======================== -->
+      <!-- ORDERS TAB              -->
+      <!-- ======================== -->
+      <div class="settings-section" *ngIf="activeTab === 'orders'">
+        <div class="settings-card">
+          <div class="card-header">
+            <mat-icon>receipt_long</mat-icon>
+            <h2>Order Preferences</h2>
+          </div>
+  
+          <div class="toggle-list">
+            <div class="toggle-row" *ngFor="let item of orderSettings">
+              <div class="toggle-info">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <div>
+                  <span class="toggle-title">{{ item.title }}</span>
+                  <span class="toggle-desc">{{ item.desc }}</span>
+                </div>
+              </div>
+              <mat-slide-toggle [(ngModel)]="item.enabled" color="primary"></mat-slide-toggle>
+            </div>
+          </div>
+  
+          <div class="appearance-option">
+            <h3>Default Delivery Location</h3>
+            <p class="option-desc">Pre-select your most used delivery address at checkout.</p>
+            <mat-form-field appearance="outline" class="select-field">
+              <mat-label>Select Location</mat-label>
+              <mat-select [(ngModel)]="defaultLocation">
+                <mat-option value="nairobi">Nairobi CBD</mat-option>
+                <mat-option value="westlands">Westlands</mat-option>
+                <mat-option value="karen">Karen</mat-option>
+                <mat-option value="kilimani">Kilimani</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+  
+        </div>
+      </div>
+  
+      <!-- Save Bar -->
+      <div class="save-bar">
+        <span class="save-hint" *ngIf="!settingsSaved">Changes are saved automatically when you click Save</span>
+        <span class="save-hint success" *ngIf="settingsSaved">
+          <mat-icon>check_circle</mat-icon>
+          Settings saved successfully!
+        </span>
+        <button mat-raised-button class="save-settings-btn" (click)="saveSettings()">
+          <mat-icon>save</mat-icon>
+          Save Settings
+        </button>
+      </div>
+  
+    </div>
+  </div>

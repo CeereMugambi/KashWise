@@ -1,0 +1,895 @@
+// ================================
+// LAYOUT
+// ================================
+.page-layout
+  display: flex
+  min-height: 100vh
+
+.side-nav
+  width: 20%
+  min-height: 100vh
+  background-color: #003333
+  display: flex
+  flex-direction: column
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+  z-index: 100
+  overflow: hidden
+  transition: width 0.3s ease
+
+  &.collapsed
+    width: 56px
+
+.nav-toggle
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 12px 16px
+  color: #fff
+  min-height: 60px
+  border-bottom: 1px solid rgba(255,255,255,0.1)
+  cursor: pointer
+  transition: background 0.2s ease
+
+  &:hover
+    background-color: rgba(255,255,255,0.1)
+
+  mat-icon
+    font-size: 26px
+    width: 26px
+    height: 26px
+
+    &:hover
+      color: #FFA800
+
+.user-avatar
+  width: 38px
+  height: 38px
+  border-radius: 50%
+  background-color: #FFA800
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 13px
+  font-weight: 700
+  color: #fff
+  cursor: pointer
+  flex-shrink: 0
+  overflow: hidden
+  transition: background-color 0.2s ease
+
+  &:hover
+    background-color: #cc8400
+
+  .nav-avatar-img
+    width: 100%
+    height: 100%
+    object-fit: cover
+    border-radius: 50%
+
+.side-nav-header
+  padding: 16px 20px 12px
+  font-size: 11px
+  font-weight: 700
+  letter-spacing: 1.5px
+  text-transform: uppercase
+  color: rgba(255,255,255,0.5)
+  border-bottom: 1px solid rgba(255,255,255,0.1)
+  white-space: nowrap
+  overflow: hidden
+
+.nav-links
+  list-style: none
+  padding: 12px 0
+  margin: 0
+  flex: 1
+
+.nav-item
+  display: flex
+  align-items: center
+  gap: 14px
+  padding: 14px 16px
+  color: rgba(255,255,255,0.8)
+  cursor: pointer
+  transition: all 0.2s ease
+  border-left: 3px solid transparent
+  font-size: 14px
+  font-weight: 500
+  white-space: nowrap
+  overflow: hidden
+
+  mat-icon
+    font-size: 20px
+    width: 20px
+    height: 20px
+    min-width: 20px
+    color: rgba(255,255,255,0.7)
+    flex-shrink: 0
+
+  &:hover
+    background-color: rgba(255,255,255,0.1)
+    color: #fff
+    border-left-color: #FFA800
+
+    mat-icon
+      color: #fff
+
+  &.active
+    background-color: rgba(255,255,255,0.15)
+    color: #fff
+    border-left-color: #FFA800
+    font-weight: 600
+
+    mat-icon
+      color: #FFA800
+
+.nav-bottom
+  padding: 16px 0
+  border-top: 1px solid rgba(255,255,255,0.1)
+  list-style: none
+  margin: 0
+  cursor: pointer
+
+  .logout
+    color: #ff6b6b
+    white-space: nowrap
+    overflow: hidden
+
+    mat-icon
+      color: #ff6b6b
+      flex-shrink: 0
+
+    &:hover
+      background-color: rgba(255,107,107,0.1)
+      border-left-color: #ff6b6b
+
+// ================================
+// MAIN CONTENT
+// ================================
+.main-content
+  margin-left: 20%
+  width: 80%
+  padding: 24px
+  background-color: #f5f5f5
+  min-height: 100vh
+  transition: margin-left 0.3s ease, width 0.3s ease
+
+  &.expanded
+    margin-left: 56px
+    width: calc(100% - 56px)
+
+.mobile-menu-btn
+  display: none
+
+// ================================
+// BANNER
+// ================================
+.profile-banner
+  display: flex
+  align-items: center
+  gap: 28px
+  background: linear-gradient(135deg, #003333, #008080)
+  border-radius: 16px
+  padding: 32px
+  margin-bottom: 28px
+  position: relative
+  overflow: hidden
+
+// ================================
+// AVATAR WITH UPLOAD
+// ================================
+.banner-avatar-wrap
+  position: relative
+  flex-shrink: 0
+
+.banner-avatar
+  width: 100px
+  height: 100px
+  border-radius: 50%
+  background: #FFA800
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 32px
+  font-weight: 800
+  color: #fff
+  cursor: pointer
+  overflow: hidden
+  border: 3px solid rgba(255,255,255,0.25)
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3)
+  transition: all 0.2s ease
+  position: relative
+
+  &:hover
+    border-color: #FFA800
+
+    .avatar-overlay
+      opacity: 1
+
+  .avatar-img
+    width: 100%
+    height: 100%
+    object-fit: cover
+    border-radius: 50%
+
+.avatar-overlay
+  position: absolute
+  inset: 0
+  background: rgba(0,0,0,0.55)
+  border-radius: 50%
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  gap: 2px
+  opacity: 0
+  transition: opacity 0.2s ease
+
+  mat-icon
+    font-size: 22px
+    width: 22px
+    height: 22px
+    color: #fff
+
+  span
+    font-size: 9px
+    color: #fff
+    font-weight: 600
+    letter-spacing: 0.3px
+    text-align: center
+
+.locked-overlay
+  opacity: 1 !important
+  background: rgba(0,0,0,0.45) !important
+  cursor: not-allowed
+
+  mat-icon
+    font-size: 28px !important
+    width: 28px !important
+    height: 28px !important
+    color: #FFA800 !important
+
+.remove-photo-btn
+  position: absolute
+  top: -4px
+  right: -4px
+  width: 24px
+  height: 24px
+  background: #e53935 !important
+  color: #fff !important
+  border-radius: 50% !important
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 0 !important
+  min-width: unset !important
+  line-height: 1
+  transition: background 0.2s ease
+
+  &:hover
+    background: #b71c1c !important
+
+  mat-icon
+    font-size: 14px
+    width: 14px
+    height: 14px
+
+// ================================
+// BANNER INFO
+// ================================
+.banner-info
+  flex: 1
+
+  h1
+    color: #fff
+    font-size: 24px
+    font-weight: 800
+    margin: 0 0 4px 0
+
+  p
+    color: rgba(255,255,255,0.6)
+    font-size: 14px
+    margin: 0 0 10px 0
+
+  .role-chip
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    background: rgba(255,255,255,0.12)
+    color: #FFA800
+    font-size: 12px
+    font-weight: 600
+    padding: 4px 12px
+    border-radius: 20px
+    border: 1px solid rgba(255,168,0,0.3)
+    margin-bottom: 8px
+
+    mat-icon
+      font-size: 14px
+      width: 14px
+      height: 14px
+
+  .upload-hint
+    font-size: 11px
+    color: rgba(255,255,255,0.35)
+    margin: 6px 0 0 0
+    font-style: italic
+
+.banner-icon
+  font-size: 80px
+  width: 80px
+  height: 80px
+  color: rgba(255,255,255,0.06)
+  position: absolute
+  right: 32px
+
+// ================================
+// PROFILE LOCK
+// ================================
+.profile-lock-row
+  display: flex
+  align-items: center
+  gap: 10px
+  margin-top: 12px
+  flex-wrap: wrap
+
+.lock-profile-btn
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  border: 2px solid rgba(255,255,255,0.4) !important
+  color: #fff !important
+  border-radius: 50px !important
+  font-size: 12px !important
+  font-weight: 600 !important
+  padding: 4px 14px !important
+  height: 34px
+  transition: all 0.2s ease
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+
+  &:hover
+    background: rgba(255,255,255,0.15) !important
+
+  &.locked
+    border-color: #FFA800 !important
+    color: #FFA800 !important
+    background: rgba(255,168,0,0.1) !important
+
+    &:hover
+      background: rgba(255,168,0,0.2) !important
+
+.lock-hint
+  font-size: 11px
+  color: rgba(255,255,255,0.4)
+  font-style: italic
+
+// ================================
+// UPLOAD ERROR
+// ================================
+.upload-error
+  display: flex
+  align-items: center
+  gap: 8px
+  background: #fdecea
+  color: #c62828
+  font-size: 13px
+  font-weight: 500
+  padding: 12px 16px
+  border-radius: 10px
+  margin-bottom: 16px
+  animation: fadeUp 0.3s ease
+
+  mat-icon
+    font-size: 18px
+    width: 18px
+    height: 18px
+
+// ================================
+// PROFILE GRID
+// ================================
+.profile-grid
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 20px
+
+// ================================
+// PROFILE CARD
+// ================================
+.profile-card
+  background: #fff
+  border-radius: 14px
+  padding: 24px
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06)
+  animation: fadeUp 0.4s ease both
+
+  &:nth-child(2)
+    animation-delay: 0.05s
+
+  &:nth-child(3)
+    animation-delay: 0.1s
+
+  &:nth-child(4)
+    animation-delay: 0.15s
+
+@keyframes fadeUp
+  from
+    opacity: 0
+    transform: translateY(16px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// ================================
+// LOCKED CARD STATE
+// ================================
+.card-locked
+  opacity: 0.85
+  border: 1.5px solid rgba(0,128,128,0.15)
+  position: relative
+
+  &::after
+    content: ''
+    position: absolute
+    inset: 0
+    background: rgba(245,245,245,0.35)
+    border-radius: 14px
+    pointer-events: none
+
+.card-header
+  display: flex
+  align-items: center
+  gap: 10px
+  margin-bottom: 20px
+  padding-bottom: 14px
+  border-bottom: 1px solid #f0f0f0
+
+  mat-icon
+    color: #008080
+    font-size: 22px
+    width: 22px
+    height: 22px
+
+  h2
+    flex: 1
+    margin: 0
+    font-size: 16px
+    font-weight: 700
+    color: #003333
+
+  .edit-toggle-btn
+    color: #aaa
+    transition: all 0.2s ease
+
+    &.active
+      color: #e53935
+
+    &:hover
+      color: #008080
+
+.header-lock-icon
+  color: #FFA800 !important
+  font-size: 18px !important
+  width: 18px !important
+  height: 18px !important
+
+// ================================
+// FORM
+// ================================
+.form-row
+  display: flex
+  gap: 16px
+  margin-bottom: 4px
+
+  .form-field
+    flex: 1
+
+  .full-width
+    width: 100%
+
+.form-actions
+  display: flex
+  justify-content: flex-end
+  gap: 10px
+  margin-top: 16px
+  padding-top: 16px
+  border-top: 1px solid #f5f5f5
+
+.cancel-btn
+  border: 2px solid #ccc !important
+  color: #666 !important
+  border-radius: 8px !important
+  transition: all 0.2s ease
+
+  &:hover
+    border-color: #e53935 !important
+    color: #e53935 !important
+
+.save-btn
+  background-color: #008080 !important
+  color: #fff !important
+  border-radius: 8px !important
+  transition: background 0.2s ease
+
+  &:hover
+    background-color: #006666 !important
+
+.save-success
+  display: flex
+  align-items: center
+  gap: 6px
+  margin-top: 12px
+  padding: 10px 14px
+  background: #e8f5e9
+  border-radius: 8px
+  color: #2e7d32
+  font-size: 13px
+  font-weight: 500
+
+  mat-icon
+    font-size: 18px
+    width: 18px
+    height: 18px
+
+.save-error
+  display: flex
+  align-items: center
+  gap: 6px
+  margin-top: 12px
+  padding: 10px 14px
+  background: #fdecea
+  border-radius: 8px
+  color: #c62828
+  font-size: 13px
+  font-weight: 500
+
+  mat-icon
+    font-size: 18px
+    width: 18px
+    height: 18px
+
+// ================================
+// UPDATE PROFILE BAR
+// ================================
+.update-profile-bar
+  display: flex
+  justify-content: flex-end
+  margin-top: 20px
+  padding-top: 16px
+  border-top: 2px solid #f0f0f0
+
+.update-profile-btn
+  background: linear-gradient(135deg, #008080, #006666) !important
+  color: #fff !important
+  border-radius: 50px !important
+  height: 44px
+  padding: 0 24px !important
+  font-size: 14px !important
+  font-weight: 600 !important
+  box-shadow: 0 4px 14px rgba(0,128,128,0.35) !important
+  transition: all 0.2s ease !important
+
+  mat-icon
+    margin-right: 8px
+    font-size: 18px
+    width: 18px
+    height: 18px
+
+  &:hover:not(:disabled)
+    box-shadow: 0 6px 20px rgba(0,128,128,0.5) !important
+    transform: translateY(-1px)
+
+  &:disabled
+    background: #ccc !important
+    box-shadow: none !important
+    cursor: not-allowed !important
+
+// ================================
+// LOCKED NOTICE
+// ================================
+.locked-notice
+  display: flex
+  align-items: center
+  gap: 8px
+  margin-top: 16px
+  padding: 10px 14px
+  background: rgba(255,168,0,0.08)
+  border: 1px solid rgba(255,168,0,0.25)
+  border-radius: 8px
+  color: #b37800
+  font-size: 13px
+  font-weight: 500
+
+  mat-icon
+    font-size: 18px
+    width: 18px
+    height: 18px
+    color: #FFA800
+    flex-shrink: 0
+
+// ================================
+// ADMIN ONLY NOTICE
+// ================================
+.admin-only-notice
+  display: flex
+  align-items: center
+  gap: 8px
+  margin-top: 16px
+  padding: 10px 14px
+  background: rgba(0,0,0,0.03)
+  border: 1px solid rgba(0,0,0,0.08)
+  border-radius: 8px
+  color: #999
+  font-size: 12px
+  font-style: italic
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+    color: #bbb
+    flex-shrink: 0
+
+.danger-admin-notice
+  background: rgba(229,57,53,0.04)
+  border-color: rgba(229,57,53,0.12)
+  color: #c07070
+
+  mat-icon
+    color: rgba(229,147,147,0.56)
+
+// ================================
+// STATS
+// ================================
+.stats-grid
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 16px
+
+.stat-item
+  display: flex
+  flex-direction: column
+  align-items: center
+  text-align: center
+  padding: 20px 12px
+  background: #f8fffe
+  border-radius: 12px
+  border: 1px solid rgba(0,128,128,0.1)
+  gap: 6px
+  transition: all 0.2s ease
+
+  &:hover
+    background: rgba(0,128,128,0.06)
+    border-color: rgba(0,128,128,0.2)
+    transform: translateY(-2px)
+
+  mat-icon
+    color: #008080
+    font-size: 28px
+    width: 28px
+    height: 28px
+
+  .stat-value
+    font-size: 18px
+    font-weight: 800
+    color: #003333
+
+  .stat-label
+    font-size: 11px
+    color: #888
+    font-weight: 500
+    text-transform: uppercase
+    letter-spacing: 0.5px
+
+// ================================
+// PASSWORD STRENGTH
+// ================================
+.password-strength
+  margin: 4px 0 12px 0
+  display: flex
+  align-items: center
+  gap: 12px
+
+.strength-bar
+  flex: 1
+  height: 6px
+  background: #eee
+  border-radius: 10px
+  overflow: hidden
+
+.strength-fill
+  height: 100%
+  border-radius: 10px
+  transition: width 0.3s ease, background 0.3s ease
+
+  &.weak
+    background: #e53935
+
+  &.fair
+    background: #FFA800
+
+  &.good
+    background: #43a047
+
+  &.strong
+    background: #00897b
+
+.strength-label
+  font-size: 12px
+  font-weight: 600
+  min-width: 40px
+
+  &.weak
+    color: #e53935
+
+  &.fair
+    color: #FFA800
+
+  &.good
+    color: #43a047
+
+  &.strong
+    color: #00897b
+
+// ================================
+// DANGER ZONE
+// ================================
+.danger-card
+  border: 1px solid rgba(229,57,53,0.15)
+
+  .card-header mat-icon
+    color: #e53935
+
+  .card-header h2
+    color: #c62828
+
+.danger-desc
+  font-size: 13px
+  color: #888
+  line-height: 1.6
+  margin: 0 0 20px 0
+
+.delete-account-btn
+  border: 2px solid #e53935 !important
+  color: #e53935 !important
+  border-radius: 8px !important
+  transition: all 0.2s ease
+
+  &:hover:not(:disabled)
+    background: #e53935 !important
+    color: #fff !important
+
+  &:disabled
+    border-color: #ccc !important
+    color: #ccc !important
+    cursor: not-allowed !important
+
+// ================================
+// NAV OVERLAY
+// ================================
+.nav-overlay
+  display: none
+
+// ================================
+// RESPONSIVE
+// ================================
+@media (max-width: 1024px)
+  .side-nav
+    width: 240px
+
+    &.collapsed
+      width: 56px
+
+  .main-content
+    margin-left: 240px
+    width: calc(100% - 240px)
+
+    &.expanded
+      margin-left: 56px
+      width: calc(100% - 56px)
+
+@media (max-width: 900px)
+  .profile-grid
+    grid-template-columns: 1fr
+
+@media (max-width: 768px)
+  .side-nav
+    width: 240px
+    position: fixed
+    transform: translateX(-100%)
+    transition: transform 0.3s ease
+
+    &.collapsed
+      transform: translateX(0)
+
+  .main-content
+    margin-left: 0
+    width: 100%
+    padding: 16px
+
+    &.expanded
+      margin-left: 0
+      width: 100%
+
+  .mobile-menu-btn
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 44px
+    height: 44px
+    background-color: #008080
+    border-radius: 50%
+    color: #fff
+    cursor: pointer
+    margin-bottom: 16px
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2)
+
+    mat-icon
+      font-size: 22px
+      width: 22px
+      height: 22px
+
+  .nav-overlay
+    display: block
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0,0.5)
+    z-index: 99
+
+  .profile-banner
+    flex-direction: column
+    text-align: center
+    padding: 24px 20px
+    gap: 16px
+
+    .banner-icon
+      display: none
+
+  .banner-info
+    text-align: center
+
+    .upload-hint
+      text-align: center
+
+  .profile-lock-row
+    justify-content: center
+
+  .form-row
+    flex-direction: column
+    gap: 0
+
+  .update-profile-bar
+    justify-content: center
+
+@media (max-width: 480px)
+  .side-nav
+    width: 100%
+    transform: translateX(-100%)
+
+    &.collapsed
+      transform: translateX(0)
+
+  .main-content
+    margin-left: 0
+    width: 100%
+    padding: 12px
+
+    &.expanded
+      margin-left: 0
+      width: 100%
+
+  .stats-grid
+    grid-template-columns: 1fr 1fr
+
+  .banner-avatar
+    width: 80px
+    height: 80px
+    font-size: 26px

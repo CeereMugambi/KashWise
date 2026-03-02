@@ -5,9 +5,6 @@
   display: flex
   min-height: 100vh
 
-// ================================
-// SIDE NAV
-// ================================
 .side-nav
   width: 20%
   min-height: 100vh
@@ -147,7 +144,6 @@
       background-color: rgba(255,107,107,0.1)
       border-left-color: #ff6b6b
 
-
 // ================================
 // MAIN CONTENT
 // ================================
@@ -163,16 +159,123 @@
     margin-left: 56px
     width: calc(100% - 56px)
 
-// ================================
-// MOBILE MENU BUTTON
-// ================================
 .mobile-menu-btn
   display: none
 
 // ================================
-// TITLE BUTTON
+// NOTIFICATION BANNER
 // ================================
+.notification-banner
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 16px
+  background: linear-gradient(135deg, #fff8e1, #fff3cd)
+  border: 1px solid #FFA800
+  border-left: 4px solid #FFA800
+  border-radius: 12px
+  padding: 16px 20px
+  margin-bottom: 20px
+  animation: fadeUp 0.4s ease both
+  box-shadow: 0 2px 12px rgba(255,168,0,0.15)
 
+.notification-content
+  display: flex
+  align-items: flex-start
+  gap: 14px
+  flex: 1
+
+.notification-icon
+  font-size: 28px
+  width: 28px
+  height: 28px
+  color: #FFA800
+  flex-shrink: 0
+  margin-top: 2px
+
+.notification-text
+  display: flex
+  flex-direction: column
+  gap: 4px
+
+  strong
+    font-size: 14px
+    font-weight: 700
+    color: #003333
+
+  span
+    font-size: 13px
+    color: #555
+    line-height: 1.5
+
+  .notification-time
+    font-size: 11px
+    color: #999
+    font-style: italic
+
+.notification-actions
+  display: flex
+  align-items: center
+  gap: 8px
+  flex-shrink: 0
+
+.review-lock-btn
+  background-color: #008080 !important
+  color: #fff !important
+  border-radius: 8px !important
+  font-size: 13px !important
+  font-weight: 600 !important
+  white-space: nowrap
+  text-decoration: none
+  display: inline-flex
+  align-items: center
+  gap: 4px
+  padding: 0 14px
+  height: 36px
+  line-height: 36px
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+
+  &:hover
+    background-color: #006666 !important
+
+.lock-now-btn
+  background-color: #555 !important
+  color: #fff !important
+  border-radius: 8px !important
+  font-size: 13px !important
+  font-weight: 600 !important
+  white-space: nowrap
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+    margin-right: 4px
+
+  &:hover
+    background-color: #333 !important
+
+.dismiss-btn
+  color: #aaa
+
+  &:hover
+    color: #e53935
+
+@keyframes fadeUp
+  from
+    opacity: 0
+    transform: translateY(-10px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// ================================
+// TITLE SECTION
+// ================================
 .title-section
   display: flex
   align-items: center
@@ -181,7 +284,6 @@
   border-radius: 12px
   padding: 28px 32px
   margin-bottom: 24px
-  animation: fadeSlideUp 0.5s ease both
 
 .title-text
   flex: 1
@@ -207,14 +309,6 @@
   opacity: 0.8
   margin-left: 24px
 
-@keyframes fadeSlideUp
-  from
-    opacity: 0
-    transform: translateY(20px)
-  to
-    opacity: 1
-    transform: translateY(0)
-
 // ================================
 // SEARCH SECTION
 // ================================
@@ -230,6 +324,12 @@
   align-items: center
   justify-content: space-between
   margin-bottom: 16px
+
+.section-title
+  margin: 0
+  font-size: 18px
+  font-weight: 700
+  color: #003333
 
 .clear-filters
   display: flex
@@ -262,22 +362,6 @@
 
   .role-field
     flex: 1
-
-  mat-form-field
-    flex: 1
-
-.search-button
-  background-color: #003333 !important
-  color: #fff !important
-  height: 30px
-  padding: 0 24px
-  border-radius: 8px !important
-  white-space: nowrap
-  margin-bottom: 22px
-
-  &:hover
-    background-color: #008080 !important
-
 
 // ================================
 // TABLE SECTION
@@ -324,30 +408,27 @@
 // ================================
 // TABLE STYLES
 // ================================
- .accounts-table
-  width: 100%
-
 .table-wrapper
   width: 100%
   overflow-x: auto
 
 .accounts-table
   width: 100%
-  border-collapse: collapse
 
-  // Column widths
   .mat-column-name
-    width: 35%
+    width: 25%
 
   .mat-column-email
-    width: 35%
+    width: 25%
 
   .mat-column-role
+    width: 10%
+
+  .mat-column-status
     width: 15%
 
   .mat-column-actions
-    width: 15%
-    text-align: right
+    width: 25%
 
 th.mat-header-cell
   font-weight: 700
@@ -366,6 +447,57 @@ tr.mat-row
   &:hover
     background-color: #f0f8f8
 
+.row-has-notification
+  background-color: #fff8e1 !important
+  border-left: 3px solid #FFA800
+
+// ================================
+// LOCK STATUS BADGE
+// ================================
+.lock-status
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  padding: 4px 10px
+  border-radius: 20px
+  font-size: 12px
+  font-weight: 600
+  transition: all 0.2s ease
+  user-select: none
+
+  mat-icon
+    font-size: 14px
+    width: 14px
+    height: 14px
+
+  &.locked
+    background-color: rgba(229, 57, 53, 0.1)
+    color: #e53935
+    cursor: pointer
+
+    &:hover
+      background-color: rgba(229, 57, 53, 0.2)
+      transform: scale(1.05)
+
+  &.unlocked
+    background-color: rgba(0, 128, 128, 0.1)
+    color: #008080
+
+    &.clickable
+      cursor: pointer
+
+      &:hover
+        background-color: rgba(0, 128, 128, 0.2)
+        transform: scale(1.05)
+
+// ================================
+// ACTION CELL
+// ================================
+.action-cell
+  display: flex
+  align-items: center
+  gap: 2px
+
 .edit-btn
   color: #008080
 
@@ -378,6 +510,17 @@ tr.mat-row
   &:hover
     color: #b71c1c
 
+.review-btn
+  color: #FFA800
+  transition: all 0.2s ease
+
+  &:hover
+    color: #cc8400
+    transform: scale(1.1)
+
+// ================================
+// ACCOUNT TABLE EXTRAS
+// ================================
 .no-results
   display: flex
   flex-direction: column
@@ -391,9 +534,6 @@ tr.mat-row
     height: 40px
     margin-bottom: 8px
 
-// ================================
-// ACCOUNT TABLE EXTRAS
-// ================================
 .account-name-cell
   display: flex
   align-items: center
@@ -411,6 +551,11 @@ tr.mat-row
   font-size: 12px
   font-weight: 700
   flex-shrink: 0
+  transition: background 0.2s ease
+
+  &.has-notification
+    background-color: #FFA800
+    box-shadow: 0 0 0 3px rgba(255,168,0,0.25)
 
 .role-badge
   padding: 4px 10px
@@ -427,10 +572,14 @@ tr.mat-row
     color: #FFA800
 
 // ================================
+// NAV OVERLAY
+// ================================
+.nav-overlay
+  display: none
+
+// ================================
 // RESPONSIVE
 // ================================
-
-// Large tablets
 @media (max-width: 1024px)
   .side-nav
     width: 240px
@@ -446,7 +595,6 @@ tr.mat-row
       margin-left: 56px
       width: calc(100% - 56px)
 
-// Tablets
 @media (max-width: 768px)
   .side-nav
     width: 240px
@@ -478,15 +626,30 @@ tr.mat-row
     cursor: pointer
     margin-bottom: 16px
     box-shadow: 0 2px 8px rgba(0,0,0,0.2)
-    transition: background-color 0.2s ease
 
     mat-icon
       font-size: 22px
       width: 22px
       height: 22px
 
-    &:hover
-      background-color: #006666
+  .nav-overlay
+    display: block
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0,0.5)
+    z-index: 99
+
+  .notification-banner
+    flex-direction: column
+    align-items: flex-start
+    gap: 12px
+
+  .notification-actions
+    width: 100%
+    justify-content: flex-end
 
   .input-row
     flex-direction: column
@@ -496,22 +659,15 @@ tr.mat-row
       width: 100%
       flex: unset
 
-    button.search-button
-      width: 100%
-      height: 48px
-
   .table-section
     padding: 16px
     overflow-x: auto
 
-  .product-table, .accounts-table
-    min-width: 600px
+  .accounts-table
+    min-width: 640px
 
   .top-section
     padding: 16px
-
-  .section-title
-    font-size: 16px
 
   .table-header
     flex-direction: column
@@ -521,7 +677,6 @@ tr.mat-row
   .add-button
     width: 100%
 
-// Mobile
 @media (max-width: 480px)
   .side-nav
     width: 100%
@@ -543,33 +698,7 @@ tr.mat-row
     font-size: 11px
     padding: 8px 4px
 
-  .product-img
-    width: 36px
-    height: 36px
-
-  .user-avatar
-    width: 32px
-    height: 32px
-    font-size: 11px
-
   .account-avatar
     width: 30px
     height: 30px
     font-size: 11px
-
-// ================================
-// NAV OVERLAY (mobile)
-// ================================
-.nav-overlay
-  display: none
-
-@media (max-width: 768px)
-  .nav-overlay
-    display: block
-    position: fixed
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    background: rgba(0,0,0,0.5)
-    z-index: 99

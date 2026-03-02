@@ -6,4 +6,135 @@ html, body
   padding: 0
   height: 100%
 
-  
+  // ================================
+// LIGHT THEME (default)
+// ================================
+body.light-theme, body
+  --bg-page:        #f5f5f5
+  --bg-card:        #ffffff
+  --bg-nav:         #003333
+  --text-primary:   #003333
+  --text-secondary: #555555
+  --text-muted:     #999999
+  --border-color:   #e0e0e0
+  --input-bg:       #ffffff
+  --shadow:         rgba(0, 0, 0, 0.07)
+
+// ================================
+// DARK THEME
+// ================================
+body.dark-theme
+  --bg-page:        #0f1a1a
+  --bg-card:        #1a2a2a
+  --bg-nav:         #001a1a
+  --text-primary:   #e0f0f0
+  --text-secondary: #a0c0c0
+  --text-muted:     #607070
+  --border-color:   #2a4040
+  --input-bg:       #1f3030
+  --shadow:         rgba(0, 0, 0, 0.4)
+
+  // Page background
+  background-color: var(--bg-page)
+  color: var(--text-primary)
+
+  // Nav
+  .side-nav
+    background-color: var(--bg-nav)
+
+  // All white cards
+  .main-content,
+  .settings-card,
+  .profile-card,
+  .review-card,
+  .table-section,
+  .top-section,
+  .action-footer,
+  .save-bar
+    background-color: var(--bg-card)
+    color: var(--text-primary)
+
+  // Page background areas
+  .main-content
+    background-color: var(--bg-page)
+
+  // Headings and labels inside cards
+  h1, h2, h3
+    color: var(--text-primary)
+
+  p, span, td, th, label
+    color: var(--text-secondary)
+
+  // Table headers
+  th.mat-header-cell
+    background-color: #1f3030
+    color: var(--text-primary)
+
+  td.mat-cell
+    color: var(--text-secondary)
+    border-bottom-color: var(--border-color)
+
+  tr.mat-row:hover
+    background-color: #1f3030
+
+  // Form fields
+  .mat-form-field-outline
+    color: var(--border-color) !important
+
+  .mat-input-element, .mat-select-value
+    color: var(--text-primary) !important
+
+  .mat-form-field-label
+    color: var(--text-muted) !important
+
+  // Toggle rows
+  .toggle-row:hover, .action-row:hover
+    background-color: #1f3030
+
+  .toggle-title
+    color: var(--text-primary)
+
+  .toggle-desc, small
+    color: var(--text-muted)
+
+  // Borders
+  .card-header, .detail-row, .appearance-option, .profile-hero
+    border-color: var(--border-color)
+
+  // Notification banner (keep amber but darken bg)
+  .notification-banner
+    background: linear-gradient(135deg, #2a2000, #1f1800)
+
+  // Settings tabs
+  .tab-btn
+    background: var(--bg-card)
+    border-color: var(--border-color)
+    color: var(--text-secondary)
+
+    &.active
+      background: #008080
+      border-color: #008080
+      color: #fff
+
+  // No results / empty states
+  .no-results, .loading-state
+    color: var(--text-muted)
+
+  // Role badges
+  .role-badge.user
+    background-color: rgba(255,168,0,0.15)
+
+  .role-badge.admin
+    background-color: rgba(0,128,128,0.2)
+
+  // Save bar hint
+  .save-hint
+    color: var(--text-muted)
+
+  // Mat table background
+  .mat-table
+    background-color: var(--bg-card)
+
+  // Account avatar in nav (keep amber)
+  .user-avatar
+    background-color: #FFA800
