@@ -2,7 +2,7 @@
   min-height: 100vh
   display: flex
   flex-direction: column
-  padding:0px
+  padding: 0px
   position: relative
   animation: pageFadeIn 0.5s ease forwards
 
@@ -15,7 +15,7 @@
   background: url("~src/assets/background.png") no-repeat center center
   background-size: cover
   border-radius: 0 10px 10px 0
-  position: relative 
+  position: relative
   animation: slideInLeft 0.6s ease both
 
 .back-button
@@ -48,7 +48,11 @@
   padding: 10px
   box-sizing: border-box
   position: relative
-   animation: slideInRight 0.6s ease both
+  animation: slideInRight 0.6s ease both
+
+// Hidden on desktop, shown on mobile
+.back-button-mobile
+  display: none
 
 .login-logo
   position: absolute
@@ -64,10 +68,9 @@
   font-size: 1rem
   font-weight: bold
   text-shadow: 0 0 6px rgba(255, 168, 0, 0.4)
-  
 
 app-card
-  width:100%
+  width: 100%
   animation: fadeSlideUp 0.5s ease 0.2s both
 
 .card-title
@@ -115,27 +118,23 @@ app-card
     padding: 0 12px
     white-space: nowrap
 
-
-
 mat-form-field
   width: 100%
   max-width: 100%
   margin-bottom: 20px
   display: flex
 
-
 input.mat-input-element
   border-radius: 4px
   border: 1px solid #ccc
   padding: 10px
-  flex:1
+  flex: 1
 
 .mat-error
   color: red
   font-size: 14px
-  
 
-.button-container 
+.button-container
   margin-top: 40px
   display: flex
   flex-direction: column
@@ -144,17 +143,16 @@ button.mat-raised-button
   background-color: #008080 !important
   color: #fff
   padding: 10px 20px
-  width: 100% 
+  width: 100%
   border: none
   border-radius: 4px
   cursor: pointer
   transition: background-color 0.3s ease
 
-
 div.text-end
   font-size: 14px
 
-.mat-form-field-suffix 
+.mat-form-field-suffix
   display: flex
   align-items: center
 
@@ -174,8 +172,9 @@ div.text-end
     background-color: #FFA800 !important
     color: #fff !important
 
-
-// Anime face
+// ================================
+// ANIME FACE
+// ================================
 .anime-face
   display: flex
   justify-content: center
@@ -225,7 +224,7 @@ div.text-end
       height: 100%
       background: #FFDE37
       border-radius: 50%
-      transform: translateY(-100%)  // hidden above by default
+      transform: translateY(-100%)
       transition: transform 0.4s ease
 
   .mouth
@@ -234,10 +233,9 @@ div.text-end
     border-bottom: 2.5px solid #c0826a
     border-radius: 0 0 10px 10px
 
-// Eyes closed state
 .eyes-closed
   .eyelid
-    transform: translateY(0) !important  // slides down to cover eye
+    transform: translateY(0) !important
 
   .mouth
     border-bottom: none
@@ -245,8 +243,9 @@ div.text-end
     border-radius: 10px 10px 0 0
     margin-top: 4px
 
-
-// Teal overrides for Angular Material
+// ================================
+// TEAL MATERIAL OVERRIDES
+// ================================
 ::ng-deep
   .mat-form-field-ripple
     background-color: #008080 !important
@@ -266,7 +265,93 @@ div.text-end
   .mat-checkbox-checked .mat-checkbox-background
     background-color: #008080 !important
 
+// ================================
+// RESPONSIVE
+// ================================
+@media (max-width: 768px)
+  .main-layout
+    flex-direction: column
 
+  .image-side
+    display: none
+
+  .login-side
+    width: 100%
+    min-height: 100vh
+    padding: 80px 24px 40px 24px
+    align-items: flex-start
+    justify-content: flex-start
+    flex-direction: column
+
+  .back-button-mobile
+    display: flex
+    align-items: center
+    justify-content: center
+    position: fixed
+    top: 16px
+    left: 16px
+    z-index: 100
+    color: #FFA800 !important
+    background-color: rgba(255,168,0,0.1) !important
+    border-radius: 50% !important
+    width: 40px
+    height: 40px
+    transition: background 0.2s ease
+
+    &:hover
+      background-color: rgba(255,168,0,0.2) !important
+
+    mat-icon
+      font-size: 22px
+      width: 22px
+      height: 22px
+      color: #FFA800
+
+  .login-logo
+    position: relative
+    top: unset
+    right: unset
+    margin-bottom: 16px
+    align-self: center
+
+  app-card
+    width: 100%
+
+  .card-title
+    font-size: 20px
+
+  .card-description
+    font-size: 13px
+
+  .button-container
+    margin-top: 24px
+
+@media (max-width: 480px)
+  .login-side
+    padding: 72px 16px 32px 16px
+
+  .card-title
+    font-size: 18px
+
+  .anime-face
+    .face
+      width: 64px
+      height: 64px
+
+    .eyes
+      gap: 12px
+
+    .eye
+      width: 13px
+      height: 13px
+
+      .pupil
+        width: 6px
+        height: 6px
+
+// ================================
+// ANIMATIONS
+// ================================
 @keyframes pageFadeIn
   from
     opacity: 0
@@ -304,5 +389,3 @@ div.text-end
   to
     opacity: 1
     transform: translateY(0)
-
-
