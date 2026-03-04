@@ -1,3 +1,5 @@
+
+
 *, *::before, *::after
   box-sizing: border-box
 
@@ -5,6 +7,45 @@ html, body
   margin: 0
   padding: 0
   height: 100%
+
+// Form fields
+  .mat-mdc-text-field-wrapper
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a) !important
+    border-radius: 4px
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing
+    border-color: #4a4a4a !important
+
+  .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+  .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+  .mat-mdc-form-field:hover .mdc-notched-outline__trailing
+    border-color: #FFA800 !important
+
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+  .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing
+    border-color: #FFA800 !important
+
+  .mat-mdc-floating-label
+    color: #888888 !important
+
+  .mat-mdc-form-field.mat-focused .mat-mdc-floating-label
+    color: #FFA800 !important
+
+  .mat-mdc-input-element
+    color: var(--text-primary) !important
+    caret-color: #FFA800 !important
+
+  .mat-mdc-select-value-text
+    color: var(--text-primary) !important
+
+  .mat-mdc-select-arrow
+    color: #FFA800 !important
+
+  .mdc-line-ripple::after
+    border-bottom-color: #FFA800 !important
 
   // ================================
 // LIGHT THEME (default)
