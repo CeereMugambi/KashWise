@@ -1,8 +1,8 @@
 <div class="page-layout">
 
   <!-- Nav Overlay (mobile) -->
-  <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
-
+  <!-- Nav Overlay (mobile) -->
+<div class="nav-overlay" [class.visible]="!isNavCollapsed" (click)="toggleNav()"></div>
   <!-- Side Nav -->
   <div class="side-nav" [class.collapsed]="isNavCollapsed">
 
@@ -19,23 +19,27 @@
 
     <ul class="nav-links">
       <li class="nav-item active" routerLink="/home">
-        <mat-icon>home</mat-icon>
-        <span *ngIf="!isNavCollapsed">Home</span>
+        <mat-icon>dashboard</mat-icon>
+        <span *ngIf="!isNavCollapsed">Dashboard</span>
       </li>
-      <li class="nav-item" routerLink="/catalogue">
-        <mat-icon>menu_book</mat-icon>
-        <span *ngIf="!isNavCollapsed">Catalogue</span>
+      <li class="nav-item" routerLink="/portfolio">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <span *ngIf="!isNavCollapsed">Portfolio</span>
       </li>
-      <li class="nav-item" routerLink="/profile">
-        <mat-icon>person</mat-icon>
-        <span *ngIf="!isNavCollapsed">Profile</span>
+      <li class="nav-item" routerLink="/transactions">
+        <mat-icon>receipt_long</mat-icon>
+        <span *ngIf="!isNavCollapsed">Transactions</span>
+      </li>
+      <li class="nav-item" routerLink="/analytics">
+        <mat-icon>analytics</mat-icon>
+        <span *ngIf="!isNavCollapsed">Analytics</span>
       </li>
       <li class="nav-item" routerLink="/settings">
         <mat-icon>settings</mat-icon>
         <span *ngIf="!isNavCollapsed">Settings</span>
       </li>
-      <ng-container *ngIf="account!.role === Role.Admin">
-        <li class="nav-item" routerLink="/list">
+      <ng-container *ngIf="account?.role === Role.Admin">
+        <li class="nav-item" routerLink="/admin">
           <mat-icon>security</mat-icon>
           <span *ngIf="!isNavCollapsed">Admin</span>
         </li>
@@ -59,161 +63,161 @@
       <mat-icon>menu</mat-icon>
     </div>
 
-   <!-- Home Banner -->
-   <div class="home-banner">
-    <div class="home-text">
-      <h1>Welcome, {{ firstName }}!</h1>
-      <p>Search and browse products from our catalogue.<br>Add items to your order with ease.</p>
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="banner-content">
+        <div class="welcome-text">
+          <h1>Welcome back, {{ firstName }}!</h1>
+          <p>Track your investments and monitor portfolio performance in real-time</p>
+        </div>
+        <div class="banner-stats" *ngIf="portfolioSummary">
+          <div class="stat-card">
+            <mat-icon>trending_up</mat-icon>
+            <div class="stat-info">
+              <span class="stat-label">Total Value</span>
+              <span class="stat-value">{{ formatCurrency(portfolioSummary.totalValue) }}</span>
+              <span class="stat-change positive">{{ formatChange(portfolioSummary.returnPercent) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="banner-right">
-      <button
-        mat-icon-button
-        class="cart-float-btn"
-        *ngIf="hasCartItems"
-        (click)="goToCart()">
-        <mat-icon>shopping_cart</mat-icon>
-        <span class="cart-float-badge">{{ cartCount }}</span>
+
+    <!-- Quick Stats Grid -->
+    <div class="stats-grid" *ngIf="portfolioSummary">
+
+      <div class="stat-box">
+        <div class="stat-icon">
+          <mat-icon>account_balance</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-title">Active Investments</span>
+          <span class="stat-amount">{{ portfolioSummary.activeInvestments }}</span>
+          <span class="stat-subtitle">Across multiple sectors</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-icon profit">
+          <mat-icon>arrow_upward</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-title">Total Returns</span>
+          <span class="stat-amount">{{ formatCurrency(portfolioSummary.totalReturn) }}</span>
+          <span class="stat-subtitle positive">
+            {{ formatChange(portfolioSummary.returnPercent) }} overall
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-icon warning">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-title">Pending Actions</span>
+          <span class="stat-amount">{{ portfolioSummary.pendingActions }}</span>
+          <span class="stat-subtitle">Require attention</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-icon success">
+          <mat-icon>verified</mat-icon>
+        </div>
+        <div class="stat-details">
+          <span class="stat-title">Diversification Score</span>
+          <span class="stat-amount">{{ portfolioSummary.diversificationScore }}/10</span>
+          <span class="stat-subtitle positive">Well balanced</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Portfolio Overview -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="header-left">
+          <mat-icon>pie_chart</mat-icon>
+          <h2>Portfolio Overview</h2>
+        </div>
+        <button mat-stroked-button class="view-all-btn" (click)="viewAllInvestments()">
+          View All
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div class="portfolio-list">
+        <div class="portfolio-item" *ngFor="let investment of investments">
+          <div class="item-icon" [style.background-color]="investment.color">
+            <mat-icon>{{ investment.icon }}</mat-icon>
+          </div>
+          <div class="item-details">
+            <span class="item-name">{{ investment.name }}</span>
+            <span class="item-category">{{ investment.category }}</span>
+          </div>
+          <div class="item-meta">
+            <span class="item-shares">{{ investment.sharesOwned }} shares</span>
+            <span class="item-price">@ {{ formatCurrency(investment.pricePerShare) }}</span>
+          </div>
+          <div class="item-stats">
+            <span class="item-amount">{{ formatCurrency(investment.currentValue) }}</span>
+            <span class="item-change"
+              [class.positive]="isPositiveChange(investment.changePercent)"
+              [class.negative]="!isPositiveChange(investment.changePercent)">
+              {{ formatChange(investment.changePercent) }}
+            </span>
+          </div>
+          <button mat-icon-button class="item-action">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="header-left">
+          <mat-icon>history</mat-icon>
+          <h2>Recent Activity</h2>
+        </div>
+        <button mat-stroked-button class="view-all-btn" routerLink="/transactions">
+          View All
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentActivities">
+          <div class="activity-icon" [ngClass]="activity.type">
+            <mat-icon>{{ activity.icon }}</mat-icon>
+          </div>
+          <div class="activity-details">
+            <span class="activity-title">{{ activity.title }}</span>
+            <span class="activity-date">{{ activity.date }}</span>
+          </div>
+          <div class="activity-amount" [class.positive]="activity.isCredit">
+            {{ activity.formattedAmount }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button mat-raised-button class="action-btn primary" (click)="openNewInvestment()">
+        <mat-icon>add_circle</mat-icon>
+        New Investment
       </button>
-      <mat-icon class="home-icon">storefront</mat-icon>
-    </div>
-  </div>
-
-    <!-- Search Section -->
-    <div class="top-section">
-      <h2 class="section-title">Find Products</h2>
-
-      <div class="search-wrapper">
-
-        <!-- Search with live dropdown -->
-        <div class="search-input-container">
-          <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search products</mat-label>
-            <mat-icon matPrefix>search</mat-icon>
-            <input
-              matInput
-              type="text"
-              [(ngModel)]="searchQuery"
-              (ngModelChange)="onSearchChange()"
-              (focus)="showSuggestions = true"
-              (blur)="hideSuggestions()"
-              autocomplete="off">
-            <button
-              *ngIf="searchQuery"
-              matSuffix
-              mat-icon-button
-              (click)="clearSearch()">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-
-          <!-- Live suggestions dropdown -->
-          <div class="suggestions-dropdown" *ngIf="showSuggestions && suggestions.length > 0">
-            <div class="suggestion-group-label">Suggestions</div>
-            <div
-              class="suggestion-item"
-              *ngFor="let suggestion of suggestions"
-              (mousedown)="selectSuggestion(suggestion)">
-              <mat-icon>search</mat-icon>
-              <div class="suggestion-details">
-                <span class="suggestion-name">{{ suggestion.productName }}</span>
-                <span class="suggestion-category">{{ suggestion.category }}</span>
-              </div>
-              <span class="suggestion-price">KSH {{ suggestion.price | number:'1.2-2' }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Category filter chips -->
-        <div class="category-chips">
-          <span
-            class="chip"
-            [class.active]="selectedCategory === ''"
-            (click)="filterByCategory('')">
-            <mat-icon>apps</mat-icon>
-            All
-          </span>
-          <span
-            class="chip"
-            *ngFor="let category of categories"
-            [class.active]="selectedCategory === category"
-            (click)="filterByCategory(category)">
-            {{ category }}
-          </span>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Results Section -->
-     <div class="results-section" *ngIf="groupedResults.length > 0">
-      <div class="results-header">
-        <h3>
-          <span class="result-count">{{ groupedResults.length }}</span>
-          categor{{ groupedResults.length === 1 ? 'y' : 'ies' }} found
-          <span *ngIf="searchQuery"> for "<strong>{{ searchQuery }}</strong>"</span>
-        </h3>
-      </div>
-
-      <!-- Grouped by category -->
-      <div class="category-result-group" *ngFor="let group of groupedResults">
-
-        <div class="category-group-header">
-          <div class="category-group-title">
-            <mat-icon>category</mat-icon>
-            <h3>{{ group.category }}</h3>
-            <span class="group-count">{{ group.products.length }} items</span>
-          </div>
-        </div>
-
-        <!-- Product rows -->
-        <div class="product-rows-table">
-
-          <div class="product-row" *ngFor="let product of group.products">
-
-            <!-- Image -->
-            <div class="col-image">
-              <img [src]="product.imageUrl" [alt]="product.productName" class="row-product-img"/>
-            </div>
-
-            <!-- Details -->
-            <div class="col-details">
-              <span class="row-product-name">{{ product.productName }}</span>
-              <span class="row-product-price">KSH {{ product.price | number:'1.2-2' }}</span>
-              <span class="row-qty" [class.low-stock]="product.quantity < 10">
-                {{ product.quantity }} available
-                <span class="low-label" *ngIf="product.quantity < 10">Low</span>
-              </span>
-            </div>
-
-            <!-- Add button bottom right -->
-            <div class="col-action">
-              <button
-                mat-icon-button
-                class="add-btn"
-                (click)="addToOrder(product)"
-                [disabled]="product.quantity === 0">
-                <mat-icon>add_circle</mat-icon>
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <!-- No results -->
-      <div class="no-results" *ngIf="groupedResults.length === 0">
-        <mat-icon>search_off</mat-icon>
-        <p>No products found for "{{ searchQuery }}"</p>
-      </div>
-
-    </div>
-
-    <!-- Default empty state -->
-    <div class="empty-state" *ngIf="groupedResults.length === 0">
-      <mat-icon>manage_search</mat-icon>
-      <h3>Start searching</h3>
-      <p>Type a product name or select a category above to browse available products</p>
+      <button mat-raised-button class="action-btn secondary" (click)="openTransfer()">
+        <mat-icon>swap_horiz</mat-icon>
+        Transfer Funds
+      </button>
+      <button mat-raised-button class="action-btn tertiary" (click)="downloadReport()">
+        <mat-icon>download</mat-icon>
+        Download Report
+      </button>
     </div>
 
   </div>

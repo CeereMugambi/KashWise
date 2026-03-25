@@ -5,7 +5,7 @@ import {
   BeverageProduct,
   FreshProduceProduct,
   CerealProduct,
-} from "../../app/models/product.model";
+} from "../../app/models/product";
 
 // ─────────────────────────────────────────────
 //  BREAD

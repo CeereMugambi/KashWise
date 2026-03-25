@@ -1,148 +1,109 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
-import { Product, IRole } from 'src/app/models';
-import { allProducts } from 'src/assets/data/mock-products';
-import { AccountService, CartService } from 'src/app/services';
+import { IRole, IAccount} from 'src/app/models';
+import { Investment, PortfolioSummary, ActivityItem } from 'src/app/models';
+import { mockInvestments, mockPortfolioSummary, mockRecentActivities } from 'src/assets/data/mock-investments';
+import { AccountService } from 'src/app/services';
 import { Router } from '@angular/router';
-
-interface ProductGroup {
-  category: string;
-  products: Product[];
-}
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
+  // ─── Auth & Nav ──────────────────────────────
   Role = IRole;
-  account = this.accountService.accountValue;
+  account: IAccount | null = this.accountService.accountValue;
   isNavCollapsed = false;
-  userInitials = '';
-  firstName = '';
+  userInitials   = '';
+  firstName      = '';
 
-  searchQuery = '';
-  selectedCategory = '';
-  showSuggestions = false;
-  suggestions: Product[] = [];
-
-  products: Product[] = [];
-  groupedResults: ProductGroup[] = [];
-  categories: string[] = [];
-
-  order: { product: Product; quantity: number }[] = [];
-
-  // ← reactive cart state
-  cartCount = 0;
-  hasCartItems = false;
-
-  private cartSub!: Subscription;
+  // ─── Investment Data ─────────────────────────
+  investments: Investment[]       = [];
+  portfolioSummary!: PortfolioSummary;
+  recentActivities: ActivityItem[] = [];
 
   constructor(
     private accountService: AccountService,
     private router: Router,
-    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
-    this.products = allProducts;
-    this.categories = [...new Set(this.products.map(p => p.category))];
-    this.setUserInitials();
-    // this.buildGroupedResults();
-
-    // ← subscribe so cart count updates reactively
-    this.cartSub = this.cartService.cartItems$.subscribe(items => {
-      this.cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
-      this.hasCartItems = this.cartCount > 0;
-      console.log('Cart updated on home:', this.cartCount);
-    });
+    this.isNavCollapsed = window.innerWidth <= 1024;
+    this.setUserInfo();
+    this.loadInvestmentData();
   }
 
-  ngOnDestroy(): void {
-    this.cartSub?.unsubscribe();
+  // ─── Data Loading ─────────────────────────────
+
+  private loadInvestmentData(): void {
+    this.investments      = mockInvestments;
+    this.portfolioSummary = mockPortfolioSummary;
+    this.recentActivities = mockRecentActivities;
   }
 
-  goToCart(): void {
-    const lastItem = this.cartService.cartItems[0];
-    if (lastItem) {
-      this.router.navigate(['/product-detail', lastItem.product.id]);
-    }
-  }
+  // ─── User Helpers ─────────────────────────────
 
-  // ... rest of your methods unchanged ...
-  setUserInitials(): void {
-    const account = this.accountService.accountValue;
-    if (account?.firstName && account?.lastName) {
-      this.firstName = account.firstName;
-      this.userInitials = `${account.firstName.charAt(0)}${account.lastName.charAt(0)}`.toUpperCase();
+  private setUserInfo(): void {
+    const acc = this.accountService.accountValue;
+    if (acc?.firstName && acc?.lastName) {
+      this.firstName    = acc.firstName;
+      this.userInitials = `${acc.firstName.charAt(0)}${acc.lastName.charAt(0)}`.toUpperCase();
     } else {
-      this.accountService.account.subscribe(acc => {
-        if (acc?.firstName && acc?.lastName) {
-          this.firstName = acc.firstName;
-          this.userInitials = `${acc.firstName.charAt(0)}${acc.lastName.charAt(0)}`.toUpperCase();
+      this.accountService.account.subscribe(a => {
+        if (a?.firstName && a?.lastName) {
+          this.firstName    = a.firstName;
+          this.userInitials = `${a.firstName.charAt(0)}${a.lastName.charAt(0)}`.toUpperCase();
         }
       });
     }
   }
 
-  toggleNav(): void { this.isNavCollapsed = !this.isNavCollapsed; }
-  logout(): void { this.accountService.logout(); }
+  // ─── Nav ──────────────────────────────────────
 
-  onSearchChange(): void {
-    const query = this.searchQuery.toLowerCase().trim();
-    this.suggestions = query
-      ? this.products.filter(p => p.productName.toLowerCase().includes(query)).slice(0, 6)
-      : [];
-    this.buildGroupedResults();
+  toggleNav(): void {
+    this.isNavCollapsed = !this.isNavCollapsed;
   }
 
-  filterByCategory(category: string): void {
-    this.selectedCategory = category;
-    this.buildGroupedResults();
+  logout(): void {
+    this.accountService.logout();
   }
 
-  buildGroupedResults(): void {
-    const query = this.searchQuery.toLowerCase().trim();
-    const filtered = this.products.filter(p => {
-      const matchesSearch = query ? p.productName.toLowerCase().includes(query) : true;
-      const matchesCategory = this.selectedCategory ? p.category === this.selectedCategory : true;
-      return matchesSearch && matchesCategory;
-    });
+  // ─── Navigation Actions ───────────────────────
 
-    const groupMap = new Map<string, Product[]>();
-    filtered.forEach(p => {
-      if (!groupMap.has(p.category)) groupMap.set(p.category, []);
-      groupMap.get(p.category)!.push(p);
-    });
-
-    this.groupedResults = Array.from(groupMap.entries()).map(([category, products]) => ({
-      category, products
-    }));
+  viewAllInvestments(): void {
+    this.router.navigate(['/portfolio']);
   }
 
-  selectSuggestion(product: Product): void {
-    this.searchQuery = product.productName;
-    this.suggestions = [];
-    this.showSuggestions = false;
-    this.buildGroupedResults();
+  openNewInvestment(): void {
+    this.router.navigate(['/portfolio/new']);
   }
 
-  hideSuggestions(): void {
-    setTimeout(() => { this.showSuggestions = false; }, 200);
+  openTransfer(): void {
+    this.router.navigate(['/transactions/transfer']);
   }
 
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.selectedCategory = '';
-    this.suggestions = [];
-    // this.buildGroupedResults();
+  downloadReport(): void {
+    this.router.navigate(['/analytics/report']);
   }
 
-  addToOrder(product: Product): void {
-    this.router.navigate(['/product-detail', product.id]);
+  // ─── Formatting Helpers ───────────────────────
+
+  formatCurrency(value: number | undefined): string {
+    if (value === undefined) return 'KSH 0';
+    return `KSH ${value.toLocaleString('en-KE')}`;
+  }
+  
+  formatChange(changePercent: number | undefined): string {
+    if (changePercent === undefined) return '0.0%';
+    const sign = changePercent > 0 ? '+' : '';
+    return `${sign}${changePercent.toFixed(1)}%`;
+  }
+  
+  isPositiveChange(changePercent: number | undefined): boolean {
+    return (changePercent ?? 0) > 0;
   }
 }
