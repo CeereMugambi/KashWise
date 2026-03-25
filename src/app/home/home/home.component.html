@@ -148,7 +148,8 @@
       </div>
 
       <div class="portfolio-list">
-        <div class="portfolio-item" *ngFor="let investment of investments">
+        <div class="portfolio-item" *ngFor="let investment of investments"
+        [class.inactive]="!investment.isActive">
           <div class="item-icon" [style.background-color]="investment.color">
             <mat-icon>{{ investment.icon }}</mat-icon>
           </div>

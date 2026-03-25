@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   firstName      = '';
 
   // ─── Investment Data ─────────────────────────
+  activeInvestments:  Investment[] = [];
   investments: Investment[]       = [];
   portfolioSummary!: PortfolioSummary;
   recentActivities: ActivityItem[] = [];
@@ -35,12 +36,14 @@ export class HomeComponent implements OnInit {
     this.isNavCollapsed = window.innerWidth <= 1024;
     this.setUserInfo();
     this.loadInvestmentData();
+    console.log("active investments", this.activeInvestments);
   }
 
   // ─── Data Loading ─────────────────────────────
 
   private loadInvestmentData(): void {
     this.investments      = mockInvestments;
+    this.activeInvestments = mockInvestments.filter(i => i.isActive);
     this.portfolioSummary = mockPortfolioSummary;
     this.recentActivities = mockRecentActivities;
   }

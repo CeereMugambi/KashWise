@@ -17,13 +17,17 @@ export const mockInvestments: Investment[] = [
     ticker: 'EQBS',
     category: InvestmentCategory.Banking,
     currentValue: 226_000,
-    costBasis: 0,
     changePercent: 10,
     sharesOwned: 137.46,
     pricePerShare: 72.75,
     icon: 'account_balance',
     color: '#4caf50',
-    lastUpdated: new Date('2025-03-20T10:00:00'),
+    lastUpdated: new Date('2026-03-24T10:00:00'),
+    initialInvestment: 180_000,
+    monthlyInvestment: 5_000,
+    dividendsPerAnnum: 0.10,
+    entryDate: new Date('2026-02-21'),
+    isActive: true,
   },
   {
     id: 'inv-002',
@@ -31,27 +35,35 @@ export const mockInvestments: Investment[] = [
     ticker: 'Zidii',
     category: InvestmentCategory.Telecom,
     currentValue: 20_000,
-    costBasis: 0,
     changePercent: 6.25,
     sharesOwned: 20_000,
     pricePerShare: 1,
     icon: 'phone_android',
     color: '#2196f3',
-    lastUpdated: new Date('2025-03-20T10:00:00'),
+    lastUpdated: new Date('2026-03-24T10:00:00'),
+    initialInvestment: 20_000,
+    monthlyInvestment: 0,
+    dividendsPerAnnum: 0.0625,
+    entryDate: new Date('2026-03-24'),
+    isActive: true,
   },
   {
     id: 'inv-003',
-    name: 'Equity Bank',
+    name: 'Equity Bank Shares',
     ticker: 'EQTY',
     category: InvestmentCategory.Banking,
-    currentValue: 320_000,
-    costBasis: 326_720,
-    changePercent: -2.1,
-    sharesOwned: 640,
-    pricePerShare: 500,
+    currentValue: 10_000,
+    changePercent: 13,
+    sharesOwned: 137.46,
+    pricePerShare: 72.75,
     icon: 'account_balance',
     color: '#ff9800',
-    lastUpdated: new Date('2025-03-20T10:00:00'),
+    lastUpdated: new Date('2026-03-24T10:00:00'),
+    initialInvestment: 10_000,
+    monthlyInvestment: 0,
+    dividendsPerAnnum: 0.13,
+    entryDate: new Date('2026-02-24'),
+    isActive: true,
   },
   {
     id: 'inv-004',
@@ -59,13 +71,17 @@ export const mockInvestments: Investment[] = [
     ticker: 'EABL',
     category: InvestmentCategory.Manufacturing,
     currentValue: 520_000,
-    costBasis: 449_000,
     changePercent: 15.7,
     sharesOwned: 400,
     pricePerShare: 1_300,
     icon: 'local_drink',
     color: '#9c27b0',
     lastUpdated: new Date('2025-03-20T10:00:00'),
+    initialInvestment: 400_000,
+    monthlyInvestment: 10_000,
+    dividendsPerAnnum: 0.12,
+    entryDate: new Date('2020-03-10'),
+    isActive: false,
   },
   {
     id: 'inv-005',
@@ -73,13 +89,17 @@ export const mockInvestments: Investment[] = [
     ticker: 'KEGN',
     category: InvestmentCategory.Energy,
     currentValue: 275_000,
-    costBasis: 250_000,
     changePercent: 10.0,
     sharesOwned: 5_000,
     pricePerShare: 55,
     icon: 'bolt',
     color: '#f44336',
     lastUpdated: new Date('2025-03-20T10:00:00'),
+    initialInvestment: 250_000,
+    monthlyInvestment: 0,
+    dividendsPerAnnum: 0.10,
+    entryDate: new Date('2022-08-20'),
+    isActive: false,
   },
   {
     id: 'inv-006',
@@ -87,35 +107,49 @@ export const mockInvestments: Investment[] = [
     ticker: 'FAHR',
     category: InvestmentCategory.RealEstate,
     currentValue: 205_000,
-    costBasis: 200_000,
     changePercent: 2.5,
     sharesOwned: 10_250,
     pricePerShare: 20,
     icon: 'apartment',
     color: '#00bcd4',
     lastUpdated: new Date('2025-03-20T10:00:00'),
+    initialInvestment: 200_000,
+    monthlyInvestment: 3_000,
+    dividendsPerAnnum: 0.09,
+    entryDate: new Date('2023-04-01'),
+    isActive: false,
   },
 ];
-
 // ─────────────────────────────────────────────
 //  Derived Portfolio Summary
 // ─────────────────────────────────────────────
 
-const totalValue    = mockInvestments.reduce((s, i) => s + i.currentValue, 0);
-const totalCost     = mockInvestments.reduce((s, i) => s + i.costBasis, 0);
+function monthsElapsed(from: Date): number {
+  return Math.floor(
+    (new Date().getTime() - from.getTime()) / (1000 * 60 * 60 * 24 * 30.44)
+  );
+}
+
+function costBasis(inv: Investment): number {
+  return inv.initialInvestment + inv.monthlyInvestment * monthsElapsed(inv.entryDate);
+}
+
+const activeInvestments = mockInvestments.filter(i => i.isActive);
+
+const totalValue    = activeInvestments.reduce((s, i) => s + i.currentValue, 0);
+const totalCost     = activeInvestments.reduce((s, i) => s + costBasis(i), 0);
 const totalReturn   = totalValue - totalCost;
 const returnPercent = parseFloat(((totalReturn / totalCost) * 100).toFixed(2));
 
 export const mockPortfolioSummary: PortfolioSummary = {
   totalValue,
-  totalCostBasis:      totalCost,
+  totalCostBasis:       totalCost,
   totalReturn,
   returnPercent,
-  activeInvestments:   mockInvestments.length,
+  activeInvestments:    activeInvestments.length,   // counts only active
   diversificationScore: 8.5,
   pendingActions:       3,
 };
-
 // ─────────────────────────────────────────────
 //  Mock Recent Activity
 // ─────────────────────────────────────────────

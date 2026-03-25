@@ -20,23 +20,24 @@ export enum InvestmentCategory {
   
   
   // ─── Core Entities ───────────────────────────
-  
   export interface Investment {
     id: string;
     name: string;
     ticker?: string;
     category: InvestmentCategory;
-    /** Current market value in KSH */
     currentValue: number;
-    /** Original amount invested in KSH */
-    costBasis: number;
-    /** Percentage change (positive = gain) */
+    /** Replaces costBasis — computed as initialInvestment + (monthlyInvestment × months) */
+    initialInvestment: number;
+    monthlyInvestment: number;
+    dividendsPerAnnum: number;
+    entryDate: Date;
     changePercent: number;
     sharesOwned: number;
     pricePerShare: number;
     icon: string;
     color: string;
     lastUpdated: Date;
+    isActive: boolean;
   }
 
   // ─────────────────────────────────────────────
