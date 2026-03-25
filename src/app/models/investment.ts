@@ -38,6 +38,49 @@ export enum InvestmentCategory {
     color: string;
     lastUpdated: Date;
   }
+
+  // ─────────────────────────────────────────────
+//  Tranche — a single chunk of capital with
+//  its own rate and start date
+// ─────────────────────────────────────────────
+export type TrancheType = 'share_capital' | 'deposit';
+
+export interface InvestmentTranche {
+  id: string;
+  label: string;
+  type: TrancheType;
+  /** Amount placed into this tranche (KSH) */
+  principal: number;
+  /** Annual dividend/interest rate, e.g. 0.13 = 13% */
+  annualDividendRate: number;
+  startDate: Date;
+  /** Computed: principal × rate × (months elapsed / 12) */
+  dividendEarned: number;
+  /** principal + dividendEarned */
+  currentValue: number;
+}
+
+// ─────────────────────────────────────────────
+//  InvestmentDetails extends Investment
+//  with tranche breakdown + contribution data
+// ─────────────────────────────────────────────
+export interface InvestmentDetails extends Investment {
+  tranches: InvestmentTranche[];
+  /** Recurring top-up added each month (KSH) */
+  monthlyContribution: number;
+  /** When monthly contributions started */
+  contributionStartDate: Date;
+  /** Date the very first capital was deployed */
+  investmentStartDate: Date;
+  /** How many months since investmentStartDate */
+  months: number;
+  /** Sum of principal across all tranches + accumulated contributions */
+  totalPrincipalInvested: number;
+  /** Sum of dividendEarned across all tranches */
+  totalDividendEarned: number;
+  /** What you expect to earn in dividends over a full year at current balances */
+  projectedAnnualDividend: number;
+}
   
   export interface PortfolioSummary {
     totalValue: number;
