@@ -391,3 +391,75 @@ div.text-end
   to
     opacity: 1
     transform: translateY(0)
+::ng-deep
+  // ================================
+  // FORM FIELD - FILL APPEARANCE
+  // ================================
+  .mat-mdc-form-field.mat-form-field-appearance-fill
+    .mat-mdc-text-field-wrapper
+      background-color: #1f1f1f !important
+      border-radius: 4px 4px 0 0
+
+    // Bottom border line
+    .mdc-line-ripple::before
+      border-bottom-color: #4a4a4a !important
+
+    .mdc-line-ripple::after
+      border-bottom-color: #FFA800 !important
+
+    // Label color
+    .mat-mdc-floating-label, .mdc-floating-label
+      color: #888 !important
+
+    // Focused label
+    &.mat-focused .mat-mdc-floating-label
+      color: #FFA800 !important
+
+    // Input text
+    .mat-mdc-input-element
+      color: #e0e0e0 !important
+      caret-color: #FFA800 !important
+
+    // Suffix icon (eye toggle)
+    .mat-mdc-form-field-icon-suffix .mat-icon
+      color: #888 !important
+      cursor: pointer
+
+      &:hover
+        color: #FFA800 !important
+
+  // ================================
+  // LOGIN BUTTON (mat-raised-button)
+  // ================================
+  .button-container .mat-mdc-raised-button.mat-primary
+    background-color:  #FFA800 !important
+    color: #fff !important
+    box-shadow: 0 2px 8px rgba(0, 128, 128, 0.4) !important
+
+    &:hover:not([disabled])
+      background-color:  #F0C040 !important
+      box-shadow: 0 4px 12px rgba(212, 160, 23, 0.6) !important
+
+    &[disabled]
+      background-color: #3a3a3a !important
+      color: #666 !important
+
+    // Remove Material ripple pink tint
+    .mat-ripple-element
+      background-color: rgba(255, 255, 255, 0.1) !important
+
+  // ================================
+  // ERROR MESSAGES
+  // ================================
+  .mat-mdc-form-field .mat-mdc-form-field-error
+    color: #ff6b6b !important
+
+  // ================================
+  // AUTOFILL - prevent browser white bg
+  // ================================
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus
+    -webkit-box-shadow: 0 0 0px 1000px #1f1f1f inset !important
+    -webkit-text-fill-color: #e0e0e0 !important
+    caret-color: #FFA800 !important

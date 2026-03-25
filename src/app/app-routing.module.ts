@@ -23,8 +23,8 @@ const routes: Routes = [
 
   //Unrecognised routes redirect
   { path: 'subnavbar', redirectTo: './', pathMatch: "full" },
-  { path: '', redirectTo: 'welcome', pathMatch: "full" },
-  { path: '**', redirectTo: 'Welcome' },
+  { path: '', redirectTo: 'login', pathMatch: "full" },
+  { path: '**', redirectTo: 'login' },
   
 ];
 

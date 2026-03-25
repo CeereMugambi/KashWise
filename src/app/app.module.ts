@@ -7,11 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { WelcomeComponent } from './welcome/welcome.component';
 import { CommonModule } from '@angular/common';
 import { AccountModule } from './account/account.module';
 import { ComponentsModule } from './components/components.module';
-import { WelcomeRoutingModule } from './welcome/welcome-routing.component';
 import { HomeModule } from './home/home.module';
 import { AccountService } from './services';
 import { fakeBackendProvider } from './helpers';
@@ -28,7 +26,6 @@ import { ComponentsRoutingModule } from './components/components-routing.module'
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent,
 
   ],
   imports: [
@@ -38,7 +35,6 @@ import { ComponentsRoutingModule } from './components/components-routing.module'
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    WelcomeRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,

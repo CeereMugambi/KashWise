@@ -8,6 +8,7 @@ import { ComponentsModule } from '../components/components.module';
 import { RegistrationComponent } from './registration/registration.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -19,6 +20,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
   imports: [
     CommonModule,
     MaterialModule,
+    RouterModule,
     ReactiveFormsModule,
     FormsModule,
     AccountRoutingModule,
