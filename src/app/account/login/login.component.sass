@@ -18,8 +18,6 @@
   background-size: cover
   position: relative
   
-
-
 .back-button
   position: absolute
   top: 16px
@@ -51,7 +49,6 @@
   box-sizing: border-box
   position: relative
 
-// Hidden on desktop, shown on mobile
 .back-button-mobile
   display: none
 
@@ -174,80 +171,53 @@ div.text-end
     background-color: #FFA800 !important
     color: #fff !important
 
-// ================================
-// ANIME FACE
-// ================================
-.anime-face
+.monkey-wrapper
   display: flex
   justify-content: center
-  margin-bottom: 10px
+  align-items: flex-end
+  margin-bottom: 12px
+  position: relative
+  height: 100px
+  width: 100%
 
-  .face
-    width: 80px
-    height: 80px
-    background: #FFDE21
-    border-radius: 50%
-    display: flex
-    flex-direction: column
-    align-items: center
-    justify-content: center
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+  .monkey-face
     position: relative
+    z-index: 1
+    width: 100px
+    height: 100px
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)) drop-shadow(0 0 16px rgba(212,160,23,0.15))
+    transition: transform 0.3s ease
 
-  .eyes
-    display: flex
-    gap: 16px
-    margin-bottom: 8px
-
-  .eye
-    width: 16px
-    height: 16px
-    background: white
-    border-radius: 50%
-    position: relative
-    overflow: hidden
-    border: 1.5px solid #333
-
-    .pupil
-      width: 8px
-      height: 8px
-      background: #333
-      border-radius: 50%
-      position: absolute
-      top: 3px
-      left: 3px
-      transition: transform 0.3s ease
-
-    .eyelid
-      position: absolute
-      top: 0
-      left: 0
+    svg
       width: 100%
       height: 100%
-      background: #FFDE37
-      border-radius: 50%
-      transform: translateY(-100%)
-      transition: transform 0.4s ease
 
-  .mouth
-    width: 20px
-    height: 8px
-    border-bottom: 2.5px solid #c0826a
-    border-radius: 0 0 10px 10px
+  .monkey-hands
+    position: absolute
+    z-index: 2
+    width: 90px
+    height: 75px
+    top: 18px
+    left: 50%
+    transform: translateX(-50%) perspective(80px) rotateX(-90deg)
+    transform-origin: 50% 0%
+    opacity: 0
+    transition: transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1), opacity 0.15s ease 0.2s
+    pointer-events: none
 
-.eyes-closed
-  .eyelid
-    transform: translateY(0) !important
+    svg
+      width: 100%
+      height: 100%
 
-  .mouth
-    border-bottom: none
-    border-top: 2.5px solid #c0826a
-    border-radius: 10px 10px 0 0
-    margin-top: 4px
+.monkey-wrapper:not(.show)
+  .monkey-hands
+    transform: translateX(-50%) perspective(80px) rotateX(0deg)
+    opacity: 1
+    transition: transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1), opacity 0.1s ease
 
-// ================================
-// TEAL MATERIAL OVERRIDES
-// ================================
+  .monkey-face
+    transform: translateY(2px)
+
 ::ng-deep
   .mat-form-field-ripple
     background-color: #008080 !important
@@ -267,9 +237,6 @@ div.text-end
   .mat-checkbox-checked .mat-checkbox-background
     background-color: #008080 !important
 
-// ================================
-// RESPONSIVE
-// ================================
 @media (max-width: 768px)
   .main-layout
     flex-direction: column
@@ -351,9 +318,6 @@ div.text-end
         width: 6px
         height: 6px
 
-// ================================
-// ANIMATIONS
-// ================================
 @keyframes pageFadeIn
   from
     opacity: 0
@@ -391,36 +355,29 @@ div.text-end
   to
     opacity: 1
     transform: translateY(0)
+
 ::ng-deep
-  // ================================
-  // FORM FIELD - FILL APPEARANCE
-  // ================================
   .mat-mdc-form-field.mat-form-field-appearance-fill
     .mat-mdc-text-field-wrapper
       background-color: #1f1f1f !important
       border-radius: 4px 4px 0 0
 
-    // Bottom border line
     .mdc-line-ripple::before
       border-bottom-color: #4a4a4a !important
 
     .mdc-line-ripple::after
       border-bottom-color: #FFA800 !important
 
-    // Label color
     .mat-mdc-floating-label, .mdc-floating-label
       color: #888 !important
 
-    // Focused label
     &.mat-focused .mat-mdc-floating-label
       color: #FFA800 !important
 
-    // Input text
     .mat-mdc-input-element
       color: #e0e0e0 !important
       caret-color: #FFA800 !important
 
-    // Suffix icon (eye toggle)
     .mat-mdc-form-field-icon-suffix .mat-icon
       color: #888 !important
       cursor: pointer
@@ -428,9 +385,6 @@ div.text-end
       &:hover
         color: #FFA800 !important
 
-  // ================================
-  // LOGIN BUTTON (mat-raised-button)
-  // ================================
   .button-container .mat-mdc-raised-button.mat-primary
     background-color:  #FFA800 !important
     color: #fff !important
@@ -444,19 +398,12 @@ div.text-end
       background-color: #3a3a3a !important
       color: #666 !important
 
-    // Remove Material ripple pink tint
     .mat-ripple-element
       background-color: rgba(255, 255, 255, 0.1) !important
 
-  // ================================
-  // ERROR MESSAGES
-  // ================================
   .mat-mdc-form-field .mat-mdc-form-field-error
     color: #ff6b6b !important
 
-  // ================================
-  // AUTOFILL - prevent browser white bg
-  // ================================
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus
