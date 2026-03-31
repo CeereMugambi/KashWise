@@ -9,8 +9,6 @@ const routes: Routes = [
    
         {path: 'subnavbar', component: SubnavbarComponent},
         {path:'home-navbar',component:HomeNavbarComponent},
-        {path:'profile',component:ProfileComponent},
-        {path:'settings',component:SettingsComponent},
        
    
 ];

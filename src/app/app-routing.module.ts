@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './helpers';
 import { IRole } from './models';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const AccountModule = () => import('./account/account.module').then(x => x.AccountModule);
 const ComponentsModule = () => import('./components/components.module').then(x => x.ComponentsModule);
@@ -16,6 +18,9 @@ const routes: Routes = [
   {path:'components',loadChildren:ComponentsModule},
   {path:'home',loadChildren:HomeModule, canActivate: [AuthGuard] },
   {path:'catalogue',loadChildren:CatalogueModule },
+  {path:'settings',component:SettingsComponent},
+  {path:'profile',component:ProfileComponent},
+
  
 
 

@@ -1,175 +1,102 @@
-import { Component, OnInit, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services';
-import { IAccount, IRole } from 'src/app/models';
-
-interface ToggleSetting {
-  icon: string;
-  title: string;
-  desc: string;
-  enabled: boolean;
-}
+import { IRole } from 'src/app/models';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.sass']
 })
-export class SettingsComponent implements OnInit, OnDestroy {
+export class SettingsComponent implements OnInit {
 
   Role = IRole;
-  account?: IAccount | null;
-  isNavCollapsed = false;
+  account: any;
   userInitials = '';
+  isNavCollapsed = false;
 
-  activeTab = 'notifications';
-  selectedTheme = 'light';
-  selectedLanguage = 'en';
-  selectedCurrency = 'KSH';
-  defaultLocation = 'nairobi';
+  activeTab = '';
   settingsSaved = false;
 
-  private systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  private systemThemeListener = (e: MediaQueryListEvent) => {
-    if (this.selectedTheme === 'system') {
-      this.applyTheme(e.matches ? 'dark' : 'light');
-    }
-  };
+  selectedTheme = 'dark';
+  selectedLanguage = 'en';
+  selectedCurrency = 'KSH';
+  defaultPortfolioView = 'overview';
+  riskTolerance = 'moderate';
 
   tabs = [
     { key: 'notifications', label: 'Notifications', icon: 'notifications' },
-    { key: 'appearance',    label: 'Appearance',    icon: 'palette'        },
-    { key: 'privacy',       label: 'Privacy',       icon: 'shield'         },
-    { key: 'orders',        label: 'Orders',        icon: 'receipt_long'   }
+    { key: 'appearance',    label: 'Appearance',    icon: 'palette'       },
+    { key: 'privacy',       label: 'Privacy',       icon: 'shield'        },
+    { key: 'investments',   label: 'Investments',   icon: 'trending_up'   }
   ];
 
-  notificationSettings: ToggleSetting[] = [
-    { icon: 'email',          title: 'Email Notifications',        desc: 'Receive order updates via email',              enabled: true  },
-    { icon: 'sms',            title: 'SMS Notifications',          desc: 'Get text messages for order status changes',   enabled: false },
-    { icon: 'campaign',       title: 'Promotional Offers',         desc: 'Receive deals and special offers',             enabled: true  },
-    { icon: 'inventory_2',    title: 'Stock Alerts',               desc: 'Notify when low-stock items are restocked',    enabled: true  },
-    { icon: 'local_shipping', title: 'Delivery Updates',           desc: 'Real-time updates on your deliveries',         enabled: true  },
-    { icon: 'rate_review',    title: 'Review Reminders',           desc: 'Prompt to review items you have purchased',    enabled: false }
+  notificationSettings = [
+    { icon: 'trending_up',  title: 'Portfolio Alerts',    desc: 'Notify me of significant portfolio changes',      enabled: true  },
+    { icon: 'price_change', title: 'Price Movements',     desc: 'Alerts when assets move beyond set thresholds',   enabled: true  },
+    { icon: 'receipt_long', title: 'Transaction Updates', desc: 'Receive updates when transactions are processed', enabled: true  },
+    { icon: 'analytics',    title: 'Performance Reports', desc: 'Weekly and monthly portfolio summaries',          enabled: false },
+    { icon: 'security',     title: 'Security Alerts',     desc: 'Notify me of account security events',           enabled: true  },
+    { icon: 'email',        title: 'Email Digest',        desc: 'Daily digest of portfolio activity',             enabled: false }
   ];
 
-  privacySettings: ToggleSetting[] = [
-    { icon: 'visibility',  title: 'Profile Visibility',      desc: 'Allow others to view your public profile',     enabled: true  },
-    { icon: 'analytics',   title: 'Usage Analytics',         desc: 'Help improve the app with anonymous data',     enabled: true  },
-    { icon: 'cookie',      title: 'Personalization Cookies', desc: 'Allow cookies for a personalized experience',  enabled: true  },
-    { icon: 'location_on', title: 'Location Access',         desc: 'Use your location for delivery suggestions',   enabled: false }
+  privacySettings = [
+    { icon: 'visibility_off', title: 'Profile Visibility', desc: 'Make your profile visible to other users',   enabled: false },
+    { icon: 'analytics',      title: 'Usage Analytics',    desc: 'Help improve the app by sharing usage data', enabled: true  },
+    { icon: 'cookie',         title: 'Performance Cookies',desc: 'Allow cookies for a better experience',      enabled: true  },
+    { icon: 'fingerprint',    title: 'Two-Factor Auth',    desc: 'Require 2FA on every login',                 enabled: false }
   ];
 
-  orderSettings: ToggleSetting[] = [
-    { icon: 'save',        title: 'Save Order History',          desc: 'Keep a record of all past orders',              enabled: true  },
-    { icon: 'replay',      title: 'Quick Reorder',               desc: 'Enable one-click reordering of past items',     enabled: true  },
-    { icon: 'receipt',     title: 'Auto-Print Receipt',          desc: 'Automatically print receipt after checkout',    enabled: false },
-    { icon: 'local_offer', title: 'Apply Offers Automatically',  desc: 'Auto-apply eligible discounts at checkout',     enabled: true  }
+  investmentSettings = [
+    { icon: 'show_chart',        title: 'Auto-Rebalancing Alerts', desc: 'Notify when portfolio drifts from target',    enabled: true  },
+    { icon: 'lightbulb',         title: 'Investment Suggestions',  desc: 'Receive AI-powered investment insights',      enabled: true  },
+    { icon: 'currency_exchange', title: 'Dividend Tracking',       desc: 'Track and notify for dividend payouts',       enabled: true  },
+    { icon: 'lock_clock',        title: 'Lock-in Reminders',       desc: 'Remind me when lock-in periods are expiring', enabled: false }
   ];
 
   constructor(
+    private router: Router,
     private accountService: AccountService,
-    private renderer: Renderer2
-  ) {
-    this.accountService.account.subscribe(x => this.account = x);
-  }
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.setUserInitials();
-    this.loadSavedSettings();
+    this.account = this.accountService.accountValue;
+    const first = this.account?.firstName?.[0] ?? '';
+    const last  = this.account?.lastName?.[0]  ?? '';
+    this.userInitials = (first + last).toUpperCase();
 
-    // Listen for OS-level theme changes
-    this.systemThemeMediaQuery.addEventListener('change', this.systemThemeListener);
+    // Set after init so *ngIf evaluates with a fully ready view
+    setTimeout(() => {
+      this.activeTab = 'notifications';
+      this.cdr.detectChanges();
+    });
   }
 
-  ngOnDestroy(): void {
-    this.systemThemeMediaQuery.removeEventListener('change', this.systemThemeListener);
+  setTab(key: string): void {
+    this.activeTab = key;
+    this.cdr.detectChanges();
   }
 
-  // ================================
-  // THEME
-  // ================================
+  toggleNav(): void {
+    this.isNavCollapsed = !this.isNavCollapsed;
+  }
 
-  onThemeChange(theme: 'light' | 'dark' | 'system'): void {
+  onThemeChange(theme: string): void {
     this.selectedTheme = theme;
-    if (theme === 'system') {
-      const isDark = this.systemThemeMediaQuery.matches;
-      this.applyTheme(isDark ? 'dark' : 'light');
-    } else {
-      this.applyTheme(theme);
-    }
   }
 
-  private applyTheme(theme: 'light' | 'dark'): void {
-    const body = document.body;
-    if (theme === 'dark') {
-      this.renderer.addClass(body, 'dark-theme');
-      this.renderer.removeClass(body, 'light-theme');
-    } else {
-      this.renderer.addClass(body, 'light-theme');
-      this.renderer.removeClass(body, 'dark-theme');
-    }
+  clearHistory(): void {
+    // implement clear history logic
   }
-
-  // ================================
-  // SAVE / LOAD
-  // ================================
 
   saveSettings(): void {
-    const settings = {
-      theme:           this.selectedTheme,
-      language:        this.selectedLanguage,
-      currency:        this.selectedCurrency,
-      defaultLocation: this.defaultLocation,
-      notifications:   this.notificationSettings.map(s => s.enabled),
-      privacy:         this.privacySettings.map(s => s.enabled),
-      orders:          this.orderSettings.map(s => s.enabled)
-    };
-    localStorage.setItem('appSettings', JSON.stringify(settings));
     this.settingsSaved = true;
     setTimeout(() => this.settingsSaved = false, 3000);
   }
 
-  loadSavedSettings(): void {
-    const raw = localStorage.getItem('appSettings');
-    if (!raw) return;
-    try {
-      const s = JSON.parse(raw);
-      if (s.theme) {
-        this.selectedTheme = s.theme;
-        this.onThemeChange(s.theme as 'light' | 'dark' | 'system');
-      }      if (s.language)          this.selectedLanguage  = s.language;
-      if (s.currency)          this.selectedCurrency  = s.currency;
-      if (s.defaultLocation)   this.defaultLocation   = s.defaultLocation;
-      if (s.notifications)     s.notifications.forEach((v: boolean, i: number) => { if (this.notificationSettings[i]) this.notificationSettings[i].enabled = v; });
-      if (s.privacy)           s.privacy.forEach((v: boolean, i: number)       => { if (this.privacySettings[i])       this.privacySettings[i].enabled = v; });
-      if (s.orders)            s.orders.forEach((v: boolean, i: number)         => { if (this.orderSettings[i])         this.orderSettings[i].enabled = v; });
-    } catch {
-      // corrupted settings — ignore
-    }
+  logout(): void {
+    this.accountService.logout();
+    this.router.navigate(['/account/login']);
   }
-
-  clearHistory(): void {
-    if (confirm('Clear all activity history? This cannot be undone.')) {
-      console.log('History cleared');
-    }
-  }
-
-  // ================================
-  // NAV
-  // ================================
-
-  setUserInitials(): void {
-    const account = this.accountService.accountValue;
-    if (account?.firstName && account?.lastName) {
-      this.userInitials = `${account.firstName.charAt(0)}${account.lastName.charAt(0)}`.toUpperCase();
-    } else {
-      this.accountService.account.subscribe(acc => {
-        if (acc?.firstName && acc?.lastName) {
-          this.userInitials = `${acc.firstName.charAt(0)}${acc.lastName.charAt(0)}`.toUpperCase();
-        }
-      });
-    }
-  }
-
-  toggleNav(): void { this.isNavCollapsed = !this.isNavCollapsed; }
-  logout(): void { this.accountService.logout(); }
 }

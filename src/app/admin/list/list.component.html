@@ -37,6 +37,10 @@
         <mat-icon>settings</mat-icon>
         <span *ngIf="!isNavCollapsed">Settings</span>
       </li>
+      <li class="nav-item" routerLink="/profile">
+        <mat-icon>person</mat-icon>
+        <span *ngIf="!isNavCollapsed">Profile</span>
+      </li>
       <ng-container *ngIf="account?.role === Role.Admin">
         <li class="nav-item active" routerLink="/admin">
           <mat-icon>security</mat-icon>
