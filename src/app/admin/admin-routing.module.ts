@@ -6,7 +6,7 @@ import { ReviewComponent } from './review/review.component';
 
 
 const routes: Routes = [
-    
+       { path: '', redirectTo: 'list', pathMatch: 'full' },
        {path:'list',component:ListComponent},
        {path:'add',component:EditAdminComponent},
        { path: 'list/edit/:id', component: EditAdminComponent },

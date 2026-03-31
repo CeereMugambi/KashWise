@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogueModule } from '../catalogue/catalogue.module';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ReceiptComponent } from './receipt/receipt.component';
+import { AdminRoutingModule } from '../admin/admin-routing.module';
+import { AdminModule } from '../admin/admin.module';
 
 
 
@@ -27,7 +29,7 @@ import { ReceiptComponent } from './receipt/receipt.component';
     FormsModule,
     ReactiveFormsModule,
     CatalogueModule,
-    ComponentsModule
+    ComponentsModule,
 
   ],
   exports:[

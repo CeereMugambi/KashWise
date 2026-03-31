@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { IRole } from 'src/app/models';
-import { AccountService } from 'src/app/services';
+import { AccountService, AlertService } from 'src/app/services';
 
 @Component({
   selector: 'app-list',
@@ -10,24 +13,35 @@ import { AccountService } from 'src/app/services';
   styleUrls: ['./list.component.sass']
 })
 export class ListComponent implements OnInit {
+  @Input() isAdmin: boolean = false;
+
+
   accounts?: any[];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   searchQuery: string = '';
   roleFilter: string = '';
+  statusFilter: string = '';           // ← new: for the lock status filter dropdown
   filteredAccounts: any[] = [];
   isNavCollapsed: boolean = false;
   userInitials = '';
   firstName = '';
   account = this.accountService.accountValue;
   Role = IRole;
+  deleting = false;
+  id?: string;
 
-  // The account currently UNLOCKED for editing (null = all locked by default)
+  
+
   unlockedAccountId: string | null = null;
 
-  // notification from user confirming their details
   profileNotification: { accountId: string; accountName: string; accountEmail: string; timestamp: string; message: string } | null = null;
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private alertService: AlertService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.accountService.getAll()
@@ -41,16 +55,26 @@ export class ListComponent implements OnInit {
     this.setUserInitials();
     this.loadNotification();
 
-    // Restore any previously unlocked account from localStorage
     const savedUnlocked = localStorage.getItem('adminUnlockedProfile');
     if (savedUnlocked) {
       this.unlockedAccountId = savedUnlocked;
     }
 
-    // Ensure global lock state defaults to locked
     if (!localStorage.getItem('profileLocked')) {
       localStorage.setItem('profileLocked', 'true');
     }
+  }
+
+  // ================================
+  // COMPUTED GETTERS (for title stats)
+  // ================================
+
+  get adminCount(): number {
+    return this.accounts?.filter(a => a.role === 'Admin').length ?? 0;
+  }
+
+  get userCount(): number {
+    return this.accounts?.filter(a => a.role === 'User').length ?? 0;
   }
 
   // ================================
@@ -73,7 +97,6 @@ export class ListComponent implements OnInit {
     localStorage.removeItem('adminProfileNotification');
   }
 
-  // Admin reviews and locks the profile after reviewing
   lockAfterReview(): void {
     if (this.profileNotification) {
       const notifiedId = this.profileNotification.accountId;
@@ -90,14 +113,12 @@ export class ListComponent implements OnInit {
   // UNLOCK / RELOCK
   // ================================
 
-  // By default all accounts are LOCKED. Admin clicks the lock badge to UNLOCK.
   unlockProfileForEdit(accountId: string): void {
     this.unlockedAccountId = accountId;
     localStorage.setItem('adminUnlockedProfile', accountId);
     localStorage.setItem('profileLocked', 'false');
   }
 
-  // Admin re-locks the currently unlocked account
   relockProfile(accountId: string): void {
     if (this.unlockedAccountId === accountId) {
       this.unlockedAccountId = null;
@@ -106,7 +127,6 @@ export class ListComponent implements OnInit {
     }
   }
 
-  // Helper: is this account the current admin's own account?
   isAdminOwnAccount(accountId: string): boolean {
     return this.account?.id === accountId;
   }
@@ -136,30 +156,58 @@ export class ListComponent implements OnInit {
   onSearch(): void {
     this.filteredAccounts = this.accounts!.filter(a => {
       const fullName = `${a.firstName} ${a.lastName}`.toLowerCase();
-      const matchesSearch = fullName.includes(this.searchQuery.toLowerCase()) ||
+      const matchesSearch =
+        fullName.includes(this.searchQuery.toLowerCase()) ||
         a.email.toLowerCase().includes(this.searchQuery.toLowerCase());
       const matchesRole = this.roleFilter ? a.role === this.roleFilter : true;
-      return matchesSearch && matchesRole;
+      const matchesStatus = this.statusFilter              // ← new: filter by lock status
+        ? this.statusFilter === 'unlocked'
+          ? this.unlockedAccountId === a.id
+          : this.unlockedAccountId !== a.id
+        : true;
+      return matchesSearch && matchesRole && matchesStatus;
     });
   }
 
-  deleteAccount(id: string) {
-    const account = this.accounts!.find(x => x.id === id);
-    if (account) {
-      account.isDeleting = true;
-      this.accountService.delete(id)
-        .pipe(first())
-        .subscribe(() => {
-          this.accounts = this.accounts!.filter(x => x.id !== id);
-          this.filteredAccounts = this.filteredAccounts.filter(x => x.id !== id);
-          this.dataSource.data = this.accounts;
-        });
-    }
+  confirmDelete(account: any): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '420px',
+      panelClass: 'dark-dialog',
+      data: {
+        title: 'Delete Account',
+        message: `Are you sure you want to delete ${account.firstName} ${account.lastName}? This action cannot be undone.`
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        // Mark this specific account as deleting for the spinner
+        account.isDeleting = true;
+  
+        this.accountService.delete(account.id)
+          .pipe(first())
+          .subscribe({
+            next: () => {
+              // Remove from both arrays so table updates instantly
+              this.accounts = this.accounts!.filter(a => a.id !== account.id);
+              this.filteredAccounts = this.filteredAccounts.filter(a => a.id !== account.id);
+              this.alertService.success('Account deleted successfully', {
+                keepAfterRouteChange: true
+              });
+            },
+            error: err => {
+              this.alertService.error(err);
+              account.isDeleting = false;
+            }
+          });
+      }
+    });
   }
 
   clearFilters(): void {
     this.searchQuery = '';
     this.roleFilter = '';
+    this.statusFilter = '';             // ← new: reset status filter too
     this.filteredAccounts = this.accounts ?? [];
   }
 }

@@ -14,7 +14,6 @@
   width: 50%
   background: url("~src/assets/background.png") no-repeat center center
   background-size: cover
-  border-radius: 0 10px 10px 0
   position: relative
   animation: slideInLeft 0.6s ease both
 
@@ -39,7 +38,6 @@
       color: #cc8400
       filter: drop-shadow(0 1px 3px rgba(180, 100, 0, 0.7))
 
-// Admin badge on image side
 .admin-badge
   position: absolute
   bottom: 32px
@@ -65,12 +63,15 @@
     height: 18px
     color: #FFA800
 
+// ================================
+// FORM SIDE — dark gold theme
+// ================================
 .login-side
   width: 50%
   display: flex
   align-items: center
   justify-content: center
-  background-color: #f9f9f9
+  background: linear-gradient(to bottom, #2a2a2a, #5a5a5a)
   padding: 10px
   box-sizing: border-box
   position: relative
@@ -93,15 +94,17 @@ app-card
   width: 100%
   animation: fadeSlideUp 0.5s ease 0.1s both
 
-// Admin tag inside card
+// ================================
+// ADMIN TAG
+// ================================
 .admin-tag
   display: flex
   align-items: center
   justify-content: center
   gap: 6px
-  background-color: rgba(0, 128, 128, 0.08)
-  color: #008080
-  border: 1px solid rgba(0, 128, 128, 0.2)
+  background: rgba(255, 168, 0, 0.1)
+  color: #FFA800
+  border: 1px solid rgba(255, 168, 0, 0.25)
   border-radius: 50px
   padding: 4px 16px
   font-size: 12px
@@ -114,62 +117,77 @@ app-card
     width: 14px
     height: 14px
 
+// ================================
+// CARD TITLE & DESCRIPTION
+// ================================
 .card-title
   text-align: center
   font-size: 24px
   font-weight: bold
+  color: #fff
 
 .card-description
   text-align: center
-  color: #888
+  color: rgba(255, 255, 255, 0.45)
   font-size: 14px
   margin-bottom: 20px
   margin-top: 4px
 
-// Teal overrides
+// ================================
+// FORM OVERRIDES — gold theme
+// ================================
 ::ng-deep
   .mat-form-field-ripple
-    background-color: #008080 !important
+    background-color: #FFA800 !important
 
   .mat-form-field.mat-focused .mat-form-field-ripple
-    background-color: #008080 !important
+    background-color: #FFA800 !important
 
   .mat-form-field.mat-focused .mat-form-field-label
-    color: #008080 !important
+    color: #FFA800 !important
 
   .mat-input-element:focus
-    caret-color: #008080 !important
+    caret-color: #FFA800 !important
 
+  // Primary button — gold
   button.mat-raised-button
-    background-color: #008080 !important
-    color: #fff !important
+    background-color: #FFA800 !important
+    color: #1a1a1a !important
+    font-weight: 700
     width: 100%
-    transition: background-color 0.3s ease
+    transition: background-color 0.3s ease, box-shadow 0.3s ease
 
     &:hover
-      background-color: #006666 !important
+      background-color: #F0C040 !important
+      box-shadow: 0 4px 16px rgba(255, 168, 0, 0.4) !important
 
-  button.mat-raised-button:disabled
-    background-color: #ccc !important
+    &:disabled
+      background-color: #2a2a2a !important
+      color: #555 !important
 
+  // Cancel link — gold outline
   .cancel-link
     display: block
     text-align: center
     margin-top: 16px
     font-size: 14px
     text-decoration: none
-    color: #e53935 !important
-    border: 2px solid #e53935
+    color: #FFA800 !important
+    border: 2px solid rgba(255, 168, 0, 0.5)
     border-radius: 50px
     padding: 10px 0
     font-weight: 600
-    transition: background-color 0.3s ease, color 0.3s ease
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease
     box-sizing: border-box
 
     &:hover
-      background-color: #e53935 !important
-      color: #fff !important
+      background-color: #FFA800 !important
+      color: #1a1a1a !important
+      border-color: #FFA800 !important
 
+// ================================
+// ANIMATIONS
+// ================================
 @keyframes pageFadeIn
   from
     opacity: 0

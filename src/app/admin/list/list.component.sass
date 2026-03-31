@@ -4,11 +4,15 @@
 .page-layout
   display: flex
   min-height: 100vh
+  background: linear-gradient(to bottom, #1a1a1a, #2a2a2a)
 
+// ================================
+// SIDE NAV
+// ================================
 .side-nav
-  width: 20%
+  width: 260px
   min-height: 100vh
-  background-color: #003333
+  background: linear-gradient(180deg, #1f1f1f, #2a2a2a)
   display: flex
   flex-direction: column
   position: fixed
@@ -18,75 +22,79 @@
   z-index: 100
   overflow: hidden
   transition: width 0.3s ease
+  border-right: 1px solid rgba(255, 168, 0, 0.1)
 
   &.collapsed
-    width: 56px
+    width: 70px
 
 .nav-toggle
   display: flex
   align-items: center
   justify-content: space-between
-  padding: 12px 16px
+  padding: 16px 20px
   color: #fff
-  min-height: 60px
-  border-bottom: 1px solid rgba(255,255,255,0.1)
+  min-height: 70px
+  border-bottom: 1px solid rgba(255, 168, 0, 0.1)
   cursor: pointer
   transition: background 0.2s ease
 
   &:hover
-    background-color: rgba(255,255,255,0.1)
+    background: rgba(255, 168, 0, 0.05)
 
   mat-icon
     font-size: 26px
     width: 26px
     height: 26px
-    transition: color 0.2s ease
+    color: #FFA800
+    transition: transform 0.2s ease
 
     &:hover
-      color: #FFA800
+      transform: rotate(90deg)
 
 .user-avatar
-  width: 38px
-  height: 38px
+  width: 42px
+  height: 42px
   border-radius: 50%
-  background-color: #FFA800
+  background: linear-gradient(135deg, #FFA800, #F0C040)
   display: flex
   align-items: center
   justify-content: center
-  font-size: 13px
+  font-size: 14px
   font-weight: 700
-  color: #fff
+  color: #1a1a1a
   letter-spacing: 0.5px
   cursor: pointer
   flex-shrink: 0
-  transition: background-color 0.2s ease
+  box-shadow: 0 4px 12px rgba(255, 168, 0, 0.3)
+  transition: all 0.2s ease
 
   &:hover
-    background-color: #cc8400
+    transform: scale(1.05)
+    box-shadow: 0 6px 16px rgba(255, 168, 0, 0.4)
 
 .side-nav-header
-  padding: 16px 20px 12px
+  padding: 20px 24px 16px
   font-size: 11px
   font-weight: 700
-  letter-spacing: 1.5px
+  letter-spacing: 2px
   text-transform: uppercase
-  color: rgba(255,255,255,0.5)
-  border-bottom: 1px solid rgba(255,255,255,0.1)
+  color: rgba(255, 168, 0, 0.6)
+  border-bottom: 1px solid rgba(255, 168, 0, 0.1)
   white-space: nowrap
   overflow: hidden
 
 .nav-links
   list-style: none
-  padding: 12px 0
+  padding: 16px 0
   margin: 0
   flex: 1
 
 .nav-item
   display: flex
   align-items: center
-  gap: 14px
-  padding: 14px 16px
-  color: rgba(255,255,255,0.8)
+  gap: 16px
+  padding: 14px 24px
+  color: rgba(255, 255, 255, 0.7)
   cursor: pointer
   transition: all 0.2s ease
   border-left: 3px solid transparent
@@ -94,13 +102,14 @@
   font-weight: 500
   white-space: nowrap
   overflow: hidden
+  margin: 4px 0
 
   mat-icon
-    font-size: 20px
-    width: 20px
-    height: 20px
-    min-width: 20px
-    color: rgba(255,255,255,0.7)
+    font-size: 22px
+    width: 22px
+    height: 22px
+    min-width: 22px
+    color: rgba(255, 168, 0, 0.6)
     flex-shrink: 0
 
   span
@@ -108,16 +117,16 @@
     transition: opacity 0.2s ease
 
   &:hover
-    background-color: rgba(255,255,255,0.1)
-    color: #fff
+    background: rgba(255, 168, 0, 0.08)
+    color: #FFA800
     border-left-color: #FFA800
 
     mat-icon
-      color: #fff
+      color: #FFA800
 
   &.active
-    background-color: rgba(255,255,255,0.15)
-    color: #fff
+    background: rgba(255, 168, 0, 0.12)
+    color: #FFA800
     border-left-color: #FFA800
     font-weight: 600
 
@@ -126,7 +135,7 @@
 
 .nav-bottom
   padding: 16px 0
-  border-top: 1px solid rgba(255,255,255,0.1)
+  border-top: 1px solid rgba(255, 168, 0, 0.1)
   list-style: none
   margin: 0
   cursor: pointer
@@ -141,23 +150,23 @@
       flex-shrink: 0
 
     &:hover
-      background-color: rgba(255,107,107,0.1)
+      background: rgba(255, 107, 107, 0.1)
       border-left-color: #ff6b6b
 
 // ================================
 // MAIN CONTENT
 // ================================
 .main-content
-  margin-left: 20%
-  width: 80%
-  padding: 24px
-  background-color: #f5f5f5
+  margin-left: 260px
+  width: calc(100% - 260px)
+  padding: 28px
+  background: #1a1a1a
   min-height: 100vh
   transition: margin-left 0.3s ease, width 0.3s ease
 
   &.expanded
-    margin-left: 56px
-    width: calc(100% - 56px)
+    margin-left: 70px
+    width: calc(100% - 70px)
 
 .mobile-menu-btn
   display: none
@@ -170,28 +179,39 @@
   align-items: center
   justify-content: space-between
   gap: 16px
-  background: linear-gradient(135deg, #fff8e1, #fff3cd)
-  border: 1px solid #FFA800
+  background: linear-gradient(135deg, rgba(255, 168, 0, 0.08), rgba(255, 168, 0, 0.04))
+  border: 1px solid rgba(255, 168, 0, 0.3)
   border-left: 4px solid #FFA800
-  border-radius: 12px
-  padding: 16px 20px
-  margin-bottom: 20px
+  border-radius: 16px
+  padding: 18px 22px
+  margin-bottom: 24px
   animation: fadeUp 0.4s ease both
-  box-shadow: 0 2px 12px rgba(255,168,0,0.15)
+  box-shadow: 0 4px 20px rgba(255, 168, 0, 0.12)
+
+.notification-pulse
+  position: relative
+  flex-shrink: 0
+
+  &::after
+    content: ''
+    position: absolute
+    inset: -4px
+    border-radius: 50%
+    border: 2px solid rgba(255, 168, 0, 0.4)
+    animation: pulse 2s ease-in-out infinite
+
+.notification-icon
+  font-size: 26px
+  width: 26px
+  height: 26px
+  color: #FFA800
+  display: block
 
 .notification-content
   display: flex
   align-items: flex-start
-  gap: 14px
+  gap: 16px
   flex: 1
-
-.notification-icon
-  font-size: 28px
-  width: 28px
-  height: 28px
-  color: #FFA800
-  flex-shrink: 0
-  margin-top: 2px
 
 .notification-text
   display: flex
@@ -201,38 +221,40 @@
   strong
     font-size: 14px
     font-weight: 700
-    color: #003333
+    color: #FFA800
 
   span
     font-size: 13px
-    color: #555
+    color: rgba(255, 255, 255, 0.75)
     line-height: 1.5
 
   .notification-time
     font-size: 11px
-    color: #999
+    color: rgba(255, 255, 255, 0.4)
     font-style: italic
 
 .notification-actions
   display: flex
   align-items: center
-  gap: 8px
+  gap: 10px
   flex-shrink: 0
 
-.review-lock-btn
-  background-color: #008080 !important
-  color: #fff !important
-  border-radius: 8px !important
+.review-btn-banner
+  background: linear-gradient(135deg, #FFA800, #F0C040) !important
+  color: #1a1a1a !important
+  border-radius: 10px !important
   font-size: 13px !important
-  font-weight: 600 !important
+  font-weight: 700 !important
   white-space: nowrap
   text-decoration: none
   display: inline-flex
   align-items: center
-  gap: 4px
-  padding: 0 14px
-  height: 36px
-  line-height: 36px
+  gap: 6px
+  padding: 0 16px
+  height: 38px
+  line-height: 38px
+  box-shadow: 0 4px 12px rgba(255, 168, 0, 0.3)
+  transition: all 0.2s ease
 
   mat-icon
     font-size: 16px
@@ -240,15 +262,17 @@
     height: 16px
 
   &:hover
-    background-color: #006666 !important
+    transform: translateY(-2px)
+    box-shadow: 0 6px 16px rgba(255, 168, 0, 0.4)
 
 .lock-now-btn
-  background-color: #555 !important
-  color: #fff !important
-  border-radius: 8px !important
+  background: rgba(255, 255, 255, 0.08) !important
+  color: rgba(255, 255, 255, 0.85) !important
+  border-radius: 10px !important
   font-size: 13px !important
   font-weight: 600 !important
   white-space: nowrap
+  border: 1px solid rgba(255, 255, 255, 0.15) !important
 
   mat-icon
     font-size: 16px
@@ -257,21 +281,30 @@
     margin-right: 4px
 
   &:hover
-    background-color: #333 !important
+    background: rgba(255, 255, 255, 0.14) !important
+    color: #fff !important
 
 .dismiss-btn
-  color: #aaa
+  color: rgba(255, 255, 255, 0.4)
 
   &:hover
-    color: #e53935
+    color: #ff6b6b
 
 @keyframes fadeUp
   from
     opacity: 0
-    transform: translateY(-10px)
+    transform: translateY(-12px)
   to
     opacity: 1
     transform: translateY(0)
+
+@keyframes pulse
+  0%, 100%
+    opacity: 0.4
+    transform: scale(1)
+  50%
+    opacity: 0.8
+    transform: scale(1.15)
 
 // ================================
 // TITLE SECTION
@@ -280,65 +313,129 @@
   display: flex
   align-items: center
   justify-content: space-between
-  background: linear-gradient(135deg, #003333, #008080)
-  border-radius: 12px
-  padding: 28px 32px
+  background: linear-gradient(135deg, #2a2a2a, #353535)
+  border-radius: 16px
+  padding: 32px
   margin-bottom: 24px
+  border: 1px solid rgba(255, 168, 0, 0.2)
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4)
+  gap: 24px
+
+.title-badge
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  background: rgba(255, 168, 0, 0.12)
+  border: 1px solid rgba(255, 168, 0, 0.3)
+  border-radius: 20px
+  padding: 4px 14px 4px 10px
+  margin-bottom: 14px
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+    color: #FFA800
+
+  span
+    font-size: 11px
+    font-weight: 700
+    letter-spacing: 1.5px
+    text-transform: uppercase
+    color: #FFA800
 
 .title-text
   flex: 1
 
   h1
     color: #fff
-    font-size: 24px
+    font-size: 28px
     font-weight: 700
-    margin: 0 0 8px 0
+    margin: 0 0 10px 0
+    text-shadow: 0 2px 8px rgba(255, 168, 0, 0.15)
 
   p
-    color: rgba(255,255,255,0.75)
+    color: rgba(255, 255, 255, 0.65)
     font-size: 14px
     line-height: 1.6
     margin: 0
-    max-width: 600px
+    max-width: 520px
 
-.title-icon
-  font-size: 64px
-  width: 64px
-  height: 64px
-  color: #FFA800
-  opacity: 0.8
-  margin-left: 24px
+.title-stats
+  display: flex
+  gap: 12px
+  flex-shrink: 0
+
+.title-stat-card
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 4px
+  background: rgba(255, 168, 0, 0.06)
+  border: 1px solid rgba(255, 168, 0, 0.15)
+  border-radius: 12px
+  padding: 16px 24px
+  min-width: 80px
+
+  .title-stat-value
+    font-size: 28px
+    font-weight: 800
+    color: #FFA800
+    line-height: 1
+
+  .title-stat-label
+    font-size: 11px
+    color: rgba(255, 255, 255, 0.55)
+    font-weight: 600
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    white-space: nowrap
 
 // ================================
 // SEARCH SECTION
 // ================================
-.top-section
-  background: #fff
-  padding: 20px 24px
-  border-radius: 12px
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06)
+.search-section
+  background: linear-gradient(135deg, #2a2a2a, #323232)
+  padding: 22px 26px
+  border-radius: 16px
+  border: 1px solid rgba(255, 168, 0, 0.15)
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3)
   margin-bottom: 24px
 
 .section-title-row
   display: flex
   align-items: center
   justify-content: space-between
-  margin-bottom: 16px
+  margin-bottom: 18px
 
-.section-title
-  margin: 0
-  font-size: 18px
-  font-weight: 700
-  color: #003333
+.section-heading
+  display: flex
+  align-items: center
+  gap: 10px
+
+  mat-icon
+    font-size: 24px
+    width: 24px
+    height: 24px
+    color: #FFA800
+
+  h2
+    margin: 0
+    font-size: 18px
+    font-weight: 700
+    color: #fff
 
 .clear-filters
   display: flex
   align-items: center
-  gap: 4px
-  color: #888
+  gap: 6px
+  color: #FFA800
   font-size: 13px
   cursor: pointer
-  transition: color 0.2s ease
+  transition: all 0.2s ease
+  padding: 6px 12px
+  border-radius: 8px
+  border: 1px solid rgba(255, 255, 255, 0.08)
 
   mat-icon
     font-size: 16px
@@ -346,31 +443,31 @@
     height: 16px
 
   &:hover
-    color: #008080
-
-    mat-icon
-      color: #008080
+    color: #FFA800
+    border-color: rgba(255, 168, 0, 0.3)
+    background: rgba(255, 168, 0, 0.06)
 
 .input-row
   display: flex
   gap: 16px
   align-items: center
-  width: 100%
 
   .search-field
     flex: 2
 
-  .role-field
+  .role-field, .status-field
     flex: 1
 
 // ================================
 // TABLE SECTION
 // ================================
 .table-section
-  background: #fff
-  border-radius: 12px
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06)
-  padding: 24px
+  background: linear-gradient(135deg, #2a2a2a, #323232)
+  border-radius: 16px
+  border: 1px solid rgba(255, 168, 0, 0.1)
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3)
+  padding: 26px
+  overflow: hidden
 
 .table-header
   display: flex
@@ -381,29 +478,39 @@
 .table-header-left
   display: flex
   align-items: center
-  gap: 12px
+  gap: 14px
 
   h2
     margin: 0
     font-size: 18px
-    font-weight: 600
-    color: #003333
+    font-weight: 700
+    color: #fff
 
 .account-count
-  font-size: 13px
-  color: #888
-  font-weight: 500
-  background-color: #f0f8f8
-  padding: 2px 10px
+  font-size: 12px
+  color: #FFA800
+  font-weight: 700
+  background: rgba(255, 168, 0, 0.1)
+  border: 1px solid rgba(255, 168, 0, 0.2)
+  padding: 3px 12px
   border-radius: 20px
 
 .add-button
-  background-color: #FFA800 !important
-  color: #fff !important
-  border-radius: 8px !important
+  background: linear-gradient(135deg, #FFA800, #F0C040) !important
+  color: #1a1a1a !important
+  border-radius: 10px !important
+  font-weight: 700 !important
+  font-size: 13px !important
+  box-shadow: 0 4px 12px rgba(255, 168, 0, 0.3)
+  transition: all 0.2s ease !important
+  text-decoration: none
+
+  mat-icon
+    margin-right: 6px
 
   &:hover
-    background-color: #cc8400 !important
+    transform: translateY(-2px)
+    box-shadow: 0 6px 16px rgba(255, 168, 0, 0.4) !important
 
 // ================================
 // TABLE STYLES
@@ -411,54 +518,222 @@
 .table-wrapper
   width: 100%
   overflow-x: auto
+  border-radius: 12px
+  border: 1px solid rgba(255, 255, 255, 0.06)
 
 .accounts-table
   width: 100%
+  background: transparent !important
 
   .mat-column-name
-    width: 25%
+    width: 28%
 
   .mat-column-email
     width: 25%
 
   .mat-column-role
-    width: 10%
+    width: 12%
 
   .mat-column-status
     width: 15%
 
   .mat-column-actions
-    width: 25%
+    width: 20%
 
-th.mat-header-cell
-  font-weight: 700
-  color: #003333
-  font-size: 13px
-  background-color: #f0f8f8
+::ng-deep
+  .page-layout .accounts-table
+    .mat-header-row
+      background: rgba(255, 168, 0, 0.1) !important
+      border-bottom: 1px solid rgba(255, 168, 0, 0.2) !important
 
-td.mat-cell
-  font-size: 13px
-  color: #444
-  padding: 12px 8px
+    th.mat-header-cell,
+    .mat-header-cell
+      font-weight: 700
+      color: rgba(255, 210, 120, 0.95) !important
+      font-size: 11px
+      background: transparent !important
+      letter-spacing: 1px
+      text-transform: uppercase
+      border-bottom: none !important
+      padding: 16px 10px
 
-tr.mat-row
-  transition: background 0.2s ease
+    td.mat-cell
+      font-size: 13px
+      color: rgba(255, 255, 255, 0.88) !important
+      padding: 14px 10px
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important
 
-  &:hover
-    background-color: #f0f8f8
+    tr.mat-row
+      background: transparent !important
+      transition: background 0.2s ease
 
-.row-has-notification
-  background-color: #fff8e1 !important
-  border-left: 3px solid #FFA800
+      &:hover
+        background: rgba(255, 168, 0, 0.05) !important
+
+    tr.row-has-notification
+      background: rgba(255, 168, 0, 0.06) !important
+      border-left: 3px solid #FFA800
+
+  // --------------------------------
+  // Form fields — outline + label
+  // --------------------------------
+  .search-section
+
+    .mat-form-field-outline
+      color: rgba(255, 168, 0, 0.3)
+
+    .mat-form-field-label,
+    mat-label
+      color: rgba(255, 200, 100, 0.75) !important
+
+    .mat-input-element
+      color: rgba(255, 255, 255, 0.92) !important
+      caret-color: #FFA800 !important
+
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-gap,
+    .mat-form-field-outline-end
+      background: rgba(255, 168, 0, 0.04) !important
+      border-color: rgba(255, 168, 0, 0.28) !important
+
+    .mat-focused
+      .mat-form-field-outline-start,
+      .mat-form-field-outline-gap,
+      .mat-form-field-outline-end
+        border-color: #FFA800 !important
+        border-width: 2px !important
+
+    .mat-focused .mat-form-field-label,
+    .mat-focused mat-label
+      color: #FFA800 !important
+
+    .mat-select-value-text
+      color: rgba(255, 255, 255, 0.88) !important
+
+    .mat-select-arrow
+      color: rgba(255, 168, 0, 0.7) !important
+
+    .mat-form-field-prefix mat-icon
+      color: rgba(255, 168, 0, 0.55) !important
+
+  // --------------------------------
+  // Dropdown panel (global overlay)
+  // --------------------------------
+  .mat-select-panel
+    background: #252525 !important
+    border: 1px solid rgba(255, 168, 0, 0.22) !important
+    border-radius: 10px !important
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important
+
+  .mat-option
+    color: rgba(255, 255, 255, 0.78) !important
+    font-size: 13px !important
+
+    &:hover,
+    &.mat-active
+      background: rgba(255, 168, 0, 0.1) !important
+      color: #FFA800 !important
+
+  .mat-option.mat-selected:not(.mat-option-disabled)
+    color: #FFA800 !important
+    background: rgba(255, 168, 0, 0.08) !important
+
+  .mat-option.mat-selected:not(.mat-option-disabled) .mat-pseudo-checkbox-checked
+    background: #FFA800 !important
 
 // ================================
-// LOCK STATUS BADGE
+// ACCOUNT NAME CELL
+// ================================
+.account-name-cell
+  display: flex
+  align-items: center
+  gap: 12px
+
+.account-avatar
+  width: 38px
+  height: 38px
+  border-radius: 10px
+  background: linear-gradient(135deg, rgba(255, 168, 0, 0.3), rgba(255, 168, 0, 0.15))
+  border: 1px solid rgba(255, 168, 0, 0.3)
+  color: #FFA800
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 12px
+  font-weight: 700
+  flex-shrink: 0
+  transition: all 0.2s ease
+
+  &.has-notification
+    background: linear-gradient(135deg, #FFA800, #F0C040)
+    color: #1a1a1a
+    box-shadow: 0 0 0 3px rgba(255, 168, 0, 0.25)
+
+.account-name-info
+  display: flex
+  flex-direction: column
+  gap: 3px
+
+.account-fullname
+  font-size: 14px
+  font-weight: 600
+  color: #fff
+
+.account-id
+  font-size: 11px
+  color: rgba(255, 255, 255, 0.45)
+
+// ================================
+// EMAIL CELL
+// ================================
+.email-cell
+  display: flex
+  align-items: center
+  gap: 8px
+  color: rgba(255, 255, 255, 0.75)
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
+    color: rgba(255, 168, 0, 0.5)
+    flex-shrink: 0
+
+// ================================
+// ROLE BADGE
+// ================================
+.role-badge
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  padding: 5px 12px
+  border-radius: 20px
+  font-size: 12px
+  font-weight: 700
+
+  mat-icon
+    font-size: 14px
+    width: 14px
+    height: 14px
+
+  &.admin
+    background: rgba(255, 168, 0, 0.14)
+    color: #FFB830
+    border: 1px solid rgba(255, 168, 0, 0.3)
+
+  &.user
+    background: rgba(255, 255, 255, 0.08)
+    color: rgba(255, 255, 255, 0.75)
+    border: 1px solid rgba(255, 255, 255, 0.14)
+
+// ================================
+// LOCK STATUS
 // ================================
 .lock-status
   display: inline-flex
   align-items: center
-  gap: 5px
-  padding: 4px 10px
+  gap: 6px
+  padding: 5px 12px
   border-radius: 20px
   font-size: 12px
   font-weight: 600
@@ -471,24 +746,31 @@ tr.mat-row
     height: 14px
 
   &.locked
-    background-color: rgba(229, 57, 53, 0.1)
-    color: #e53935
+    background: rgba(244, 67, 54, 0.12)
+    color: #f55a4e
+    border: 1px solid rgba(244, 67, 54, 0.25)
     cursor: pointer
 
     &:hover
-      background-color: rgba(229, 57, 53, 0.2)
-      transform: scale(1.05)
+      background: rgba(244, 67, 54, 0.2)
+      transform: scale(1.04)
 
   &.unlocked
-    background-color: rgba(0, 128, 128, 0.1)
-    color: #008080
+    background: rgba(76, 175, 80, 0.12)
+    color: #5ec462
+    border: 1px solid rgba(76, 175, 80, 0.25)
 
     &.clickable
       cursor: pointer
 
       &:hover
-        background-color: rgba(0, 128, 128, 0.2)
-        transform: scale(1.05)
+        background: rgba(76, 175, 80, 0.2)
+        transform: scale(1.04)
+
+    &.own-account
+      background: rgba(33, 150, 243, 0.12)
+      color: #4aabf7
+      border: 1px solid rgba(33, 150, 243, 0.25)
 
 // ================================
 // ACTION CELL
@@ -496,86 +778,84 @@ tr.mat-row
 .action-cell
   display: flex
   align-items: center
-  gap: 2px
+  gap: 4px
 
-.edit-btn
-  color: #008080
+.action-icon-btn
+  width: 34px
+  height: 34px
+  border-radius: 8px !important
+  transition: all 0.2s ease !important
 
-  &:hover
-    color: #006666
+  mat-icon
+    font-size: 18px
+    width: 18px
+    height: 18px
 
-.delete-btn
-  color: #e53935
+  &.edit-btn
+    color: rgba(255, 168, 0, 0.75) !important
 
-  &:hover
-    color: #b71c1c
+    &:hover
+      color: #FFA800 !important
+      background: rgba(255, 168, 0, 0.12) !important
 
-.review-btn
-  color: #FFA800
-  transition: all 0.2s ease
+  &.delete-btn
+    color: rgba(244, 67, 54, 0.75) !important
 
-  &:hover
-    color: #cc8400
-    transform: scale(1.1)
+    &:hover
+      color: #f44336 !important
+      background: rgba(244, 67, 54, 0.12) !important
+
+  &.review-btn
+    color: rgba(33, 150, 243, 0.75) !important
+
+    &:hover
+      color: #2196f3 !important
+      background: rgba(33, 150, 243, 0.12) !important
 
 // ================================
-// ACCOUNT TABLE EXTRAS
+// NO RESULTS
 // ================================
 .no-results
   display: flex
   flex-direction: column
   align-items: center
-  padding: 40px
-  color: #ccc
+  padding: 60px 40px
+  color: rgba(255, 255, 255, 0.2)
 
   mat-icon
-    font-size: 40px
-    width: 40px
-    height: 40px
-    margin-bottom: 8px
+    font-size: 48px
+    width: 48px
+    height: 48px
+    margin-bottom: 12px
+    color: rgba(255, 168, 0, 0.25)
 
-.account-name-cell
-  display: flex
-  align-items: center
-  gap: 12px
+  p
+    font-size: 16px
+    font-weight: 600
+    color: rgba(255, 255, 255, 0.5)
+    margin: 0 0 6px 0
 
-.account-avatar
-  width: 36px
-  height: 36px
-  border-radius: 50%
-  background-color: #008080
-  color: #fff
-  display: flex
-  align-items: center
-  justify-content: center
-  font-size: 12px
-  font-weight: 700
-  flex-shrink: 0
-  transition: background 0.2s ease
-
-  &.has-notification
-    background-color: #FFA800
-    box-shadow: 0 0 0 3px rgba(255,168,0,0.25)
-
-.role-badge
-  padding: 4px 10px
-  border-radius: 20px
-  font-size: 12px
-  font-weight: 600
-
-  &.admin
-    background-color: rgba(0,128,128,0.1)
-    color: #008080
-
-  &.user
-    background-color: rgba(255,168,0,0.1)
-    color: #FFA800
+  span
+    font-size: 13px
+    color: rgba(255, 255, 255, 0.3)
 
 // ================================
 // NAV OVERLAY
 // ================================
 .nav-overlay
   display: none
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: rgba(0, 0, 0, 0.7)
+  z-index: 99
+  opacity: 0
+  transition: opacity 0.3s ease
+
+  &.visible
+    opacity: 1
 
 // ================================
 // RESPONSIVE
@@ -585,67 +865,81 @@ tr.mat-row
     width: 240px
 
     &.collapsed
-      width: 56px
+      width: 70px
 
   .main-content
     margin-left: 240px
     width: calc(100% - 240px)
 
     &.expanded
-      margin-left: 56px
-      width: calc(100% - 56px)
+      margin-left: 70px
+      width: calc(100% - 70px)
+
+  .title-stats
+    display: none
 
 @media (max-width: 768px)
   .side-nav
-    width: 240px
+    width: 260px
     position: fixed
     transform: translateX(-100%)
     transition: transform 0.3s ease
 
-    &.collapsed
+    &:not(.collapsed)
       transform: translateX(0)
 
   .main-content
     margin-left: 0
     width: 100%
-    padding: 16px
+    padding: 20px
 
     &.expanded
       margin-left: 0
       width: 100%
 
+  .nav-overlay
+    display: block
+
   .mobile-menu-btn
     display: flex
     align-items: center
     justify-content: center
-    width: 44px
-    height: 44px
-    background-color: #008080
-    border-radius: 50%
-    color: #fff
+    width: 48px
+    height: 48px
+    background: linear-gradient(135deg, #FFA800, #F0C040)
+    border-radius: 12px
+    color: #1a1a1a
     cursor: pointer
-    margin-bottom: 16px
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2)
+    margin-bottom: 20px
+    box-shadow: 0 4px 12px rgba(255, 168, 0, 0.3)
+    transition: all 0.2s ease
 
     mat-icon
-      font-size: 22px
-      width: 22px
-      height: 22px
+      font-size: 24px
+      width: 24px
+      height: 24px
 
-  .nav-overlay
-    display: block
-    position: fixed
-    top: 0
-    left: 0
+    &:hover
+      transform: translateY(-2px)
+
+  .title-section
+    flex-direction: column
+    align-items: flex-start
+    padding: 24px
+
+  .title-stats
+    display: flex
     width: 100%
-    height: 100%
-    background: rgba(0,0,0,0.5)
-    z-index: 99
+    gap: 10px
+
+    .title-stat-card
+      flex: 1
+      padding: 12px 10px
 
   .notification-banner
     flex-direction: column
     align-items: flex-start
-    gap: 12px
+    gap: 14px
 
   .notification-actions
     width: 100%
@@ -653,52 +947,34 @@ tr.mat-row
 
   .input-row
     flex-direction: column
-    gap: 8px
+    gap: 0
 
-    mat-form-field, .search-field, .role-field
+    mat-form-field
       width: 100%
-      flex: unset
 
   .table-section
-    padding: 16px
-    overflow-x: auto
-
-  .accounts-table
-    min-width: 640px
-
-  .top-section
     padding: 16px
 
   .table-header
     flex-direction: column
     align-items: flex-start
-    gap: 12px
+    gap: 14px
 
   .add-button
     width: 100%
 
+  .accounts-table
+    min-width: 640px
+
 @media (max-width: 480px)
   .side-nav
     width: 100%
-    transform: translateX(-100%)
-
-    &.collapsed
-      transform: translateX(0)
 
   .main-content
-    margin-left: 0
-    width: 100%
-    padding: 12px
+    padding: 14px
 
-    &.expanded
-      margin-left: 0
-      width: 100%
+  .title-section
+    padding: 20px
 
-  th.mat-header-cell, td.mat-cell
-    font-size: 11px
-    padding: 8px 4px
-
-  .account-avatar
-    width: 30px
-    height: 30px
-    font-size: 11px
+    h1
+      font-size: 22px

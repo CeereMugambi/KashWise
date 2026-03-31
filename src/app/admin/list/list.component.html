@@ -1,7 +1,9 @@
 <div class="page-layout">
 
-  <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+  <!-- Nav Overlay (mobile) -->
+  <div class="nav-overlay" [class.visible]="!isNavCollapsed" (click)="toggleNav()"></div>
 
+  <!-- Side Nav -->
   <div class="side-nav" [class.collapsed]="isNavCollapsed">
     <div class="nav-toggle" (click)="toggleNav()">
       <mat-icon>menu</mat-icon>
@@ -9,23 +11,52 @@
         <span>{{ userInitials }}</span>
       </div>
     </div>
-    <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
+
+    <div class="side-nav-header" *ngIf="!isNavCollapsed">
+      <span>Menu</span>
+    </div>
+
     <ul class="nav-links">
-      <li class="nav-item active" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
-      <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
-      <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
-      <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
-      <ng-container *ngIf="account!.role === Role.Admin">
-        <li class="nav-item" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
+      <li class="nav-item" routerLink="/home">
+        <mat-icon>dashboard</mat-icon>
+        <span *ngIf="!isNavCollapsed">Dashboard</span>
+      </li>
+      <li class="nav-item" routerLink="/portfolio">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <span *ngIf="!isNavCollapsed">Portfolio</span>
+      </li>
+      <li class="nav-item" routerLink="/transactions">
+        <mat-icon>receipt_long</mat-icon>
+        <span *ngIf="!isNavCollapsed">Transactions</span>
+      </li>
+      <li class="nav-item" routerLink="/analytics">
+        <mat-icon>analytics</mat-icon>
+        <span *ngIf="!isNavCollapsed">Analytics</span>
+      </li>
+      <li class="nav-item" routerLink="/settings">
+        <mat-icon>settings</mat-icon>
+        <span *ngIf="!isNavCollapsed">Settings</span>
+      </li>
+      <ng-container *ngIf="account?.role === Role.Admin">
+        <li class="nav-item active" routerLink="/admin">
+          <mat-icon>security</mat-icon>
+          <span *ngIf="!isNavCollapsed">Admin</span>
+        </li>
       </ng-container>
     </ul>
+
     <div class="nav-bottom" (click)="logout()">
-      <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+      <li class="nav-item logout">
+        <mat-icon>logout</mat-icon>
+        <span *ngIf="!isNavCollapsed">Logout</span>
+      </li>
     </div>
   </div>
 
+  <!-- Main Content -->
   <div class="main-content" [class.expanded]="isNavCollapsed">
 
+    <!-- Mobile menu button -->
     <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
       <mat-icon>menu</mat-icon>
     </div>
@@ -33,7 +64,9 @@
     <!-- Profile Update Notification Banner -->
     <div class="notification-banner" *ngIf="profileNotification">
       <div class="notification-content">
-        <mat-icon class="notification-icon">notifications_active</mat-icon>
+        <div class="notification-pulse">
+          <mat-icon class="notification-icon">notifications_active</mat-icon>
+        </div>
         <div class="notification-text">
           <strong>Profile Update Request</strong>
           <span>{{ profileNotification.accountName }} ({{ profileNotification.accountEmail }}) has confirmed their updated profile details and is awaiting your review.</span>
@@ -41,7 +74,7 @@
         </div>
       </div>
       <div class="notification-actions">
-        <a [routerLink]="['/list/review', profileNotification.accountId]" mat-raised-button class="review-lock-btn">
+        <a [routerLink]="['/admin/list/review', profileNotification.accountId]" mat-raised-button class="review-btn-banner">
           <mat-icon>rate_review</mat-icon>
           Review Profile
         </a>
@@ -55,21 +88,39 @@
       </div>
     </div>
 
+    <!-- Title Section -->
     <div class="title-section">
       <div class="title-text">
-        <h1>Welcome Admin</h1>
-        <p>This section can only be accessed by administrators.<br>
-          The admin page is a secure and powerful dashboard designed for administrators
-          to manage various aspects of the system with ease such as managing user accounts.
-        </p>
+        <div class="title-badge">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Admin Console</span>
+        </div>
+        <h1>Account Management</h1>
+        <p>Secure admin dashboard for managing user accounts, roles, and access control across the platform.</p>
       </div>
-      <mat-icon class="title-icon">admin_panel_settings</mat-icon>
+      <div class="title-stats">
+        <div class="title-stat-card">
+          <span class="title-stat-value">{{ accounts?.length ?? 0 }}</span>
+          <span class="title-stat-label">Total Accounts</span>
+        </div>
+        <div class="title-stat-card">
+          <span class="title-stat-value">{{ adminCount }}</span>
+          <span class="title-stat-label">Admins</span>
+        </div>
+        <div class="title-stat-card">
+          <span class="title-stat-value">{{ userCount }}</span>
+          <span class="title-stat-label">Users</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Search Section -->
-    <div class="top-section">
+    <!-- Search & Filter Section -->
+    <div class="search-section">
       <div class="section-title-row">
-        <h2 class="section-title">Manage Accounts</h2>
+        <div class="section-heading">
+          <mat-icon>manage_accounts</mat-icon>
+          <h2>Manage Accounts</h2>
+        </div>
         <span class="clear-filters" (click)="clearFilters()">
           <mat-icon>refresh</mat-icon>
           Clear Filters
@@ -89,6 +140,14 @@
             <mat-option value="User">User</mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field appearance="outline" class="status-field">
+          <mat-label>Lock Status</mat-label>
+          <mat-select [(ngModel)]="statusFilter" (ngModelChange)="onSearch()">
+            <mat-option value="">All Status</mat-option>
+            <mat-option value="locked">Locked</mat-option>
+            <mat-option value="unlocked">Unlocked</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
 
@@ -99,7 +158,7 @@
           <h2>All Accounts</h2>
           <span class="account-count">{{ filteredAccounts.length }} accounts</span>
         </div>
-        <a routerLink="/add" mat-raised-button class="add-button">
+        <a routerLink="/admin/add" mat-raised-button class="add-button">
           <mat-icon>person_add</mat-icon>
           Create Account
         </a>
@@ -116,7 +175,10 @@
                 <div class="account-avatar" [class.has-notification]="profileNotification?.accountId === account.id">
                   {{ account.firstName?.charAt(0) }}{{ account.lastName?.charAt(0) }}
                 </div>
-                <span>{{ account.title }} {{ account.firstName }} {{ account.lastName }}</span>
+                <div class="account-name-info">
+                  <span class="account-fullname">{{ account.title }} {{ account.firstName }} {{ account.lastName }}</span>
+                  <span class="account-id">ID: {{ account.id }}</span>
+                </div>
               </div>
             </td>
           </ng-container>
@@ -124,7 +186,12 @@
           <!-- Email Column -->
           <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let account">{{ account.email }}</td>
+            <td mat-cell *matCellDef="let account">
+              <div class="email-cell">
+                <mat-icon>mail_outline</mat-icon>
+                <span>{{ account.email }}</span>
+              </div>
+            </td>
           </ng-container>
 
           <!-- Role Column -->
@@ -132,6 +199,7 @@
             <th mat-header-cell *matHeaderCellDef>Role</th>
             <td mat-cell *matCellDef="let account">
               <span class="role-badge" [class.admin]="account.role === 'Admin'" [class.user]="account.role === 'User'">
+                <mat-icon>{{ account.role === 'Admin' ? 'shield' : 'person' }}</mat-icon>
                 {{ account.role }}
               </span>
             </td>
@@ -141,17 +209,13 @@
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef>Lock Status</th>
             <td mat-cell *matCellDef="let account">
-
-              <!-- Admin's own account: always unlocked, no toggle -->
               <ng-container *ngIf="isAdminOwnAccount(account.id); else lockToggle">
-                <span class="lock-status unlocked">
-                  <mat-icon>lock_open</mat-icon>
-                  <span>Admin</span>
+                <span class="lock-status unlocked own-account">
+                  <mat-icon>verified_user</mat-icon>
+                  <span>Protected</span>
                 </span>
               </ng-container>
-
               <ng-template #lockToggle>
-                <!-- LOCKED (default) — click to unlock -->
                 <span
                   *ngIf="unlockedAccountId !== account.id"
                   class="lock-status locked"
@@ -160,7 +224,6 @@
                   <mat-icon>lock</mat-icon>
                   <span>Locked</span>
                 </span>
-                <!-- UNLOCKED — click to relock -->
                 <span
                   *ngIf="unlockedAccountId === account.id"
                   class="lock-status unlocked clickable"
@@ -170,7 +233,6 @@
                   <span>Unlocked</span>
                 </span>
               </ng-template>
-
             </td>
           </ng-container>
 
@@ -179,18 +241,17 @@
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let account">
               <div class="action-cell">
-                <a [routerLink]="['/list/edit', account.id]" mat-icon-button class="edit-btn" matTooltip="Edit account">
+                <a [routerLink]="['/admin/list/edit', account.id]" mat-icon-button class="action-icon-btn edit-btn" matTooltip="Edit account">
                   <mat-icon>edit</mat-icon>
                 </a>
-                <button mat-icon-button class="delete-btn" (click)="deleteAccount(account.id)" [disabled]="account.isDeleting" matTooltip="Delete account">
+                <button mat-icon-button class="action-icon-btn delete-btn" (click)="confirmDelete(account)" [disabled]="account.isDeleting" matTooltip="Delete account">
                   <mat-icon>{{ account.isDeleting ? 'hourglass_empty' : 'delete' }}</mat-icon>
                 </button>
-                <!-- Review icon shown only for the account with a pending notification -->
-                 <a
+                <a
                   *ngIf="profileNotification?.accountId === account.id"
-                  [routerLink]="['/list/review', account.id]"
+                  [routerLink]="['/admin/list/review', account.id]"
                   mat-icon-button
-                  class="review-btn"
+                  class="action-icon-btn review-btn"
                   matTooltip="Review profile update">
                   <mat-icon>rate_review</mat-icon>
                 </a>
@@ -208,6 +269,7 @@
       <div class="no-results" *ngIf="filteredAccounts.length === 0">
         <mat-icon>person_search</mat-icon>
         <p>No accounts found</p>
+        <span>Try adjusting your search or filters</span>
       </div>
 
     </div>

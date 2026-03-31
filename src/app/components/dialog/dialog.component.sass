@@ -1,58 +1,99 @@
 .dialog-container
-  padding: 10px
+  background: linear-gradient(135deg, #1e1e1e, #252525)
+  border: 1px solid rgba(255, 168, 0, 0.2)
+  border-radius: 16px
+  padding: 28px 24px 20px
+  text-align: center
   max-width: 400px
 
 .dialog-icon
   display: flex
-  justify-content: flex-start
-  margin-bottom: 12px
+  align-items: center
+  justify-content: center
+  width: 56px
+  height: 56px
+  border-radius: 50%
+  background: rgba(244, 67, 54, 0.1)
+  border: 1px solid rgba(244, 67, 54, 0.25)
+  margin: 0 auto 16px auto
 
   mat-icon
-    font-size: 48px
-    width: 48px
-    height: 48px
-    color: #e53935
+    font-size: 28px
+    width: 28px
+    height: 28px
+    color: #f55a4e
 
-h2
-  font-size: 20px
-  font-weight: 700
-  color: #003333
-  margin: 0 0 8px 0
-  text-align: left
+::ng-deep
+  // Dialog panel background
+  .mat-mdc-dialog-container,
+  .mdc-dialog__surface
+    background: linear-gradient(135deg, #1e1e1e, #252525) !important
+    border-radius: 16px !important
+    border: 1px solid rgba(255, 168, 0, 0.2) !important
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6) !important
 
-p
-  color: #666
-  font-size: 14px
-  margin: 0
-  line-height: 1.6
-  text-align: left
+  // Title
+  .mat-mdc-dialog-title,
+  h2[mat-dialog-title]
+    color: #fff !important
+    font-size: 20px !important
+    font-weight: 700 !important
+    text-align: center
+    padding: 0 0 8px 0
+    margin: 0
 
-mat-dialog-actions
-  display: flex
-  justify-content: space-between
-  gap: 12px
-  margin-top: 16px
-  padding: 0
+  // Content text
+  .mat-mdc-dialog-content
+    color: rgba(255, 255, 255, 0.6) !important
+    font-size: 14px !important
+    line-height: 1.6
+    text-align: center
+    padding: 8px 0 16px 0
 
+  // Actions row
+  .mat-mdc-dialog-actions
+    justify-content: center !important
+    gap: 12px
+    padding: 8px 0 0 0
+    border-top: 1px solid rgba(255, 255, 255, 0.06)
+
+// Cancel button
 .cancel-btn
-  border: 2px solid #008080 !important
-  color: #008080 !important
-  border-radius: 8px !important
-  padding: 0 24px
-  height: 40px
+  color: rgba(255, 255, 255, 0.7) !important
+  border-color: rgba(255, 255, 255, 0.15) !important
+  border-radius: 10px !important
+  font-weight: 600 !important
+  font-size: 13px !important
+  padding: 0 20px !important
+  height: 38px
   transition: all 0.2s ease
 
   &:hover
-    background-color: #008080 !important
+    background: rgba(255, 255, 255, 0.06) !important
     color: #fff !important
+    border-color: rgba(255, 255, 255, 0.3) !important
 
+// Confirm/delete button
 .confirm-btn
-  background-color: #e53935 !important
+  background: linear-gradient(135deg, #c0392b, #e74c3c) !important
   color: #fff !important
-  border-radius: 8px !important
-  padding: 0 24px
-  height: 40px
-  transition: background-color 0.2s ease
+  border-radius: 10px !important
+  font-weight: 700 !important
+  font-size: 13px !important
+  padding: 0 20px !important
+  height: 38px
+  border: none !important
+  transition: all 0.2s ease
+  display: inline-flex
+  align-items: center
+  gap: 6px
+
+  mat-icon
+    font-size: 16px
+    width: 16px
+    height: 16px
 
   &:hover
-    background-color: #b71c1c !important
+    background: linear-gradient(135deg, #e74c3c, #ff5c4d) !important
+    box-shadow: 0 4px 16px rgba(231, 76, 60, 0.4) !important
+    transform: translateY(-1px)
