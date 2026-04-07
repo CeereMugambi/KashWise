@@ -1,196 +1,195 @@
 <div class="page-layout">
 
-    <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
-  
-    <div class="side-nav" [class.collapsed]="isNavCollapsed">
-      <div class="nav-toggle" (click)="toggleNav()">
-        <mat-icon>menu</mat-icon>
-        <div class="user-avatar" *ngIf="!isNavCollapsed">
-          <span>{{ userInitials }}</span>
-        </div>
-      </div>
-      <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
-      <ul class="nav-links">
-        <li class="nav-item" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
-        <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
-        <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
-        <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
-        <ng-container *ngIf="account!.role === Role.Admin">
-          <li class="nav-item active" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
-        </ng-container>
-      </ul>
-      <div class="nav-bottom" (click)="logout()">
-        <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+  <div class="nav-overlay" *ngIf="!isNavCollapsed" (click)="toggleNav()"></div>
+
+  <div class="side-nav" [class.collapsed]="isNavCollapsed">
+    <div class="nav-toggle" (click)="toggleNav()">
+      <mat-icon>menu</mat-icon>
+      <div class="user-avatar" *ngIf="!isNavCollapsed">
+        <span>{{ userInitials }}</span>
       </div>
     </div>
-  
-    <div class="main-content" [class.expanded]="isNavCollapsed">
-  
-      <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
-        <mat-icon>menu</mat-icon>
+    <div class="side-nav-header" *ngIf="!isNavCollapsed"><span>Menu</span></div>
+    <ul class="nav-links">
+      <li class="nav-item" routerLink="/home"><mat-icon>home</mat-icon><span *ngIf="!isNavCollapsed">Home</span></li>
+      <li class="nav-item" routerLink="/catalogue"><mat-icon>menu_book</mat-icon><span *ngIf="!isNavCollapsed">Catalogue</span></li>
+      <li class="nav-item" routerLink="/profile"><mat-icon>person</mat-icon><span *ngIf="!isNavCollapsed">Profile</span></li>
+      <li class="nav-item" routerLink="/settings"><mat-icon>settings</mat-icon><span *ngIf="!isNavCollapsed">Settings</span></li>
+      <ng-container *ngIf="account!.role === Role.Admin">
+        <li class="nav-item active" routerLink="/list"><mat-icon>security</mat-icon><span *ngIf="!isNavCollapsed">Admin</span></li>
+      </ng-container>
+    </ul>
+    <div class="nav-bottom" (click)="logout()">
+      <li class="nav-item logout"><mat-icon>logout</mat-icon><span *ngIf="!isNavCollapsed">Logout</span></li>
+    </div>
+  </div>
+
+  <div class="main-content" [class.expanded]="isNavCollapsed">
+
+    <div class="mobile-menu-btn" *ngIf="isNavCollapsed" (click)="toggleNav()">
+      <mat-icon>menu</mat-icon>
+    </div>
+
+    <!-- Header Banner -->
+    <div class="title-section">
+      <div class="title-text">
+        <h1>Review Profile Update</h1>
+        <p>Review the details submitted by the user before locking their profile.</p>
       </div>
-  
-      <!-- Header -->
-      <div class="title-section">
-        <div class="title-text">
-          <h1>Review Profile Update</h1>
-          <p>Review the details submitted by the user before locking their profile.</p>
+      <mat-icon class="title-icon">rate_review</mat-icon>
+    </div>
+
+    <!-- Notification Info Bar -->
+    <div class="notification-banner" *ngIf="notification">
+      <div class="notification-content">
+        <mat-icon class="notification-icon">notifications_active</mat-icon>
+        <div class="notification-text">
+          <strong>{{ notification.accountName }}</strong>
+          <span>submitted a profile update request and is awaiting your review.</span>
+          <span class="notification-time">{{ notification.timestamp | date:'medium' }}</span>
         </div>
-        <mat-icon class="title-icon">rate_review</mat-icon>
       </div>
-  
-      <!-- Notification Info Bar -->
-      <div class="notification-banner" *ngIf="notification">
-        <div class="notification-content">
-          <mat-icon class="notification-icon">notifications_active</mat-icon>
-          <div class="notification-text">
-            <strong>{{ notification.accountName }}</strong>
-            <span>submitted a profile update request and is awaiting your review.</span>
-            <span class="notification-time">{{ notification.timestamp | date:'medium' }}</span>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="!account">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading account details...</p>
+    </div>
+
+    <!-- Account Details Card -->
+    <div class="review-card" *ngIf="account">
+
+      <!-- Avatar + Name Hero -->
+      <div class="profile-hero">
+        <div class="profile-avatar">{{ getInitials(account) }}</div>
+        <div class="profile-meta">
+          <h2>{{ account.title }} {{ account.firstName }} {{ account.lastName }}</h2>
+          <span class="role-badge" [class.admin]="account.role === 'Admin'" [class.user]="account.role === 'User'">
+            {{ account.role }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="details-grid">
+
+        <!-- Personal Info -->
+        <div class="detail-group">
+          <h3 class="group-title">
+            <mat-icon>person</mat-icon>
+            Personal Information
+          </h3>
+          <div class="detail-row" [class.changed]="isChanged('firstName')">
+            <span class="detail-label">First Name</span>
+            <span class="detail-value">
+              {{ account.firstName || '—' }}
+              <span class="changed-badge" *ngIf="isChanged('firstName')">Updated</span>
+            </span>
           </div>
-        </div>
-      </div>
-  
-      <!-- Loading State -->
-      <div class="loading-state" *ngIf="!account">
-        <mat-spinner diameter="40"></mat-spinner>
-        <p>Loading account details...</p>
-      </div>
-  
-      <!-- Account Details Card -->
-      <div class="review-card" *ngIf="account">
-  
-        <!-- Avatar + Name Hero -->
-        <div class="profile-hero">
-          <div class="profile-avatar">{{ getInitials(account) }}</div>
-          <div class="profile-meta">
-            <h2>{{ account.title }} {{ account.firstName }} {{ account.lastName }}</h2>
-            <span class="role-badge" [class.admin]="account.role === 'Admin'" [class.user]="account.role === 'User'">
-              {{ account.role }}
+          <div class="detail-row" [class.changed]="isChanged('lastName')">
+            <span class="detail-label">Last Name</span>
+            <span class="detail-value">
+              {{ account.lastName || '—' }}
+              <span class="changed-badge" *ngIf="isChanged('lastName')">Updated</span>
             </span>
           </div>
         </div>
-  
 
-     <!-- Details Grid -->
-<div class="details-grid">
-
-    <!-- Personal Info -->
-    <div class="detail-group">
-      <h3 class="group-title">
-        <mat-icon>person</mat-icon>
-        Personal Information
-      </h3>
-      <div class="detail-row" [class.changed]="isChanged('firstName')">
-        <span class="detail-label">First Name</span>
-        <span class="detail-value">
-          {{ account.firstName || '—' }}
-          <span class="changed-badge" *ngIf="isChanged('firstName')">Updated</span>
-        </span>
-      </div>
-      <div class="detail-row" [class.changed]="isChanged('lastName')">
-        <span class="detail-label">Last Name</span>
-        <span class="detail-value">
-          {{ account.lastName || '—' }}
-          <span class="changed-badge" *ngIf="isChanged('lastName')">Updated</span>
-        </span>
-      </div>
-    </div>
-  
-    <!-- Contact Details -->
-    <div class="detail-group">
-      <h3 class="group-title">
-        <mat-icon>contact_mail</mat-icon>
-        Contact Details
-      </h3>
-      <div class="detail-row" [class.changed]="isChanged('email')">
-        <span class="detail-label">Email</span>
-        <span class="detail-value">
-          {{ account.email || '—' }}
-          <span class="changed-badge" *ngIf="isChanged('email')">Updated</span>
-        </span>
-      </div>
-      <div class="detail-row" [class.changed]="isChanged('phone')">
-        <span class="detail-label">Phone</span>
-        <span class="detail-value">
-          {{ account.phone || '—' }}
-          <span class="changed-badge" *ngIf="isChanged('phone')">Updated</span>
-        </span>
-      </div>
-      <div class="detail-row" [class.changed]="isChanged('location')">
-        <span class="detail-label">Location</span>
-        <span class="detail-value">
-          {{ account.location || '—' }}
-          <span class="changed-badge" *ngIf="isChanged('location')">Updated</span>
-        </span>
-      </div>
-    </div>
-  
-    <!-- Account Info -->
-    <div class="detail-group" *ngIf="account.acceptTerms !== undefined || account.created">
-      <h3 class="group-title">
-        <mat-icon>admin_panel_settings</mat-icon>
-        Account Info
-      </h3>
-      <div class="detail-row" *ngIf="account.created">
-        <span class="detail-label">Account Created</span>
-        <span class="detail-value">{{ formatDate(account.created) }}</span>
-      </div>
-      <div class="detail-row" *ngIf="account.updated">
-        <span class="detail-label">Last Updated</span>
-        <span class="detail-value">{{ formatDate(account.updated) }}</span>
-      </div>
-      <div class="detail-row" *ngIf="account.acceptTerms !== undefined">
-        <span class="detail-label">Terms Accepted</span>
-        <span class="detail-value">
-          <mat-icon class="check-icon" [class.yes]="account.acceptTerms" [class.no]="!account.acceptTerms">
-            {{ account.acceptTerms ? 'check_circle' : 'cancel' }}
-          </mat-icon>
-        </span>
-      </div>
-    </div>
-  
-  </div>
-  
-  <!-- No changes notice -->
-  <div class="no-changes-notice" *ngIf="!pendingUpdate">
-    <mat-icon>info_outline</mat-icon>
-    No pending changes found. The profile details shown are the current saved values.
-  </div>
-  
-  <!-- Error -->
-  <div class="lock-error" *ngIf="lockError">
-    <mat-icon>error_outline</mat-icon>
-    {{ lockError }}
-  </div>
-  
-        <!-- User's Note -->
-        <div class="user-message" *ngIf="notification?.message">
+        <!-- Contact Details -->
+        <div class="detail-group">
           <h3 class="group-title">
-            <mat-icon>message</mat-icon>
-            User's Note
+            <mat-icon>contact_mail</mat-icon>
+            Contact Details
           </h3>
-          <p class="message-text">{{ notification.message }}</p>
+          <div class="detail-row" [class.changed]="isChanged('email')">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">
+              {{ account.email || '—' }}
+              <span class="changed-badge" *ngIf="isChanged('email')">Updated</span>
+            </span>
+          </div>
+          <div class="detail-row" [class.changed]="isChanged('phone')">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">
+              {{ account.phone || '—' }}
+              <span class="changed-badge" *ngIf="isChanged('phone')">Updated</span>
+            </span>
+          </div>
+          <div class="detail-row" [class.changed]="isChanged('location')">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">
+              {{ account.location || '—' }}
+              <span class="changed-badge" *ngIf="isChanged('location')">Updated</span>
+            </span>
+          </div>
         </div>
-  
+
+        <!-- Account Info -->
+        <div class="detail-group" *ngIf="account.acceptTerms !== undefined || account.created">
+          <h3 class="group-title">
+            <mat-icon>admin_panel_settings</mat-icon>
+            Account Info
+          </h3>
+          <div class="detail-row" *ngIf="account.created">
+            <span class="detail-label">Account Created</span>
+            <span class="detail-value">{{ formatDate(account.created) }}</span>
+          </div>
+          <div class="detail-row" *ngIf="account.updated">
+            <span class="detail-label">Last Updated</span>
+            <span class="detail-value">{{ formatDate(account.updated) }}</span>
+          </div>
+          <div class="detail-row" *ngIf="account.acceptTerms !== undefined">
+            <span class="detail-label">Terms Accepted</span>
+            <span class="detail-value">
+              <mat-icon class="check-icon" [class.yes]="account.acceptTerms" [class.no]="!account.acceptTerms">
+                {{ account.acceptTerms ? 'check_circle' : 'cancel' }}
+              </mat-icon>
+            </span>
+          </div>
+        </div>
+
       </div>
-  
-      <!-- Action Footer -->
-      <div class="action-footer" *ngIf="account">
-        <button mat-stroked-button class="cancel-btn" (click)="goBack()">
-          <mat-icon>arrow_back</mat-icon>
-          Back to List
-        </button>
-  
-        <button
-          mat-raised-button
-          class="lock-btn"
-          (click)="lockAndReturn()"
-          [disabled]="isLocking || isLocked">
-          <mat-icon>{{ isLocked ? 'check_circle' : 'lock' }}</mat-icon>
-          {{ isLocked ? 'Profile Locked!' : isLocking ? 'Locking...' : 'Review Complete — Lock Profile' }}
-        </button>
+
+      <!-- No changes notice -->
+      <div class="no-changes-notice" *ngIf="!pendingUpdate">
+        <mat-icon>info_outline</mat-icon>
+        No pending changes found. The profile details shown are the current saved values.
       </div>
-  
+
+      <!-- Error -->
+      <div class="lock-error" *ngIf="lockError">
+        <mat-icon>error_outline</mat-icon>
+        {{ lockError }}
+      </div>
+
+      <!-- User's Note -->
+      <div class="user-message" *ngIf="notification?.message">
+        <h3 class="group-title">
+          <mat-icon>message</mat-icon>
+          User's Note
+        </h3>
+        <p class="message-text">{{ notification.message }}</p>
+      </div>
+
     </div>
+
+    <!-- Action Footer -->
+    <div class="action-footer" *ngIf="account">
+      <button mat-stroked-button class="cancel-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to List
+      </button>
+
+      <button
+        mat-raised-button
+        class="lock-btn"
+        (click)="lockAndReturn()"
+        [disabled]="isLocking || isLocked">
+        <mat-icon>{{ isLocked ? 'check_circle' : 'lock' }}</mat-icon>
+        {{ isLocked ? 'Profile Locked!' : isLocking ? 'Locking...' : 'Review Complete — Lock Profile' }}
+      </button>
+    </div>
+
   </div>
+</div>

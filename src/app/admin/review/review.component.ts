@@ -13,7 +13,7 @@ export class ReviewComponent implements OnInit {
   accountId: string = '';
   account: any = null;
   notification: any = null;
-  pendingUpdate: any = null;  // the changes the user made
+  pendingUpdate: any = null;
   isLocking: boolean = false;
   isLocked: boolean = false;
   lockError: string = '';
@@ -44,7 +44,6 @@ export class ReviewComponent implements OnInit {
     if (pendingRaw) {
       try {
         const parsed = JSON.parse(pendingRaw);
-        // Only apply if it belongs to the account being reviewed
         if (parsed.accountId === this.accountId) {
           this.pendingUpdate = parsed;
         }
@@ -60,7 +59,6 @@ export class ReviewComponent implements OnInit {
         .subscribe({
           next: (account) => {
             this.account = account;
-            // Overlay the pending update on top of current account data
             if (this.pendingUpdate) {
               this.account = { ...this.account, ...this.pendingUpdate };
             }
@@ -108,7 +106,6 @@ export class ReviewComponent implements OnInit {
     this.isLocking = true;
     this.lockError = '';
 
-    // If there are pending changes, save them to the backend first
     if (this.pendingUpdate) {
       const updatePayload: any = {
         firstName: this.pendingUpdate.firstName,
@@ -128,7 +125,6 @@ export class ReviewComponent implements OnInit {
           }
         });
     } else {
-      // No pending changes, just lock
       this.finalizeLock();
     }
   }
@@ -146,6 +142,7 @@ export class ReviewComponent implements OnInit {
 
     this.isLocked = true;
 
+    // Redirect to /list (not login) after short confirmation delay
     setTimeout(() => {
       this.router.navigate(['/list']);
     }, 1200);
@@ -171,7 +168,6 @@ export class ReviewComponent implements OnInit {
     });
   }
 
-  // Check whether a field was changed by the user vs what's on the backend
   isChanged(field: string): boolean {
     if (!this.pendingUpdate || !this.account) return false;
     return this.pendingUpdate[field] !== undefined;
